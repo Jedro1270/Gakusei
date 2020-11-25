@@ -1,5 +1,5 @@
 {
-
+  "type": "module",
   "name": "gakusei",
   "version": "1.0.0",
   "main": "commitlint.config.js",
