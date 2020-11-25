@@ -10,22 +10,22 @@ export default class Menu extends Component {
                     </a>
                 </div>
                 <div>
-                    <a href="/groups">
+                    <a href="/pomodoro">
                         Pomodoro
                     </a>
                 </div>
                 <div>
-                    <a href="/groups">
+                    <a href="/notebooks">
                         Notebooks
                     </a>
                 </div>
                 <div>
-                    <a href="/groups">
+                    <a href="/chat">
                         Chat
                     </a>
                 </div>
                 <div>
-                    <a href="/groups">
+                    <a href="/rankings">
                         Rankings and Badges
                     </a>
                 </div>
