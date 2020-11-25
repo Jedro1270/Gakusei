@@ -1,5 +1,9 @@
+#root {
+  height: 100vh;
+}
+
 .App {
-  text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -7,32 +11,59 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App-menu {
+  font-size: 20px;
+  text-align: center;
+  height: 100%;
+  width: 90%;
+  background-color: rgb(92, 92, 92);
+  transform: translateX(-100%);
+}
+
+.App-menu div {
+  flex: 1;
+  padding: 20px;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  text-align: center;
+  background-color: grey;
+  height: 15%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 100%;
+  outline: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.Header-title {
+  flex: 20;
+}
+
+@media screen and (min-width: 768px) {
+  .App-header button {
+    visibility: hidden;
+    flex: 0;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .Header-burger {
+    flex: 1;
+    margin-left: 10px;
+  }
+
+  .App-menu {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    transform: none;
   }
 }
