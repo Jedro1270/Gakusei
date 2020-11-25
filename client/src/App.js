@@ -1,11 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
+import Header from './components/Header/Header';
+import Menu from './components/Header/Menu/Menu'
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "" };
+    this.state = { menuOpen: false };
   }
 
   callAPI() {
@@ -19,23 +20,24 @@ class App extends Component {
     this.callAPI();
   }
 
+  toggleMenu = event => {
+    if (this.state.menuOpen) {
+      document.querySelector('.App-menu').style.transform = "translateX(-100%)";
+    } else {
+      document.querySelector('.App-menu').style.transform = "none";
+    }
+
+    this.setState(() => ({
+        menuOpen: !this.state.menuOpen
+      })
+    );
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p className="App-intro">
-              {this.state.apiResponse}
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Header toggleMenu={this.toggleMenu}/>
+        <Menu />
       </div>
     );
   }
