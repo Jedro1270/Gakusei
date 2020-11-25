@@ -1,7 +1,14 @@
 import './App.css';
 import React, { Component } from 'react';
+import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
+
 import Header from './components/Header/Header';
-import Menu from './components/Header/Menu/Menu'
+import Menu from './components/Header/Menu/Menu';
+import Groups from './components/Body/Groups/Groups';
+import Pomodoro from './components/Body/Pomodoro/Pomodoro';
+import Notebooks from './components/Body/Notebooks/Notebooks';
+import Chat from './components/Body/Chat/Chat';
+import Rankings from './components/Body/Rankings/Rankings';
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +27,7 @@ class App extends Component {
     this.callAPI();
   }
 
-  toggleMenu = event => {
+  toggleMenu = () => {
     if (this.state.menuOpen) {
       document.querySelector('.App-menu').style.transform = "translateX(-100%)";
     } else {
@@ -35,10 +42,19 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header toggleMenu={this.toggleMenu}/>
-        <Menu />
-      </div>
+      <Router>
+        <div className="App">
+          <Header toggleMenu={this.toggleMenu}/>
+          <Menu />
+          <Switch>
+            <Route path="/groups" component={Groups} />
+            <Route path="/pomodoro" component={Pomodoro} />
+            <Route path="/notebooks" component={Notebooks} />
+            <Route path="/chat" component={Chat} />
+            <Route path="/rankings" component={Rankings} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
