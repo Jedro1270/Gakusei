@@ -4,21 +4,31 @@ export default class Menu extends Component {
     render() {
         return (
             <div className="App-menu">
-                <a href="/groups">
-                    Groups
-                </a>
-                <a href="/groups">
-                    Pomodoro
-                </a>
-                <a href="/groups">
-                    Notebooks
-                </a>
-                <a href="/groups">
-                    Chat
-                </a>
-                <a href="/groups">
-                    Rankings and Badges
-                </a>
+                <div>
+                    <a href="/groups">
+                        Groups
+                    </a>
+                </div>
+                <div>
+                    <a href="/groups">
+                        Pomodoro
+                    </a>
+                </div>
+                <div>
+                    <a href="/groups">
+                        Notebooks
+                    </a>
+                </div>
+                <div>
+                    <a href="/groups">
+                        Chat
+                    </a>
+                </div>
+                <div>
+                    <a href="/groups">
+                        Rankings and Badges
+                    </a>
+                </div>
             </div>
         )
     }
