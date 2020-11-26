@@ -1,5 +1,6 @@
 #root {
   height: 100vh;
+  position: relative;
 }
 
 .App {
@@ -12,12 +13,21 @@
 }
 
 .App-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
   font-size: 20px;
   text-align: center;
-  height: 100%;
-  width: 90%;
+  height: 115%;
+  width: 80%;
   background-color: rgb(92, 92, 92);
   transform: translateX(-100%);
+}
+
+.App-body {
+  height: 100%;
+  background-color: black;
+  color: white;
 }
 
 .App-menu div {
@@ -36,7 +46,7 @@
   color: white;
 }
 
-.App-header button {
+.App-header button, .close-menu button {
   background: none;
   border: none;
   color: white;
@@ -44,14 +54,20 @@
   outline: none;
 }
 
+.close-menu {
+  text-align: start;
+}
+
 .Header-title {
   flex: 20;
 }
 
-@media screen and (min-width: 768px) {
-  .App-header button {
+@media screen and (min-width: 760px) {
+  .App-header button, .close-menu {
     visibility: hidden;
     flex: 0;
+    position: absolute;
+    left: 100px;
   }
   
   .Header-burger {
@@ -60,6 +76,7 @@
   }
 
   .App-menu {
+    position: relative;
     height: 10%;
     width: 100%;
     display: flex;
