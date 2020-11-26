@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 
 export default class Menu extends Component {
+    toggleMenu() {
+        this.props.toggleMenu()
+    }
+
     render() {
         return (
-            <div className="App-menu">
+            <div className="App-menu" onClick={this.toggleMenu.bind(this)}>
+                <div className="close-menu">
+                    <h1>
+                        <button>
+                            X
+                        </button>
+                    </h1>
+                </div>
                 <div>
                     <a href="/groups">
                         Groups
