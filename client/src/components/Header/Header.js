@@ -14,7 +14,7 @@ export default class Header extends Component {
                     <Burger />
                 </button>
                 <div className="Header-title">
-                    <Title />
+                    <Title title={this.props.title}/>
                 </div>
             </div>
         )
