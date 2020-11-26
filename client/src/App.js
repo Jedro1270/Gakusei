@@ -13,7 +13,11 @@ import Rankings from './components/Body/Rankings/Rankings';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { menuOpen: false };
+    
+    this.state = { menuOpen: false, title: "Groups" };
+
+    this.toggleMenu = this.toggleMenu.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
   }
 
   callAPI() {
@@ -27,32 +31,55 @@ class App extends Component {
     this.callAPI();
   }
 
-  toggleMenu = () => {
-    if (this.state.menuOpen) {
-      document.querySelector('.App-menu').style.transform = "translateX(-100%)";
-    } else {
-      document.querySelector('.App-menu').style.transform = "none";
+  toggleMenu() {
+    if (window.innerWidth < 760) {
+      if (this.state.menuOpen) {
+        document.querySelector('.App-menu').style.transform = "translateX(-100%)";
+      } else {
+        document.querySelector('.App-menu').style.transform = "none";
+      }
+  
+      this.setState(() => ({
+          menuOpen: !this.state.menuOpen
+        })
+      );
     }
+  }
 
-    this.setState(() => ({
-        menuOpen: !this.state.menuOpen
-      })
-    );
+  updateTitle(newTitle) {
+    this.setState({ title: newTitle });
   }
 
   render() {
     return (
       <Router>
         <div className="App">
-          <Header toggleMenu={this.toggleMenu}/>
-          <Menu />
-          <Switch>
-            <Route path="/groups" component={Groups} />
-            <Route path="/pomodoro" component={Pomodoro} />
-            <Route path="/notebooks" component={Notebooks} />
-            <Route path="/chat" component={Chat} />
-            <Route path="/rankings" component={Rankings} />
-          </Switch>
+          <Header toggleMenu={this.toggleMenu} title={this.state.title}/>
+          <Menu toggleMenu={this.toggleMenu}/>
+          <div className="App-body">
+            <Switch>
+              <Route path="/groups" render={() => (
+                  <Groups updateTitle={this.updateTitle} title="Groups"/>
+                )} 
+              />
+              <Route path="/pomodoro" render={() => (
+                  <Pomodoro updateTitle={this.updateTitle} title="Pomodoro"/>
+                )} 
+              />
+              <Route path="/notebooks" render={() => (
+                  <Notebooks updateTitle={this.updateTitle} title="Notebooks"/>
+                )} 
+              />
+              <Route path="/chat" render={() => (
+                  <Chat updateTitle={this.updateTitle} title="Chat"/>
+                )} 
+              />
+              <Route path="/rankings" render={() => (
+                  <Rankings updateTitle={this.updateTitle} title="Rankings and Badges"/>
+                )} 
+              />
+            </Switch>
+          </div>
         </div>
       </Router>
     );
