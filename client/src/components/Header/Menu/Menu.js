@@ -19,8 +19,8 @@ export default class Menu extends Component {
 
     render() {
         return (
-            <div className="App-menu" onClick={this.toggleMenu.bind(this)}>
-                <div className="close-menu">
+            <div className="App-menu">
+                <div className="close-menu" onClick={this.toggleMenu.bind(this)}>
                     <h1>
                         <button>
                             X
