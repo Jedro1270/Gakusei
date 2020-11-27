@@ -27,31 +27,21 @@ export default class Menu extends Component {
                         </button>
                     </h1>
                 </div>
-                <div className="Groups-drawer">
-                    <a href="/groups">
-                        Groups
-                    </a>
-                </div>
-                <div className="Pomodoro-drawer">
-                    <a href="/pomodoro">
-                        Pomodoro
-                    </a>
-                </div>
-                <div className="Notebooks-drawer">
-                    <a href="/notebooks">
-                        Notebooks
-                    </a>
-                </div>
-                <div className="Chat-drawer">
-                    <a href="/chat">
-                        Chat
-                    </a>
-                </div>
-                <div className="Rankings-drawer">
-                    <a href="/rankings">
-                        Rankings and Badges
-                    </a>
-                </div>
+                <a href="/groups" className="Groups-drawer">
+                    Groups   
+                </a>
+                <a href="/pomodoro" className="Pomodoro-drawer">
+                    Pomodoro
+                </a>
+                <a href="/notebooks" className="Notebooks-drawer">               
+                    Notebooks
+                </a>
+                <a href="/chat" className="Chat-drawer">
+                    Chat             
+                </a>
+                <a href="/rankings" className="Rankings-drawer">          
+                    Rankings and Badges          
+                </a>
             </div>
         )
     }
