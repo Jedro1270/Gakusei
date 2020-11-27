@@ -60,6 +60,7 @@
 }
 
 .close-menu {
+  width: max-content;
   text-align: start;
 }
 
