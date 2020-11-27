@@ -55,7 +55,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header toggleMenu={this.toggleMenu} title={this.state.title}/>
-          <Menu toggleMenu={this.toggleMenu}/>
+          <Menu toggleMenu={this.toggleMenu} title={this.state.title}/>
           <div className="App-body">
             <Switch>
               <Route path="/groups" render={() => (
