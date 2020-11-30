@@ -5,6 +5,7 @@
 
 .App {
   height: 100%;
+  background-color: black;
 }
 
 .App-logo {
@@ -36,7 +37,6 @@
 
 .App-body {
   height: 100%;
-  background-color: black;
   color: white;
 }
 
@@ -141,6 +141,17 @@
   width: 200px;
   font-size: 20px;
   font-weight: bold;
+}
+
+.Notebooks-page {
+  height: 100%;
+  background-color: black;
+}
+
+.Notebook {
+  background-color: grey;
+  padding: 10px;
+  margin: 10px 0px;
 }
 
 .Selectable-groups img {
