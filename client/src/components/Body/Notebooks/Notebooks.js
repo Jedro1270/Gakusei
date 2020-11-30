@@ -12,7 +12,21 @@ export default class Notebooks extends Component {
     render() {
         return (
             <div className="Notebooks-page">
-                notebooks stuff here
+                <div className="Notebook">
+                    <h1>
+                        Notebook 1
+                    </h1>
+                </div>
+                <div className="Notebook">
+                    <h1>
+                        Notebook 2
+                    </h1>
+                </div>
+                <div className="Notebook">
+                    <h1>
+                        Notebook 3
+                    </h1>
+                </div>
             </div>
         )
     }
