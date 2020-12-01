@@ -8,55 +8,9 @@
   background-color: black;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-menu {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 20px;
-  text-align: center;
-  height: 115%;
-  width: 80%;
-  background-color: rgb(92, 92, 92);
-  transform: translateX(-100%);
-}
-
-.App-menu a {
-  text-decoration: none;
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  padding: 20px;
-}
-
 .App-body {
   height: 100%;
-  color: white;
-}
-
-.App-header {
-  text-align: center;
-  background-color: grey;
-  height: 15%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-header button, .close-menu button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 100%;
-  outline: none;
+  background-color: black;
 }
 
 .Group-buttons {
@@ -77,10 +31,6 @@
 .close-menu {
   width: max-content;
   text-align: start;
-}
-
-.Header-title {
-  flex: 20;
 }
 
 .Selectable-groups {
