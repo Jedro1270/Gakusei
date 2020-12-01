@@ -1,22 +1,19 @@
 import { styled, Typography } from '@material-ui/core';
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Title extends Component {
-    render() {
-        return (
-            <TitleContent>
-                {this.props.title}
-            </TitleContent>
-        );
-    }
+export default function Title(props) {
+    return (
+        <TitleContent>
+            {props.title}
+        </TitleContent>
+    );
 }
 
 const TitleContent = styled(Typography)({
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    textAlign: 'center',
+    flexGrow: '1',
     variant: 'h2',
     color: 'white',
     fontWeight: 'bold',
-    padding: '20px',
     fontSize: '50px'
 });

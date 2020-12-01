@@ -1,46 +1,48 @@
-import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 import styled from 'styled-components';
-import React, { Component } from 'react';
-import { Link, BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default class NavigationMenu extends Component {
+export default function NavigationMenu() {
+    return (
+        <NavigationList>
+            <CustomLink to='/groups' >
+                <NavigationContainer button>
+                    <ListItemText primary={'Groups'}/>
+                </NavigationContainer>
+            </CustomLink>
 
-    render() {
-        return (
-            <NavigationList>
-                <CustomLink to='/groups' >
-                    <ListItem button>
-                        <ListItemText primary={'Groups'}/>
-                    </ListItem>
-                </CustomLink>
+            <CustomLink to='/pomodoro' >
+                <NavigationContainer button>
+                    <ListItemText primary={'Pomodoro'}/>
+                </NavigationContainer>
+            </CustomLink>
 
-                <CustomLink to='/pomodoro' >
-                    <ListItem button>
-                        <ListItemText primary={'Pomodoro'}/>
-                    </ListItem>
-                </CustomLink>
+            <CustomLink to='/notebooks' >
+                <NavigationContainer button>
+                    <ListItemText primary={'Notebooks'}/>
+                </NavigationContainer>
+            </CustomLink>
 
-                <CustomLink to='/notebooks' >
-                    <ListItem button>
-                        <ListItemText primary={'Notebooks'}/>
-                    </ListItem>
-                </CustomLink>
+            <CustomLink to='/chat' >
+                <NavigationContainer button>
+                    <ListItemText primary={'Chat'}/>
+                </NavigationContainer>
+            </CustomLink>
 
-                <CustomLink to='/chat' >
-                    <ListItem button>
-                        <ListItemText primary={'Chat'}/>
-                    </ListItem>
-                </CustomLink>
-
-                <CustomLink to='/rankings' >
-                    <ListItem button>
-                        <ListItemText primary={'Rankings and Badges'}/>
-                    </ListItem>
-                </CustomLink>
-            </NavigationList>
-        )
-    }
+            <CustomLink to='/rankings' >
+                <NavigationContainer button>
+                    <ListItemText primary={'Rankings and Badges'}/>
+                </NavigationContainer>
+            </CustomLink>
+        </NavigationList>
+    );
 }
+
+const NavigationContainer = styled(ListItem)({
+    width: '350px',
+    textAlign: 'center'
+});
 
 const NavigationList = styled(List)({
     backgroundColor: 'rgb(121, 121, 121)'

@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-export default class Chat extends Component {
-    updateTitle(title) {
-        this.props.updateTitle(title)
-    }
+export default function Chat(props) {
+    
+    useEffect(() => {
+        props.setTitle('Chat');
+    });
 
-    componentDidMount() {
-        this.updateTitle(this.props.title);
-    }
-
-    render() {
-        return (
-            <div className="Chat-page">
-                chat stuff here
-            </div>
-        )
-    }
+    return (
+        <div className="Chat-page">
+            chat stuff here
+        </div>
+    );
 }

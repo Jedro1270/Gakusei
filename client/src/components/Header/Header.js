@@ -1,47 +1,29 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Title from './Title/Title';
 
 import { AppBar, Drawer, IconButton, styled } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 
-export default class Header extends Component {
+export default function Header(props) {
+    
+    const [open, setOpen] = useState(false);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            open: false,
-        }
-
-        this.openDrawer = this.openDrawer.bind(this);
-        this.closeDrawer = this.closeDrawer.bind(this);
-    }
-
-    openDrawer() {
-        this.setState({ open: true });
-    }
-
-    closeDrawer() {
-        this.setState({ open: false })
-    }
-
-    render() {
-        return (
-            <TitleBar>
-                <IconButton onClick={this.openDrawer}>
-                    <MenuButton/>
-                </IconButton>
-                <Drawer
-                    anchor='left'
-                    open={this.state.open}
-                    onClose={this.closeDrawer}
-                >
-                    <NavigationMenu/>
-                </Drawer>
-                <Title title={this.props.title}/>
-            </TitleBar>
-        )
-    }
+    return (
+        <TitleBar>
+            <IconButton onClick={() => {setOpen(true)}}>
+                <MenuButton/>
+            </IconButton>
+            <Drawer
+                anchor='left'
+                open={open}
+                onClose={()=> {setOpen(false)}}
+            >
+                <NavigationMenu/>
+            </Drawer>
+            <Title title={props.title}/>
+        </TitleBar>
+    );
 }
 
 const TitleBar = styled(AppBar)({

@@ -1,33 +1,28 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-export default class Notebooks extends Component {
-    updateTitle(title) {
-        this.props.updateTitle(title)
-    }
+export default function Notebooks(props) {
 
-    componentDidMount() {
-        this.updateTitle(this.props.title);
-    }
+    useEffect(() => {
+        props.setTitle('Notebooks');
+    });
 
-    render() {
-        return (
-            <div className="Notebooks-page">
-                <div className="Notebook">
-                    <h1>
-                        Notebook 1
-                    </h1>
-                </div>
-                <div className="Notebook">
-                    <h1>
-                        Notebook 2
-                    </h1>
-                </div>
-                <div className="Notebook">
-                    <h1>
-                        Notebook 3
-                    </h1>
-                </div>
+    return (
+        <div className="Notebooks-page">
+            <div className="Notebook">
+                <h1>
+                    Notebook 1
+                </h1>
             </div>
-        )
-    }
+            <div className="Notebook">
+                <h1>
+                    Notebook 2
+                </h1>
+            </div>
+            <div className="Notebook">
+                <h1>
+                    Notebook 3
+                </h1>
+            </div>
+        </div>
+    );
 }

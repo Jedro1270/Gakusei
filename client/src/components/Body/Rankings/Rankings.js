@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-export default class Rankings extends Component {
-    updateTitle(title) {
-        this.props.updateTitle(title)
-    }
-
-    componentDidMount() {
-        this.updateTitle(this.props.title);
-    }
+export default function Rankings(props) {
     
-    render() {
-        return (
-            <div className="Rankings-page">
-                rankings stuff here
-            </div>
-        )
-    }
+    useEffect(() => {
+        props.setTitle('Rankings and Badges')
+    });
+
+    return (
+        <div className="Rankings-page">
+            rankings stuff here
+        </div>
+    );
 }
