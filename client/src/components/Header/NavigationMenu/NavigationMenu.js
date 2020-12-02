@@ -1,5 +1,4 @@
-import { List, ListItem, ListItemText } from '@material-ui/core';
-import styled from 'styled-components';
+import { List, ListItem, ListItemText, styled } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -48,7 +47,7 @@ const NavigationList = styled(List)({
     backgroundColor: 'rgb(121, 121, 121)'
 });
 
-const CustomLink = styled(Link)`
-    text-decoration: none;
-    color: white
-`;
+const CustomLink = styled(Link)({
+    textDecoration: 'none',
+    color: 'white'
+});
