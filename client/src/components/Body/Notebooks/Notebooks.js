@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { List, ListItem, Typography, styled } from '@material-ui/core';
 
 export default function Notebooks(props) {
 
@@ -7,22 +8,41 @@ export default function Notebooks(props) {
     });
 
     return (
-        <div className="Notebooks-page">
-            <div className="Notebook">
-                <h1>
+        <List>
+
+            <Notebook button>
+                <NotebookTitle>
                     Notebook 1
-                </h1>
-            </div>
-            <div className="Notebook">
-                <h1>
+                </NotebookTitle>
+            </Notebook>
+
+            <Notebook button>
+                <NotebookTitle>
                     Notebook 2
-                </h1>
-            </div>
-            <div className="Notebook">
-                <h1>
+                </NotebookTitle>
+            </Notebook>
+
+            <Notebook button>
+                <NotebookTitle>
                     Notebook 3
-                </h1>
-            </div>
-        </div>
+                </NotebookTitle>
+            </Notebook>
+
+        </List>
     );
 }
+
+const Notebook = styled(ListItem)({
+    backgroundColor: 'grey',
+    padding: '10px',
+    margin: '10px 0px',
+    '&:hover': {
+        backgroundColor: 'rgb(102, 102, 102)'
+    }
+});
+
+const NotebookTitle = styled(Typography)({
+    color: 'white',
+    fontSize: '30px',
+    fontWeight: 'bold'
+});

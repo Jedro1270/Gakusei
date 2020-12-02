@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Avatar, Box, Button, Typography, styled } from '@material-ui/core';
 
 export default function Groups(props) {
 
@@ -7,53 +8,77 @@ export default function Groups(props) {
     });
 
     return (
-        <div className='Group-page'>
-            <div className='Group-buttons'>
-                <button className='Create-group'>
+        <div>
+            <GroupButtonsSection>
+                <GroupButton>
                     Create
-                </button>
-                <button className='Join-group'>
+                </GroupButton>
+                <GroupButton>
                     Join
-                </button>
-            </div>
+                </GroupButton>
+            </GroupButtonsSection>
 
-            <div className='Selectable-groups'>
-                <div className='sample-group'>
-                    <div className='Group-icon'>
-                        <img src='/images/group-icons/image.png'/>
-                    </div>
-                    <div className='Group-name'>
+            <SelectableGroupsSection>
+
+                    <GroupIcon src='/images/group-icons/image.png'>
+                    </GroupIcon>
+                    <GroupName>
                         Group Name
-                    </div>
-                </div>
+                    </GroupName>
+
+                    <GroupIcon src='/images/group-icons/image.png'>
+                    </GroupIcon>
+                    <GroupName>
+                        Group Name
+                    </GroupName>
+     
+                    <GroupIcon src='/images/group-icons/image.png'>
+                    </GroupIcon>
+                    <GroupName>
+                        Group Name
+                    </GroupName>
                 
-                <div className='sample-group'>
-                    <div className='Group-icon'>
-                        <img src='/images/group-icons/image.png'/>
-                    </div>
-                    <div className='Group-name'>
-                        Group Name
-                    </div>
-                </div>
-
-                <div className='sample-group'>
-                    <div className='Group-icon'>
-                        <img src='/images/group-icons/image.png'/>
-                    </div>
-                    <div className='Group-name'>
-                        Group Name
-                    </div>
-                </div>
-
-                <div className='sample-group'>
-                    <div className='Group-icon'>
-                        <img src='/images/group-icons/image.png'/>
-                    </div>
-                    <div className='Group-name'>
-                        Group Name
-                    </div>
-                </div>
-            </div>
+            </SelectableGroupsSection>
         </div>
     );
 }
+
+const GroupButtonsSection = styled(Box)({
+    display: 'flex',
+    flexDirection: 'row',
+    height: '15%',
+});
+
+const GroupButton = styled(Button)({
+    backgroundColor: 'white',
+    '&:hover': {
+        backgroundColor: 'rgb(191, 191, 191)'
+    },
+    fontWeight: 'bold',
+    fontSize: '20px',
+    flex: '1',
+    padding: '2% 5%',
+    margin: '20px',
+});
+
+const SelectableGroupsSection = styled(Box)({
+    backgroundColor: 'black',
+    textAlign: 'center',
+    fontSize: '40px',
+    fontWeight: 'bold',
+});
+
+const GroupIcon = styled(Avatar)({
+    margin: '20px auto',
+    height: '250px',
+    width: '250px',
+    display: 'flex',
+    flexDirection: 'column',
+});
+
+const GroupName = styled(Typography)({
+    marginBottom: '50px',
+    color: 'white',
+    fontSize: '30px',
+    fontWeight: 'bold'
+});
