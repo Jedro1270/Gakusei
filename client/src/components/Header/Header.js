@@ -27,13 +27,13 @@ export default function Header(props) {
 }
 
 const TitleBar = styled(AppBar)({
-    position: "static",
+    position: 'static',
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: 'grey',
 });
 
-const MenuButton = styled(MenuIcon) ({
+const MenuButton = styled(MenuIcon)({
     color: 'white',
     fontSize: '50px'
 });
