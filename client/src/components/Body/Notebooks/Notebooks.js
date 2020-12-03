@@ -1,36 +1,57 @@
 import React, { useEffect } from 'react';
+import {Link} from 'react-router-dom';
 import { List, ListItem, Typography, styled } from '@material-ui/core';
 
 export default function Notebooks(props) {
 
     useEffect(() => {
         props.setTitle('Notebooks');
+        props.setBackButtonNav(false);
     });
 
     return (
+
         <List>
+            <CustomLink to='/notebooks/notebook-1'>
+                <Notebook button>
+                    <NotebookTitle>
+                        Notebook 1
+                    </NotebookTitle>
+                </Notebook>
+            </CustomLink>
 
-            <Notebook button>
-                <NotebookTitle>
-                    Notebook 1
-                </NotebookTitle>
-            </Notebook>
+            <CustomLink to='/notebooks/notebook-2'>
+                <Notebook button>
+                    <NotebookTitle>
+                        Notebook 2
+                    </NotebookTitle>
+                </Notebook>
+            </CustomLink>
 
-            <Notebook button>
-                <NotebookTitle>
-                    Notebook 2
-                </NotebookTitle>
-            </Notebook>
+            <CustomLink to='/notebooks/notebook-3'>
+                <Notebook button>
+                    <NotebookTitle>
+                        Notebook 3
+                    </NotebookTitle>
+                </Notebook>
+            </CustomLink>
 
-            <Notebook button>
-                <NotebookTitle>
-                    Notebook 3
-                </NotebookTitle>
-            </Notebook>
-
+            <CustomLink to='/notebooks/notebook-4'>
+                <Notebook button>
+                    <NotebookTitle>
+                        Notebook 4
+                    </NotebookTitle>
+                </Notebook>
+            </CustomLink>
         </List>
+ 
     );
 }
+
+const CustomLink = styled(Link)({
+    textDecoration: 'none',
+    color: 'white'
+});
 
 const Notebook = styled(ListItem)({
     backgroundColor: 'grey',
