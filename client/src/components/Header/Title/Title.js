@@ -10,10 +10,8 @@ export default function Title(props) {
 }
 
 const TitleContent = styled(Typography)({
-    textAlign: 'center',
-    flexGrow: '1',
-    variant: 'h2',
     color: 'white',
     fontWeight: 'bold',
-    fontSize: '50px'
+    fontSize: '50px',
+    margin: '20px'
 });
