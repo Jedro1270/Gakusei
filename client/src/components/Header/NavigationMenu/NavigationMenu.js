@@ -1,10 +1,13 @@
-import { List, ListItem, ListItemText, styled } from '@material-ui/core';
+import { List, ListItem, ListItemText, Avatar, styled } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function NavigationMenu() {
     return (
         <NavigationList>
+
+            <UserAvatar/>
+
             <CustomLink to='/groups' >
                 <NavigationContainer button>
                     <ListItemText primary={'Groups'}/>
@@ -39,7 +42,7 @@ export default function NavigationMenu() {
 }
 
 const NavigationContainer = styled(ListItem)({
-    width: '350px',
+    width: '300px',
     textAlign: 'center'
 });
 
@@ -50,4 +53,10 @@ const NavigationList = styled(List)({
 const CustomLink = styled(Link)({
     textDecoration: 'none',
     color: 'white'
+});
+
+const UserAvatar = styled(Avatar)({
+    width: '200px',
+    height: '200px',
+    margin: '20px auto'
 });
