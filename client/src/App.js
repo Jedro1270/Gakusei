@@ -10,6 +10,8 @@ import Chat from './components/Body/Chat/Chat';
 import Rankings from './components/Body/Rankings/Rankings';
 import Notes from './components/Body/Notebooks/Notes/Notes';
 import NoteContents from './components/Body/Notebooks/Notes/NoteContents/NoteContents';
+import SignUp from './Pages/Log In/SignUp/SignUp';
+import SignIn from './Pages/Log In/SignIn/SignIn';
 
 export default function App() {
   
@@ -19,39 +21,72 @@ export default function App() {
   return (
     <Router>
       <div className='App'>
-        <Header title={title} backButtonNav={backButtonNav}/>
-        <div className='App-body'>
           <Switch>
+            <Route exact path='/sign-up' render={() => (
+                <SignUp/>
+              )}
+            />
+            <Route exact path='/sign-in' render={() => (
+                <SignIn/>
+              )}
+            />
             <Route exact path='/groups' render={() => (
-                <Groups setTitle={setTitle}/>
+              <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Groups setTitle={setTitle}/>
+              </div>
+                
               )} 
             />
             <Route exact path='/pomodoro' render={() => (
-                <Pomodoro setTitle={setTitle}/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Pomodoro setTitle={setTitle}/>
+                </div>
+                
               )} 
             />
             <Route exact path='/notebooks' render={() => (
-                <Notebooks setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Notebooks setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                </div>
+                
               )} 
             />
             <Route exact path='/notebooks/:notebookTitle' render={() => (
-                <Notes setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Notes setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                </div>
+                
               )} 
             />
             <Route exact path='/notebooks/:notebookTitle/:noteTitle' render={() => (
-                <NoteContents setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <NoteContents setTitle={setTitle} setBackButtonNav={setBackButtonNav}/>
+                </div>
+                
               )} 
             />
             <Route exact path='/chat' render={() => (
-                <Chat setTitle={setTitle}/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Chat setTitle={setTitle}/>
+                </div>
+                
               )} 
             />
             <Route exact path='/rankings' render={() => (
-                <Rankings setTitle={setTitle} title='Rankings and Badges'/>
+                <div className='App-body'>
+                  <Header title={title} backButtonNav={backButtonNav}/>
+                  <Rankings setTitle={setTitle} title='Rankings and Badges'/>
+                </div>
+                
               )} 
             />
           </Switch>
-        </div>
       </div>
     </Router>
   );
