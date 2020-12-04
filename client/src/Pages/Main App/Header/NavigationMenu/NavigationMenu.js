@@ -1,12 +1,24 @@
-import { List, ListItem, ListItemText, Avatar, styled } from '@material-ui/core';
+import { List, ListItem, ListItemText, Avatar, Typography, styled } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import LevelProgressBar from './LevelProgressBar'
 
 export default function NavigationMenu() {
     return (
         <NavigationList>
 
             <UserAvatar/>
+            
+            <UsernameDisplay>
+                Username
+            </UsernameDisplay>
+
+            <LevelDisplay>
+                Level 1 (50 Pts)
+            </LevelDisplay>
+
+            <LevelProgressBar value={50}/>
 
             <CustomLink to='/groups' >
                 <NavigationContainer button>
@@ -43,7 +55,8 @@ export default function NavigationMenu() {
 
 const NavigationContainer = styled(ListItem)({
     width: '300px',
-    textAlign: 'center'
+    height: '80px',
+    textAlign: 'center',
 });
 
 const NavigationList = styled(List)({
@@ -52,11 +65,25 @@ const NavigationList = styled(List)({
 
 const CustomLink = styled(Link)({
     textDecoration: 'none',
-    color: 'white'
+    color: 'white',
 });
 
 const UserAvatar = styled(Avatar)({
-    width: '200px',
-    height: '200px',
-    margin: '20px auto'
+    width: '100px',
+    height: '100px',
+    margin: '30px auto'
+});
+
+const UsernameDisplay = styled(Typography)({
+    textAlign: 'center',
+    margin: '10px',
+    fontSize: '30px',
+    color: 'white'
+});
+
+const LevelDisplay = styled(Typography)({
+    textAlign: 'center',
+    fontSize: '35px',
+    color: 'white',
+    fontWeight: 'bold'
 });

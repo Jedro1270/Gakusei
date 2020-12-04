@@ -19,9 +19,17 @@ export default function Notes(props) {
 
             <CustomLink to={`/notebooks/${notebookTitle}/note-1`}>
                 <Note button>
+                    <DateText>
+                        01/27/2000
+                    </DateText>
+
                     <NoteTitle>
                         note 1
                     </NoteTitle>
+
+                    <NotePreview noWrap>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                    </NotePreview>
                 </Note>
             </CustomLink>
 
@@ -43,15 +51,26 @@ const CustomLink = styled(Link)({
 
 const Note = styled(ListItem)({
     backgroundColor: 'grey',
-    padding: '10px',
+    padding: '15px',
     margin: '10px 0px',
     '&:hover': {
         backgroundColor: 'rgb(102, 102, 102)'
-    }
+    },
+    display: 'block',
+    textAlign: 'left',
+    color: 'white'
 });
 
 const NoteTitle = styled(Typography)({
-    color: 'white',
     fontSize: '30px',
     fontWeight: 'bold'
+});
+
+const DateText = styled(Typography)({
+    fontSize: '15px'
+});
+
+const NotePreview = styled(Typography)({
+    fontSize: '20px',
+    width: '80%'
 });
