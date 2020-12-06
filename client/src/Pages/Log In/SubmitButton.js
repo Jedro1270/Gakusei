@@ -1,8 +1,9 @@
 import { Button, styled } from '@material-ui/core';
 
 export default function SubmitButton(props) {
+
     return (
-        <SubmitButtonComponent  type="submit" fullWidth>
+        <SubmitButtonComponent fullWidth onClick={() => {props.submit()}}>
             {props.text}
         </SubmitButtonComponent>
     );
@@ -16,6 +17,6 @@ const SubmitButtonComponent = styled(Button)({
     backgroundColor: 'grey',
     color: 'white',
     '&:hover': {
-        backgroundColor: 'rgb(153, 153, 153)'
+        backgroundColor: 'rgb(89, 89, 89)'
     }
 });
