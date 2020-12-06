@@ -43,7 +43,7 @@ export default function passportStrategy(passport, database) {
     passport.deserializeUser((id, done) => {
         database.query(
             `
-                SELECT * FROM 'users'
+                SELECT * FROM "users"
                     WHERE "user_id" = ${id}
             `,
             (error, results) => {
@@ -52,5 +52,5 @@ export default function passportStrategy(passport, database) {
                 done(error, user)
             }
         )
-    })
+    });
 }
