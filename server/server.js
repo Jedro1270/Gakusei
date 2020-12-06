@@ -3,6 +3,12 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import session from 'express-session';
+
+import passportStrategy from './passportConfig.js';
 
 const pool = new pg.Pool({
   user: 'postgres',
@@ -24,16 +30,87 @@ pool.connect((error, client) => {
     database = client;
 
     app
+        .use(bodyParser.json())
         .use(bodyParser.urlencoded({extended: true}))
-        .use(cors())
-        .get('/groups', (request, response) => {
-            response.send("It's Alive!");
-        })
-        .get('/pomodoro', (request, response) => {
+        .use(cors({
+          origin: 'http://localhost:3000',
+          credentials: true
+        }))
+        .use(session({
+          secret: 'secretCode',
+          resave: true,
+          saveUninitialized: true
+        }))
+        .use(cookieParser('secretCode'))
+        .use(passport.initialize())
+        .use(passport.session());
+
+        passportStrategy(passport, database)
+
+        // Sign In
+        app.post('/sign-in', (request, response, next) => {
+          passport.authenticate('local', (error, user) => {
+            if (error) {
+              console.log(`ERROR: ${error}`)
+            } else if (!user) {
+              console.log('No User exists');
+            } else {
+              request.logIn(user, (error) => {
+                if (error) {
+                  console.log(`ERROR: ${error}`)
+                }
+
+                response.send('Successfully Authenticated');
+                console.log(request.user);
+              });
+            }
+          })(request, response, next)
+        });
+
+        // Sign Up
+        app.post('/sign-up', async (request, response) => {
+          const hashedPassword = await bcrypt.hash(request.body.password, 10);
+
+          database.query(
+            `
+              INSERT INTO "users"(username, password, points)
+                VALUES('${request.body.username}', '${hashedPassword}', 0)
+                ON CONFLICT (username) DO NOTHING
+                RETURNING *;
+            `,
+            (error, results) => {
+              if (error) {
+                console.log(`ERROR: ${error}`)
+              } else {
+                if (results.rows.length === 0) {
+                  console.log('Username taken');
+                } else {
+                  console.log('User inserted');
+                }
+              }
+            }
+          );
+        });
+
+        // Groups
+        app.get('/groups', (request, response) => {
+            try {
+                response.send('something');
+            } catch (error) {
+              console.log(error)
+            }
+        });
+
+        // Pomodoro 
+        app.get('/pomodoro', (request, response) => {
+          try {
             
+          } catch (error) {
+            console.log(error)
+          }
         })
         .listen(2727, () => {
-          console.log('server started!')
+          console.log('Server started!')
         });
   }
 });
