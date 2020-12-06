@@ -1,5 +1,7 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import React, { useState } from 'react';
 import Title from '../Title';
@@ -8,8 +10,12 @@ import SubmitButton from '../SubmitButton';
 
 export default function SignUp() {
 
+  const history = useHistory();
+
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
+  const [usernameTaken, setUsernameTaken] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const register = () => {
     Axios({
@@ -20,62 +26,85 @@ export default function SignUp() {
       },
        withCredentials: true,
        url: 'http://localhost:2727/sign-up'
-    }).then((response) => console.log(response))
+    }).then((response) => {
+      console.log(response)
+
+      if (response.data === 'Username Taken') {
+        setUsernameTaken(true);
+      } else if (response.data === 'User Inserted') {
+        setLoggedIn(true);
+      }
+    });
   }
 
-  return (
-    <SignUpBody>
+  if (loggedIn) {
+    
+    history.push('/groups');
+    return null;
 
-        <AppLogo/>
+  } else {
+    let alert = null;
 
-        <Title title='Sign Up'/>
+    if (usernameTaken) {
+      alert = <Alert severity='error' onClose={() => {setUsernameTaken(false)}} >Username is already taken!</Alert>
+    }
 
-        <form>
-          <Grid container spacing={2}>
+    return (
+      <SignUpBody>
 
-            <Grid item xs={12}>
-              <TextField
-                autoComplete='fname'
-                name='username'
-                variant='outlined'
-                required
-                fullWidth
-                id='username'
-                label='Username'
-                autoFocus
-                onChange={(event) => setRegisterUsername(event.target.value)}
-              />
+          <AppLogo/>
+
+          <Title title='Sign Up'/>
+
+          {alert}
+
+          <form>
+            <Grid container spacing={2}>
+
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete='fname'
+                  name='username'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='username'
+                  label='Username'
+                  autoFocus
+                  onChange={(event) => setRegisterUsername(event.target.value)}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='current-password'
+                  onChange={(event) => setRegisterPassword(event.target.value)}
+                />
+              </Grid>
+
             </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                variant='outlined'
-                required
-                fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
-                autoComplete='current-password'
-                onChange={(event) => setRegisterPassword(event.target.value)}
-              />
+            <SubmitButton text='SUBMIT' submit={register}/>
+
+            <Grid container justify='flex-end'>
+              <Grid item>
+                <Link href='/sign-in' variant='body2'>
+                  Already have an account? Sign in   
+                </Link>
+              </Grid>
             </Grid>
+          </form>
 
-          </Grid>
-
-          <SubmitButton text='SUBMIT' submit={register}/>
-
-          <Grid container justify='flex-end'>
-            <Grid item>
-              <Link href='/sign-in' variant='body2'>
-                Already have an account? Sign in   
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-
-    </SignUpBody>
-  );
+      </SignUpBody>
+    );
+  }
 }
 
 const SignUpBody = styled(Box)({
