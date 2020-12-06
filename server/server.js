@@ -54,6 +54,7 @@ pool.connect((error, client) => {
               console.log(`ERROR: ${error}`)
             } else if (!user) {
               console.log('No User exists');
+              response.send('Invalid Username or Password')
             } else {
               request.logIn(user, (error) => {
                 if (error) {
@@ -84,8 +85,10 @@ pool.connect((error, client) => {
               } else {
                 if (results.rows.length === 0) {
                   console.log('Username taken');
+                  response.send('Username Taken');
                 } else {
                   console.log('User inserted');
+                  response.send('User Inserted');
                 }
               }
             }
