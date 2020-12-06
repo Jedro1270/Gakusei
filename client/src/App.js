@@ -2,14 +2,14 @@ import './App.css';
 import React, { useState } from 'react';
 import {Route, BrowserRouter as Router, Switch} from 'react-router-dom';
 
-import Header from './components/Header/Header';
-import Groups from './components/Body/Groups/Groups';
-import Pomodoro from './components/Body/Pomodoro/Pomodoro';
-import Notebooks from './components/Body/Notebooks/Notebooks';
-import Chat from './components/Body/Chat/Chat';
-import Rankings from './components/Body/Rankings/Rankings';
-import Notes from './components/Body/Notebooks/Notes/Notes';
-import NoteContents from './components/Body/Notebooks/Notes/NoteContents/NoteContents';
+import Header from './Pages/Main App/Header/Header';
+import Groups from './Pages/Main App/Body/Groups/Groups';
+import Pomodoro from './Pages/Main App/Body/Pomodoro/Pomodoro';
+import Notebooks from './Pages/Main App/Body/Notebooks/Notebooks';
+import Chat from './Pages/Main App/Body/Chat/Chat';
+import Rankings from './Pages/Main App/Body/Rankings/Rankings';
+import Notes from './Pages/Main App/Body/Notebooks/Notes/Notes';
+import NoteContents from './Pages/Main App/Body/Notebooks/Notes/NoteContents/NoteContents';
 import SignUp from './Pages/Log In/SignUp/SignUp';
 import SignIn from './Pages/Log In/SignIn/SignIn';
 
