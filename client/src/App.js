@@ -24,6 +24,9 @@ export default function App() {
     <Router>
       <div className='App'>
           <Switch>
+            <Route exact path='/'>
+              <Redirect to='/sign-in'/>
+            </Route>
             <Route exact path='/sign-up' render={() => (
                 <SignUp/>
               )}
