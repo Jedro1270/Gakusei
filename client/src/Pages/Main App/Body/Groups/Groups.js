@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react';
 import { Avatar, Box, Button, Typography, styled } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 export default function Groups(props) {
 
+    const history = useHistory();
+
     useEffect(() => {
         props.setTitle('Groups');
+        props.setBackButtonNav(false);
     });
 
     return (
         <div>
             <GroupButtonsSection>
-                <GroupButton>
+                <GroupButton onClick={() => {history.push('/groups/create-group')}}>
                     Create
                 </GroupButton>
-                <GroupButton>
+                <GroupButton onClick={() => {history.push('/groups/join-group')}}>
                     Join
                 </GroupButton>
             </GroupButtonsSection>
