@@ -17,7 +17,7 @@ import CreateGroup from './Pages/Main App/Body/Groups/Create Group/CreateGroup';
 
 export default function App() {
   
-  const [title, setTitle] = useState('test');
+  const [title, setTitle] = useState('');
   const [backButtonNav, setBackButtonNav] = useState(false);
 
   return (
