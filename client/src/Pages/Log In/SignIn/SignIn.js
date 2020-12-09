@@ -1,7 +1,7 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
+import customAjax from '../../../customAjax';
 
 import React, { useState } from 'react';
 import Title from '../Title';
@@ -18,18 +18,16 @@ export default function SignIn() {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const logIn = () => {
-    Axios({
-      method: 'POST',
-      data: {
-        username: loginUsername,
-        password: loginPassword
-      },
-       withCredentials: true,
-       url: 'http://localhost:2727/sign-in'
-    }).then((response) => {
-      console.log(response);
-      
-      if (response.data === 'Successfully Authenticated') {
+    const data = {
+      username: loginUsername,
+      password: loginPassword
+    }
+
+    const ajax = new customAjax();
+
+    ajax.post('http://localhost:2727/sign-in', data);
+    ajax.stateListener((response) => {
+      if (response === 'Successfully Authenticated') {
         setLoggedIn(true);
       } else {
         setInvalidCredentials(true);

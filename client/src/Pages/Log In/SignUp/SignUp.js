@@ -1,6 +1,6 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import Axios from 'axios';
+import customAjax from '../../../customAjax';
 import { useHistory } from 'react-router-dom';
 
 import React, { useState } from 'react';
@@ -18,20 +18,18 @@ export default function SignUp() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const register = () => {
-    Axios({
-      method: 'POST',
-      data: {
-        username: registerUsername,
-        password: registerPassword
-      },
-       withCredentials: true,
-       url: 'http://localhost:2727/sign-up'
-    }).then((response) => {
-      console.log(response)
+    const data = {
+      username: registerUsername,
+      password: registerPassword
+    }
 
-      if (response.data === 'Username Taken') {
+    const ajax = new customAjax();
+
+    ajax.post('http://localhost:2727/sign-up', data);
+    ajax.stateListener((response) => {
+      if (response === 'Username Taken') {
         setUsernameTaken(true);
-      } else if (response.data === 'User Inserted') {
+      } else {
         setLoggedIn(true);
       }
     });
