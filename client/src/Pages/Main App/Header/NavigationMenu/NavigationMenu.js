@@ -22,31 +22,41 @@ export default function NavigationMenu() {
 
             <CustomLink to='/groups' >
                 <NavigationContainer button>
-                    <ListItemText primary={'Groups'}/>
+                    <NavigationTitle>
+                        Groups
+                    </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
 
             <CustomLink to='/pomodoro' >
                 <NavigationContainer button>
-                    <ListItemText primary={'Pomodoro'}/>
+                    <NavigationTitle>
+                        Pomodoro
+                    </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
 
             <CustomLink to='/notebooks' >
                 <NavigationContainer button>
-                    <ListItemText primary={'Notebooks'}/>
+                    <NavigationTitle>
+                        Notebooks
+                    </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
 
             <CustomLink to='/chat' >
                 <NavigationContainer button>
-                    <ListItemText primary={'Chat'}/>
+                    <NavigationTitle>
+                        Chat
+                    </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
 
             <CustomLink to='/rankings' >
                 <NavigationContainer button>
-                    <ListItemText primary={'Rankings and Badges'}/>
+                    <NavigationTitle>
+                        Rankings and Badges
+                    </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
         </NavigationList>
@@ -54,13 +64,20 @@ export default function NavigationMenu() {
 }
 
 const NavigationContainer = styled(ListItem)({
-    width: '300px',
-    height: '80px',
-    textAlign: 'center',
+    width: '100%',
+    height: '10%',
 });
 
 const NavigationList = styled(List)({
-    backgroundColor: 'rgb(121, 121, 121)'
+    backgroundColor: 'rgb(121, 121, 121)',
+    height: '100%',
+});
+
+const NavigationTitle = styled(Typography)({
+    fontSize: '150%',
+    fontWeight: 'bold',
+    margin: 'auto',
+    textAlign: 'center'
 });
 
 const CustomLink = styled(Link)({
