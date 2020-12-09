@@ -18,7 +18,19 @@ const pool = new pg.Pool({
 });
 
 const app = express();
-const upload = multer({dest: '../public/'});
+
+const storage = multer.diskStorage({
+  destination: (request, file, callback) => {
+    callback(null, 'client/public/images/group-icons'); 
+  },
+  filename: (request, file, callback) => {
+    callback(null, Date.now() + file.originalname)    
+  }
+});
+
+const upload = multer({
+  storage: storage
+});
 
 let database;
 
@@ -102,6 +114,16 @@ pool.connect((error, client) => {
             } catch (error) {
               console.log(error)
             }
+        });
+
+        app.post('/groups/create-group', upload.single('file'), (request, response) => {
+          try {
+            // database stuff here
+
+            response.json({message: 'Upload Successful'})
+          } catch (error) {
+            console.log(error)
+          }
         });
 
         // Pomodoro 
