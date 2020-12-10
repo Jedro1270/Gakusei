@@ -2,12 +2,16 @@ import { styled, Box, Avatar, Typography, Paper, InputBase, IconButton } from "@
 import SearchIcon from '@material-ui/icons/Search'
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
+import CustomAjax from "../../../../../CustomAjax";
 import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from "../../../../../Redux/Actions/ChangeTitle";
+import JoinableGroup from './JoinableGroup'
 
 export default function JoinGroup(props) {
 
     const [searchValue, setSearchValue] = useState('');
+    const [availableGroups, setAvailableGroups] = useState([]);
 
     const dispatch = useDispatch();
 
@@ -16,8 +20,25 @@ export default function JoinGroup(props) {
         dispatch(setBackButton());
     });
 
-    const searchGroupName = (groupname) => {
-        // database stuff here
+    const getGroups = (groupname) => {
+        const data = { groupname: groupname }
+
+        const ajax = new CustomAjax();
+
+        ajax.post('http://localhost:2727/groups/join-group', data, true);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setAvailableGroups(response.groups);
+        });
+    }
+
+    const displayAvailableGroups = () => {
+        return availableGroups.map((availableGroup) => {
+            return (
+                <JoinableGroup groupname={availableGroup.group_name} groupImage={availableGroup.group_picture}/>
+            );
+        });
     }
 
     return (
@@ -25,28 +46,12 @@ export default function JoinGroup(props) {
 
             <SearchBar> 
                 <SearchInput placeholder='Search by group name' onChange={(event) => {setSearchValue(event.target.value)}}/>
-                <IconButton onClick={() => {searchGroupName(searchValue)}}>
+                <IconButton onClick={() => {getGroups(searchValue)}}>
                     <SearchIcon/>
                 </IconButton>
             </SearchBar>
 
-            <GroupIcon src='/images/group-icons/image.png'>
-            </GroupIcon>
-            <GroupName>
-                Group Name
-            </GroupName>
-
-            <GroupIcon src='/images/group-icons/image.png'>
-            </GroupIcon>
-            <GroupName>
-                Group Name
-            </GroupName>
-
-            <GroupIcon src='/images/group-icons/image.png'>
-            </GroupIcon>
-            <GroupName>
-                Group Name
-            </GroupName>
+           {displayAvailableGroups()}
 
         </SelectableGroupsSection>
     );
@@ -57,21 +62,6 @@ const SelectableGroupsSection = styled(Box)({
     textAlign: 'center',
     fontSize: '40px',
     fontWeight: 'bold',
-});
-
-const GroupIcon = styled(Avatar)({
-    margin: '20px auto',
-    height: '250px',
-    width: '250px',
-    display: 'flex',
-    flexDirection: 'column',
-});
-
-const GroupName = styled(Typography)({
-    marginBottom: '50px',
-    color: 'white',
-    fontSize: '30px',
-    fontWeight: 'bold'
 });
 
 const SearchBar = styled(Paper)({
