@@ -1,4 +1,4 @@
-export default class customAjax {
+export default class CustomAjax {
 
     constructor() {
         this.xhr = new XMLHttpRequest();
@@ -21,12 +21,15 @@ export default class customAjax {
         this.xhr.send();
     }
 
-    post = (url, data) => {
+    post = (url, data, json) => {
         this.xhr.open('POST', url, true);
-        this.xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        if (json) {
+            this.xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            data = JSON.stringify(data);
+        }
 
-        const stringData = JSON.stringify(data);
-
-        this.xhr.send(stringData)
+        this.xhr.send(data) 
     }
 } 
