@@ -1,6 +1,6 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import customAjax from '../../../customAjax';
+import CustomAjax from '../../../CustomAjax';
 import { useHistory } from 'react-router-dom';
 
 import React, { useState } from 'react';
@@ -23,9 +23,9 @@ export default function SignUp() {
       password: registerPassword
     }
 
-    const ajax = new customAjax();
+    const ajax = new CustomAjax();
 
-    ajax.post('http://localhost:2727/sign-up', data);
+    ajax.post('http://localhost:2727/sign-up', data, true);
     ajax.stateListener((response) => {
       if (response === 'Username Taken') {
         setUsernameTaken(true);

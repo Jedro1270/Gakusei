@@ -1,7 +1,7 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
-import customAjax from '../../../customAjax';
+import CustomAjax from '../../../CustomAjax';
 
 import React, { useState } from 'react';
 import Title from '../Title';
@@ -23,9 +23,9 @@ export default function SignIn() {
       password: loginPassword
     }
 
-    const ajax = new customAjax();
+    const ajax = new CustomAjax();
 
-    ajax.post('http://localhost:2727/sign-in', data);
+    ajax.post('http://localhost:2727/sign-in', data, true);
     ajax.stateListener((response) => {
       if (response === 'Successfully Authenticated') {
         setLoggedIn(true);
