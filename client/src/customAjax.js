@@ -2,7 +2,6 @@ export default class CustomAjax {
 
     constructor() {
         this.xhr = new XMLHttpRequest();
-        this.response = '';
     }
 
     stateListener = (callback) => {
