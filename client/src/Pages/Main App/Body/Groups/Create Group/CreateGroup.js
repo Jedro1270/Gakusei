@@ -1,6 +1,6 @@
 import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core'; 
-import Axios from 'axios';
 import { useEffect, useState } from 'react';
+import CustomAjax from '../../../../../CustomAjax';
 
 export default function CreateGroup(props) {
 
@@ -19,17 +19,14 @@ export default function CreateGroup(props) {
         formData.append('groupname', groupname);
         formData.append('file', file);
 
-        Axios({
-            method: 'POST',
-            data: formData,
-            url: 'http://localhost:2727/groups/create-group'
-          }).then((response) => {
-            console.log(response.data);
-
-            if (response.data.message === 'Upload Successful') {
-                alert('show upload success message and go back to groups page')
+        const ajax = new CustomAjax();
+        
+        ajax.post('http://localhost:2727/groups/create-group', formData, false);
+        ajax.stateListener((response) => {
+            if (response === 'Upload Successful') {
+                alert('show upload success message and go back to groups page');
             }
-          });
+        });
     }
 
      return (
