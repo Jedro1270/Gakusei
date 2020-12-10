@@ -1,5 +1,5 @@
 import { Avatar, Box, Typography, Button, styled } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 
@@ -7,9 +7,49 @@ export default function Pomodoro(props) {
 
     const dispatch = useDispatch();
 
+    const [secondsLeft, setSecondsLeft] = useState(1500);
+    const [timerStart, setTimerStart] = useState(false);
+
     useEffect(() => {
         dispatch(changeTitle('Pomodoro'));
+
+        if (secondsLeft > 0 && timerStart) {
+            setTimeout(() => {
+                setSecondsLeft(secondsLeft - 1);
+            }, 1000);
+        } else if (!timerStart) {
+            setSecondsLeft(1500)
+        } else if (secondsLeft <= 0) {
+            // add pomodoro
+        } 
     });
+
+    const displayTimer = () => {
+        const minutes = Math.floor(secondsLeft / 60);
+        const seconds = secondsLeft - (minutes * 60);
+
+        return (
+            <PomodoroTimer>
+                {minutes > 9 ? minutes : `0${minutes}`}:{seconds > 9 ? seconds : `0${seconds}`}
+            </PomodoroTimer>
+        )
+    }
+
+    const displayToggleButton = () => {
+        if (timerStart) {
+            return (
+                <ToggleButton onClick={() => {setTimerStart(false)}}>
+                    RESET
+                </ToggleButton>
+            )
+        } else {
+            return (
+                <ToggleButton onClick={() => {setTimerStart(true)}}>    
+                    START
+                </ToggleButton>
+            )
+        }
+    }
 
     return (
         <PomodoroBody>
@@ -41,13 +81,9 @@ export default function Pomodoro(props) {
                 Pomodoros Finished: 5         
             </PomodoroCounter>
 
-            <PomodoroTimer>
-                25:00
-            </PomodoroTimer>
+            {displayTimer()}
 
-            <StartButton>    
-                START
-            </StartButton>
+            {displayToggleButton()}
         </PomodoroBody>
     );
 }
@@ -99,7 +135,7 @@ const PomodoroTimer = styled(Typography)({
     fontWeight: 'bold'
 });
 
-const StartButton = styled(Button)({
+const ToggleButton = styled(Button)({
     backgroundColor: 'white',
     '&:hover': {
         backgroundColor: 'rgb(191, 191, 191)'
