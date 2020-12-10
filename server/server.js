@@ -66,15 +66,14 @@ pool.connect((error, client) => {
               console.log(`ERROR: ${error}`)
             } else if (!user) {
               console.log('No User exists');
-              response.send('Invalid Username or Password')
+              response.json({message: 'Invalid Username or Password'});
             } else {
               request.logIn(user, (error) => {
                 if (error) {
                   console.log(`ERROR: ${error}`)
                 }
 
-                response.send('Successfully Authenticated');
-                console.log(request.user);
+                response.json({message: 'Successfully Authenticated'});
               });
             }
           })(request, response, next);
@@ -97,10 +96,10 @@ pool.connect((error, client) => {
               } else {
                 if (results.rows.length === 0) {
                   console.log('Username taken');
-                  response.send('Username Taken');
+                  response.json({message: 'Username taken'});
                 } else {
                   console.log('User inserted');
-                  response.send('User Inserted');
+                  response.json({message: 'User Inserted'});
                 }
               }
             }
@@ -110,7 +109,18 @@ pool.connect((error, client) => {
         // Groups
         app.get('/groups', (request, response) => {
             try {
-                response.send('something');
+                database.query(
+                  `
+                    SELECT * FROM "groups";
+                  `,
+                  (error, results) => {
+                    if (error) {
+                      console.log(`ERROR: ${error}`)
+                    } else {         
+                      response.json({groups: results.rows});
+                    }
+                  }
+                )
             } catch (error) {
               console.log(error);
             }
@@ -132,7 +142,7 @@ pool.connect((error, client) => {
                     console.log('ERROR: Data not inserted to database!');
                   } else {
                     console.log('Group inserted');
-                    response.send('Group Inserted');
+                    response.json({message: 'Group Inserted'});
                   }
                 }
               }
