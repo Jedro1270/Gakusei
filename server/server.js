@@ -57,7 +57,7 @@ pool.connect((error, client) => {
         .use(passport.initialize())
         .use(passport.session());
 
-        passportStrategy(passport, database)
+        passportStrategy(passport, database);
 
         // Sign In
         app.post('/sign-in', (request, response, next) => {
@@ -77,7 +77,7 @@ pool.connect((error, client) => {
                 console.log(request.user);
               });
             }
-          })(request, response, next)
+          })(request, response, next);
         });
 
         // Sign Up
@@ -112,17 +112,33 @@ pool.connect((error, client) => {
             try {
                 response.send('something');
             } catch (error) {
-              console.log(error)
+              console.log(error);
             }
         });
 
         app.post('/groups/create-group', upload.single('file'), (request, response) => {
           try {
-            // database stuff here
-
-            response.json({message: 'Upload Successful'})
+            database.query(
+              `
+                INSERT INTO "groups"(group_name, group_picture)
+                  VALUES('${request.body.groupname}', '${request.file.filename}')
+                  RETURNING *;
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(`ERROR: ${error}`)
+                } else {
+                  if (results.rows.length === 0) {
+                    console.log('ERROR: Data not inserted to database!');
+                  } else {
+                    console.log('Group inserted');
+                    response.send('Group Inserted');
+                  }
+                }
+              }
+            );
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         });
 
@@ -131,11 +147,11 @@ pool.connect((error, client) => {
           try {
             
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         })
         .listen(2727, () => {
-          console.log('Server started!')
+          console.log('Server started!');
         });
   }
 });
