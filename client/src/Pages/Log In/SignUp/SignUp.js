@@ -27,7 +27,8 @@ export default function SignUp() {
 
     ajax.post('http://localhost:2727/sign-up', data, true);
     ajax.stateListener((response) => {
-      if (response === 'Username Taken') {
+      response = JSON.parse(response);
+      if (response.message === 'Username Taken') {
         setUsernameTaken(true);
       } else {
         setLoggedIn(true);

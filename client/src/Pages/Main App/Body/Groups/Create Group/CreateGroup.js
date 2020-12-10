@@ -32,7 +32,8 @@ export default function CreateGroup() {
 
         ajax.post('http://localhost:2727/groups/create-group', formData, false);
         ajax.stateListener((response) => {
-            if (response === 'Group Inserted') {
+            response = JSON.parse(response);
+            if (response.message === 'Group Inserted') {
                 history.push('/groups');
             }
         });

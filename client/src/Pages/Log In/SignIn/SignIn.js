@@ -27,7 +27,8 @@ export default function SignIn() {
 
     ajax.post('http://localhost:2727/sign-in', data, true);
     ajax.stateListener((response) => {
-      if (response === 'Successfully Authenticated') {
+      response = JSON.parse(response);
+      if (response.message === 'Successfully Authenticated') {
         setLoggedIn(true);
       } else {
         setInvalidCredentials(true);
