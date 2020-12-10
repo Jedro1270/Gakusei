@@ -1,24 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Typography, styled } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
+import CustomAjax from '../../../../../CustomAjax';
+import SelectableGroup from './Selectable Group/SelectableGroup';
 
 export default function Groups() {
 
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const [groups, setGroups] = useState([]);
+
     useEffect(() => {
         dispatch(changeTitle('Groups'));
         dispatch(setDrawer());
+        initializeGroups();
     });
 
-    const displayGroups = () => {
+    const initializeGroups = () => {
+        const ajax = new CustomAjax();
 
-    } 
+        ajax.get('http://localhost:2727/groups');
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setGroups(response.groups);
+        });
+    }
+
+    const displayGroups = () => {
+        return groups.map((group) => {
+            return (
+                <SelectableGroup groupname={group.group_name} groupImage={group.group_picture}/>
+            );
+        });
+    }
 
     return (
         <div>
