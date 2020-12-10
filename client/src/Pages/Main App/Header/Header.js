@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { AppBar, Drawer, IconButton, styled } from '@material-ui/core';
 import { Menu, ArrowBack } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 import Title from './Title/Title';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
@@ -11,16 +13,16 @@ export default function Header(props) {
     const [open, setOpen] = useState(false);
     const history = useHistory();
 
-    const backButtonNav = props.backButtonNav;
+    const headerNavigation = useSelector((state) => {return state.headerNavigation})
 
     function navigationType() {
-        if (!backButtonNav) {
+        if (headerNavigation === 'DRAWER') {
             return (
                 <IconButton onClick={() => {setOpen(true)}}>
                     <MenuButton/>
                 </IconButton>
             );
-        } else {
+        } else if (headerNavigation === 'BACK_BUTTON') {
             return (
                 <IconButton onClick={() => {history.goBack()}}>
                     <BackButton/>
@@ -41,7 +43,7 @@ export default function Header(props) {
             >
                 <NavigationMenu/>
             </Drawer>
-            <Title title={props.title}/>
+            <Title/>
         </TitleBar>
     );
 }

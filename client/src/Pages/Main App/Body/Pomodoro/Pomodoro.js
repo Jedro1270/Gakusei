@@ -1,10 +1,14 @@
 import { Avatar, Box, Typography, Button, styled } from '@material-ui/core';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 
 export default function Pomodoro(props) {
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        props.setTitle('Pomodoro');
+        dispatch(changeTitle('Pomodoro'));
     });
 
     return (

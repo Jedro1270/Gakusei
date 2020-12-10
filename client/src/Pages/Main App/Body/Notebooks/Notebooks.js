@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import { List, ListItem, Typography, styled } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+
+import changeTitle from '../../../../Redux/Actions/ChangeTitle';
+import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 
 export default function Notebooks(props) {
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        props.setTitle('Notebooks');
-        props.setBackButtonNav(false);
+        dispatch(changeTitle('Notebooks'));
+        dispatch(setDrawer());
     });
 
     return (

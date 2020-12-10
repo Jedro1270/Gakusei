@@ -1,16 +1,25 @@
 import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core'; 
 import { useEffect, useState } from 'react';
-import CustomAjax from '../../../../../CustomAjax';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-export default function CreateGroup(props) {
+import CustomAjax from '../../../../../CustomAjax';
+import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
+import { setBackButton } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
+
+export default function CreateGroup() {
 
     const [groupname, setGroupname] = useState('');
     const [file, setFile] = useState(null);
     const [temporaryFile, setTemporaryFile] = useState(null);
 
+    const dispatch = useDispatch();
+
+    const history = useHistory();
+
     useEffect(() => {
-        props.setTitle('Create Group');
-        props.setBackButtonNav(true);
+        dispatch(changeTitle('Create Group'));
+        dispatch(setBackButton());
     });
 
     const submitForm = () => {
@@ -20,11 +29,11 @@ export default function CreateGroup(props) {
         formData.append('file', file);
 
         const ajax = new CustomAjax();
-        
+
         ajax.post('http://localhost:2727/groups/create-group', formData, false);
         ajax.stateListener((response) => {
-            if (response === 'Upload Successful') {
-                alert('show upload success message and go back to groups page');
+            if (response === 'Group Inserted') {
+                history.push('/groups');
             }
         });
     }

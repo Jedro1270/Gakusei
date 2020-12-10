@@ -1,15 +1,24 @@
 import React, { useEffect } from 'react';
 import { Avatar, Box, Button, Typography, styled } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-export default function Groups(props) {
+import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
+import { setDrawer } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
+
+export default function Groups() {
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        props.setTitle('Groups');
-        props.setBackButtonNav(false);
+        dispatch(changeTitle('Groups'));
+        dispatch(setDrawer());
     });
+
+    const displayGroups = () => {
+
+    } 
 
     return (
         <div>
@@ -24,23 +33,7 @@ export default function Groups(props) {
 
             <SelectableGroupsSection>
 
-                    <GroupIcon src='/images/group-icons/image.png'>
-                    </GroupIcon>
-                    <GroupName>
-                        Group Name
-                    </GroupName>
-
-                    <GroupIcon src='/images/group-icons/image.png'>
-                    </GroupIcon>
-                    <GroupName>
-                        Group Name
-                    </GroupName>
-     
-                    <GroupIcon src='/images/group-icons/image.png'>
-                    </GroupIcon>
-                    <GroupName>
-                        Group Name
-                    </GroupName>
+                {displayGroups()}
                 
             </SelectableGroupsSection>
         </div>
@@ -70,19 +63,4 @@ const SelectableGroupsSection = styled(Box)({
     textAlign: 'center',
     fontSize: '40px',
     fontWeight: 'bold',
-});
-
-const GroupIcon = styled(Avatar)({
-    margin: '20px auto',
-    height: '250px',
-    width: '250px',
-    display: 'flex',
-    flexDirection: 'column',
-});
-
-const GroupName = styled(Typography)({
-    marginBottom: '50px',
-    color: 'white',
-    fontSize: '30px',
-    fontWeight: 'bold'
 });

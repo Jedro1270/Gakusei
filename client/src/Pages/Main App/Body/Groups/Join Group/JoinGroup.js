@@ -1,14 +1,19 @@
 import { styled, Box, Avatar, Typography, Paper, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigation";
+import changeTitle from "../../../../../Redux/Actions/ChangeTitle";
 
 export default function JoinGroup(props) {
 
     const [searchValue, setSearchValue] = useState('');
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        props.setTitle('Join Group');
-        props.setBackButtonNav(true);
+        dispatch(changeTitle('Join Group'));
+        dispatch(setBackButton());
     });
 
     const searchGroupName = (groupname) => {
