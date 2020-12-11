@@ -38,7 +38,7 @@ export default function SignUp() {
 
   if (loggedIn) {
     
-    history.push('/groups');
+    history.push('/sign-in');
     return null;
 
   } else {
