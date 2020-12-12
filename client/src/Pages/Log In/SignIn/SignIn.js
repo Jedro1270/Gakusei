@@ -1,7 +1,9 @@
 import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import CustomAjax from '../../../CustomAjax';
+import setUser from '../../../Redux/Actions/SetUserState';
 
 import React, { useState } from 'react';
 import Title from '../Title';
@@ -11,6 +13,7 @@ import SubmitButton from '../SubmitButton';
 export default function SignIn() {
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -29,6 +32,7 @@ export default function SignIn() {
     ajax.stateListener((response) => {
       response = JSON.parse(response);
       if (response.message === 'Successfully Authenticated') {
+        dispatch(setUser(response.user));
         setLoggedIn(true);
       } else {
         setInvalidCredentials(true);
