@@ -10,9 +10,9 @@ export default function Pomodoro(props) {
     const [secondsLeft, setSecondsLeft] = useState(1500);
     const [timerStart, setTimerStart] = useState(false);
 
-    useEffect(() => {
-        dispatch(changeTitle('Pomodoro'));
+    dispatch(changeTitle('Pomodoro'));
 
+    useEffect(() => {
         if (secondsLeft > 0 && timerStart) {
             setTimeout(() => {
                 setSecondsLeft(secondsLeft - 1);

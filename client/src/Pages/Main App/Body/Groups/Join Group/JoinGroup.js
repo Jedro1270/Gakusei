@@ -1,6 +1,6 @@
 import { styled, Box, Avatar, Typography, Paper, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import CustomAjax from "../../../../../CustomAjax";
@@ -8,24 +8,22 @@ import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigati
 import changeTitle from "../../../../../Redux/Actions/ChangeTitle";
 import JoinableGroup from './JoinableGroup'
 
-export default function JoinGroup(props) {
+export default function JoinGroup() {
 
     const [searchValue, setSearchValue] = useState('');
     const [availableGroups, setAvailableGroups] = useState([]);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(changeTitle('Join Group'));
-        dispatch(setBackButton());
-    });
+    dispatch(changeTitle('Join Group'));
+    dispatch(setBackButton());
 
     const getGroups = (groupname) => {
         const data = { groupname: groupname }
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/groups/join-group', data, true);
+        ajax.post('http://localhost:2727/groups/join-group/search', data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 

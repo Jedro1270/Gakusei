@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 
-export default function Rankings(props) {
+export default function Rankings() {
 
     const dispatch = useDispatch();
     
-    useEffect(() => {
-        dispatch(changeTitle('Rankings and Badges'));
-    });
+    dispatch(changeTitle('Rankings and Badges'));
 
     return (
         <div className="Rankings-page">

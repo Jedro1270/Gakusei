@@ -1,5 +1,5 @@
 import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core'; 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -17,10 +17,8 @@ export default function CreateGroup() {
 
     const history = useHistory();
 
-    useEffect(() => {
-        dispatch(changeTitle('Create Group'));
-        dispatch(setBackButton());
-    });
+    dispatch(changeTitle('Create Group'));
+    dispatch(setBackButton());
 
     const submitForm = () => {
         const formData = new FormData();

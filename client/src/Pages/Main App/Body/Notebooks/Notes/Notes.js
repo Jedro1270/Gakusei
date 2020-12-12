@@ -1,12 +1,11 @@
 import { List, ListItem, Typography, styled } from "@material-ui/core";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
 import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle'
 
-export default function Notes(props) {
+export default function Notes() {
 
     // To do:
     // Use database data to get proper note title for header and contents
@@ -15,10 +14,8 @@ export default function Notes(props) {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(changeTitle(notebookTitle));
-        dispatch(setBackButton());
-    });
+    dispatch(changeTitle(notebookTitle));
+    dispatch(setBackButton());
 
     return (
         <List>
