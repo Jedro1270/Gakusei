@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Avatar, Typography, styled, Button, Dialog, List, ListItem } from '@material-ui/core';
 
 export default function SelectableGroup(props) {
 
-    const [groupName, setGroupName] = useState('');
-    const [groupImage, setGroupImage] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
-
-    useEffect(() => {
-        setGroupName(props.groupname);
-        setGroupImage(props.groupImage)
-    });
 
     return (
         <div>
             <Button onClick={() => {setOpenDialog(true)}}>
-                <GroupIcon src={`/images/group-icons/${groupImage}`}/>
+                <GroupIcon src={`/images/group-icons/${props.groupImage}`}/>
             </Button>
 
             <GroupName>
-                {groupName}
+                {props.groupname}
             </GroupName>
 
             <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>

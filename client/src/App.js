@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {Route, BrowserRouter as Router, Switch, Redirect} from 'react-router-dom';
 
 import Header from './Pages/Main App/Header/Header';
-import Groups from './Pages/Main App/Body/Groups/Groups Page/Groups';
+import Groups from './Pages/Main App/Body/Groups/Groups';
 import Pomodoro from './Pages/Main App/Body/Pomodoro/Pomodoro';
 import Notebooks from './Pages/Main App/Body/Notebooks/Notebooks';
 import Chat from './Pages/Main App/Body/Chat/Chat';

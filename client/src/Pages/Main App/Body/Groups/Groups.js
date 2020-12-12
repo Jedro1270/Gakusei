@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Button, Typography, styled } from '@material-ui/core';
+import { Box, Button, styled } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
-import { setDrawer } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
-import CustomAjax from '../../../../../CustomAjax';
-import SelectableGroup from './Selectable Group/SelectableGroup';
+import changeTitle from '../../../../Redux/Actions/ChangeTitle';
+import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
+import CustomAjax from '../../../../CustomAjax';
+import SelectableGroup from './SelectableGroup';
 
 export default function Groups() {
 
@@ -15,13 +15,16 @@ export default function Groups() {
 
     const [groups, setGroups] = useState([]);
 
+    const user = useSelector((state) => {return state.userState});
+
     useEffect(() => {
-        dispatch(changeTitle('Groups'));
-        dispatch(setDrawer());
-        initializeGroups();
+        loadGroups();
     });
 
-    const initializeGroups = () => {
+    dispatch(changeTitle('Groups'));
+    dispatch(setDrawer());
+
+    const loadGroups = () => {
         const ajax = new CustomAjax();
 
         ajax.get('http://localhost:2727/groups');
