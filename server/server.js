@@ -73,7 +73,10 @@ pool.connect((error, client) => {
                   console.log(`ERROR: ${error}`)
                 }
 
-                response.json({message: 'Successfully Authenticated'});
+                response.json({
+                  message: 'Successfully Authenticated',
+                  user: request.user
+                });
               });
             }
           })(request, response, next);
@@ -126,9 +129,29 @@ pool.connect((error, client) => {
             }
         });
 
-        app.post('/groups/create-group', upload.single('file'), (request, response) => {
+        app.post('/groups/join-group/search', (request, response) => {
           try {
             database.query(
+              `
+                SELECT * FROM "groups"
+                  WHERE "group_name" ILIKE '%${request.body.groupname}%';
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(`ERROR: ${error}`)
+                } else {         
+                  response.json({groups: results.rows});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
+
+        app.post('/groups/create-group', upload.single('file'), (request, response) => {
+          try {
+            database.query(          //       INSERT INTO "group_memberships"(user_id, group_id)
               `
                 INSERT INTO "groups"(group_name, group_picture)
                   VALUES('${request.body.groupname}', '${request.file.filename}')
