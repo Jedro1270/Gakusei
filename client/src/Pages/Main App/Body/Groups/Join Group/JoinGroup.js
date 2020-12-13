@@ -1,4 +1,4 @@
-import { styled, Box, Avatar, Typography, Paper, InputBase, IconButton } from "@material-ui/core";
+import { styled, Box, Paper, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
 import { useState } from "react";
 import { useDispatch } from "react-redux";
