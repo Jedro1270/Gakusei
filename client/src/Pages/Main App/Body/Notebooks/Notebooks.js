@@ -1,75 +1,130 @@
-import React, { useEffect } from 'react';
-import {Link} from 'react-router-dom';
-import { List, ListItem, Typography, styled } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { List, Dialog, Typography, styled, Fab, DialogTitle, TextField, DialogActions, Button, Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { Add } from '@material-ui/icons';
 
+import CustomAjax from '../../../../CustomAjax';
+import SelectableNotebook from './SelectableNotebook';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 
-export default function Notebooks(props) {
+export default function Notebooks() {
 
     const dispatch = useDispatch();
 
+    const [notebooks, setNotebooks] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [newNotebookName, setNewNotebookName] = useState('')
+
+    dispatch(changeTitle('Notebooks'));
+    dispatch(setDrawer());
+
     useEffect(() => {
-        dispatch(changeTitle('Notebooks'));
-        dispatch(setDrawer());
-    });
+        loadNotebooks();
+    }, [openDialog]);
+
+    const loadNotebooks = () => {
+        const ajax = new CustomAjax();
+
+        ajax.get('http://localhost:2727/notebooks');
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setNotebooks(response.notebooks);
+        });
+    }
+
+    const createNotebookURL = (notebookName) => {
+        return notebookName.replaceAll(' ', '-').toLowerCase();
+    }
+
+    const displayNotebooks = () => {
+        return notebooks.map((notebook) => {
+            const notebookURL = createNotebookURL(notebook.notebook_name);
+            const notebookName = notebook.notebook_name;
+
+            return <SelectableNotebook title={notebookName} notebookURL={notebookURL}/>
+        });
+    }
+
+    const createNotebook = (notebookName) => {
+        const ajax = new CustomAjax();
+
+        const data = {
+            notebookName: notebookName
+        }
+
+        ajax.post('http://localhost:2727/notebooks', data, true);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setNotebooks(response.notebooks);
+        });
+    }
 
     return (
+        <NotebooksPage>
+            <List>
+            
+                {displayNotebooks()}
 
-        <List>
-            <CustomLink to='/notebooks/notebook-1'>
-                <Notebook button>
-                    <NotebookTitle>
-                        Notebook 1
-                    </NotebookTitle>
-                </Notebook>
-            </CustomLink>
+            </List>
 
-            <CustomLink to='/notebooks/notebook-2'>
-                <Notebook button>
-                    <NotebookTitle>
-                        Notebook 2
-                    </NotebookTitle>
-                </Notebook>
-            </CustomLink>
+            <FloatingActionButton size='large' onClick={() => {setOpenDialog(true)}}>
+                <Add/>
+            </FloatingActionButton>
 
-            <CustomLink to='/notebooks/notebook-3'>
-                <Notebook button>
-                    <NotebookTitle>
-                        Notebook 3
-                    </NotebookTitle>
-                </Notebook>
-            </CustomLink>
+            <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>
+                <DialogTitle>
+                        <FormTitle>
+                            Create Notebook 
+                        </FormTitle>
+                </DialogTitle>
+                
+                <NoteBookNameInput
+                    autoFocus
+                    label='Notebook Name'
+                    onChange={(event) => {setNewNotebookName(event.target.value)}}
+                />
 
-            <CustomLink to='/notebooks/notebook-4'>
-                <Notebook button>
-                    <NotebookTitle>
-                        Notebook 4
-                    </NotebookTitle>
-                </Notebook>
-            </CustomLink>
-        </List>
+                <DialogActions>
+                    <Button onClick={() => {
+                        createNotebook(newNotebookName);
+                        setOpenDialog(false);
+                        loadNotebooks();
+                    }}>
+                        <CreateButtonText>
+                            Create
+                        </CreateButtonText>
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </NotebooksPage>
  
     );
 }
 
-const CustomLink = styled(Link)({
-    textDecoration: 'none',
-    color: 'white'
+const FloatingActionButton = styled(Fab)({
+    position: 'fixed',
+    right: '20px',
+    bottom: '20px'
 });
 
-const Notebook = styled(ListItem)({
-    backgroundColor: 'grey',
-    padding: '10px',
-    margin: '10px 0px',
-    '&:hover': {
-        backgroundColor: 'rgb(102, 102, 102)'
-    }
-});
-
-const NotebookTitle = styled(Typography)({
-    color: 'white',
+const FormTitle = styled(Typography)({
     fontSize: '30px',
     fontWeight: 'bold'
+});
+
+const NoteBookNameInput = styled(TextField)({
+    margin: '0px 20px 20px 20px',
+});
+
+const CreateButtonText = styled(Typography)({
+    fontWeight: 'bold'
+});
+
+const NotebooksPage = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'black'
 });
