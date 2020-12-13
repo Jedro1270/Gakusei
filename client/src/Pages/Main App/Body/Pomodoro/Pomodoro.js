@@ -22,7 +22,7 @@ export default function Pomodoro(props) {
         } else if (secondsLeft <= 0) {
             // add pomodoro
         } 
-    });
+    }, [secondsLeft, timerStart]);
 
     const displayTimer = () => {
         const minutes = Math.floor(secondsLeft / 60);
