@@ -19,7 +19,7 @@ export default function Groups() {
 
     useEffect(() => {
         loadGroups();
-    });
+    }, []);
 
     dispatch(changeTitle('Groups'));
     dispatch(setDrawer());
