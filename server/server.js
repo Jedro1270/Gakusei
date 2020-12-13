@@ -186,6 +186,48 @@ pool.connect((error, client) => {
         .listen(2727, () => {
           console.log('Server started!');
         });
+
+        // Notebooks
+        app.get('/notebooks', (request, response) => {
+          try {
+            database.query(
+              `
+                SELECT * FROM "notebooks";
+              `,
+              (error, results) => {
+                console.log(results.rows)
+                if (error) {
+                  console.log(error)
+                } else {
+                  
+                  response.json({notebooks: results.rows});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
+
+        app.post('/notebooks', (request, response) => {
+          try {
+            database.query(
+              `
+                INSERT INTO "notebooks"(group_id, notebook_name)
+                  VALUES(1, '${request.body.notebookName}');
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(error)
+                } else {
+                  response.json({notebooks: results.rows});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
   }
 });
 
