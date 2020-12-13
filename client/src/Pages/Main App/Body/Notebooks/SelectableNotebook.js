@@ -2,11 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { ListItem, Typography, styled } from '@material-ui/core';
 
-export default function Notebooks(props) {
+export default function SelectableNotebook(props) {
 
     return (
 
-        <CustomLink to={`/notebooks/${props.notebookName}`}>
+        <CustomLink to={`/notebooks/${props.notebookURL}`}>
             <Notebook button>
                 <NotebookTitle>
                     {props.title}
