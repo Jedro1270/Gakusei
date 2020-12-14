@@ -38,3 +38,6 @@ jobs:
     - name: Start Server
       run: yarn start
 
+    - name: Start React App
+      working-directory: ./client
+      run: yarn start
