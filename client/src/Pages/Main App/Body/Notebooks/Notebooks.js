@@ -7,6 +7,7 @@ import SelectableNotebook from './SelectableNotebook';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import FloatingActionButton from './FloatingActionButton';
+import createURL from './Helper Functions/createURL';
 
 export default function Notebooks() {
 
@@ -33,10 +34,6 @@ export default function Notebooks() {
                 setNotebooks(response.notebooks);
             }
         });
-    }
-
-    const createURL = (notebookName) => {
-        return notebookName.replaceAll(' ', '-').toLowerCase();
     }
 
     const displayNotebooks = () => {
