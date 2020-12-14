@@ -19,6 +19,7 @@ export default function Notes(props) {
 
     const dispatch = useDispatch();
     const location = useLocation();
+    const notebookID = location.state.notebookID
 
     useEffect(() => {
         loadNotes();
@@ -47,7 +48,7 @@ export default function Notes(props) {
 
         const data = {
             noteName: noteName,
-            notebookID: location.state.notebookID
+            notebookID: notebookID
         }
 
         ajax.post('http://localhost:2727/notebooks/notes', data, true);
@@ -65,8 +66,16 @@ export default function Notes(props) {
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
-            if (notes.length < response.notes.length) {
-                setNotes(response.notes);
+            const sameNotebookNotes = response.notes.filter((note) => {
+                if (note.notebook_id === notebookID) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (notes.length < sameNotebookNotes.length) {
+                setNotes(sameNotebookNotes);
             }
         });
     }
@@ -83,6 +92,7 @@ export default function Notes(props) {
                         noteTitle={note.note_title}
                         contents={note.note_contents}
                         noteURL={createURL(note.note_title)}
+                        noteID={note.note_id}
                     />
         });
     }
