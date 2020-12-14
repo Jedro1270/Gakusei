@@ -31,4 +31,16 @@ export default class CustomAjax {
 
         this.xhr.send(data) 
     }
+
+    put = (url, data, json) => {
+        this.xhr.open('PUT', url, true);
+        
+        if (json) {
+            this.xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            data = JSON.stringify(data);
+        }
+
+        this.xhr.send(data)
+    }
 } 
