@@ -272,6 +272,30 @@ pool.connect((error, client) => {
             console.log(error);
           }
         });
+
+        app.put('/notebooks/notes/note-contents', (request, response) => {
+          try {
+            database.query(
+              `
+                UPDATE "notes" 
+                SET 
+                  "note_content" = '${request.body.contents}',
+                  "date_edited" = '${new Date().toLocaleString()}'
+                WHERE "note_id" = ${request.body.noteID}
+                RETURNING *;
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(error)
+                } else {
+                  response.json({note: results.rows[0]});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
   }
 });
 
