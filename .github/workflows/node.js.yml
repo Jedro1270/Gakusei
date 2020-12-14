@@ -25,19 +25,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
       
-    - name: Install Yarn
-      run: npm install -g yarn
-      
     - name: Install Project Dependencies
-      run: yarn install
+      run: npm ci
       
     - name: Install React Dependencies
       working-directory: ./client
-      run: yarn install
+      run: npm ci
     
     - name: Start Server
-      run: yarn start
+      run: npm start
       
     - name: Start React App
       working-directory: ./client
-      run: yarn start
+      run: npm start
