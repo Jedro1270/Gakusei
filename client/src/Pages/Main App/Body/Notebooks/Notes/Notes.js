@@ -9,6 +9,8 @@ import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigati
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import FloatingActionButton from '../FloatingActionButton';
 import SelectableNote from './SelectableNote';
+import createURL from '../Helper Functions/createURL';
+import createTitle from '../Helper Functions/createTitle';
 
 export default function Notes(props) {
 
@@ -24,20 +26,6 @@ export default function Notes(props) {
     useEffect(() => {
         loadNotes();
     }, [notes]);
-
-    const createTitle = (notebookURL) => {
-        return notebookURL
-                        .replaceAll('-', ' ')
-                        .split(' ')
-                        .map((word) => {
-                            const firstLetter = word[0].toUpperCase();
-                            return `${firstLetter}${word.slice(1)} `
-                        });
-    }
-
-    const createURL = (noteName) => {
-        return noteName.replaceAll(' ', '-').toLowerCase();
-    }
 
     const handleDialogButtonClick = () => {
         createNewNote(newNoteName);
