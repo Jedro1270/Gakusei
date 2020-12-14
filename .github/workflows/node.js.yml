@@ -36,7 +36,7 @@ jobs:
       run: yarn install
 
     - name: Start Server
-      run: yarn start
+      run: node .\server\server.js
 
     - name: Start React App
       working-directory: ./client
