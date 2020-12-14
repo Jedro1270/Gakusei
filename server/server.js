@@ -257,7 +257,7 @@ pool.connect((error, client) => {
             database.query(
               `
                 INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
-                  VALUES(${request.body.notebookID}, '${request.body.noteName}', '', '${new Date().toUTCString()}')
+                  VALUES(${request.body.notebookID}, '${request.body.noteName}', '', '${new Date().toLocaleString()}')
                   RETURNING *;
               `,
               (error, results) => {
