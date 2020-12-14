@@ -129,6 +129,7 @@ pool.connect((error, client) => {
             }
         });
 
+        // Join group
         app.post('/groups/join-group/search', (request, response) => {
           try {
             database.query(
@@ -149,9 +150,10 @@ pool.connect((error, client) => {
           }
         });
 
+        // Create Group
         app.post('/groups/create-group', upload.single('file'), (request, response) => {
           try {
-            database.query(          //       INSERT INTO "group_memberships"(user_id, group_id)
+            database.query(
               `
                 INSERT INTO "groups"(group_name, group_picture)
                   VALUES('${request.body.groupname}', '${request.file.filename}')
@@ -195,7 +197,6 @@ pool.connect((error, client) => {
                 SELECT * FROM "notebooks";
               `,
               (error, results) => {
-                console.log(results.rows)
                 if (error) {
                   console.log(error)
                 } else {
@@ -214,13 +215,56 @@ pool.connect((error, client) => {
             database.query(
               `
                 INSERT INTO "notebooks"(group_id, notebook_name)
-                  VALUES(1, '${request.body.notebookName}');
+                  VALUES(1, '${request.body.notebookName}')
+                  RETURNING *;
               `,
               (error, results) => {
                 if (error) {
                   console.log(error)
                 } else {
                   response.json({notebooks: results.rows});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
+
+        // Notes
+        app.get('/notebooks/notes', (request, response) => {
+          try {
+            database.query(
+              `
+                SELECT * FROM "notes";
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(error)
+                } else {
+                  
+                  response.json({notes: results.rows});
+                }
+              }
+            )
+          } catch (error) {
+            console.log(error);
+          }
+        });
+
+        app.post('/notebooks/notes', (request, response) => {
+          try {
+            database.query(
+              `
+                INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
+                  VALUES(${request.body.notebookID}, '${request.body.noteName}', '', '${new Date().toUTCString()}')
+                  RETURNING *;
+              `,
+              (error, results) => {
+                if (error) {
+                  console.log(error)
+                } else {
+                  response.json({notes: results.rows});
                 }
               }
             )
