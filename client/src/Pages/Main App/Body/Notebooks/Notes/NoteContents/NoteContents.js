@@ -10,6 +10,7 @@ import { Box, Button, styled, Typography } from "@material-ui/core";
 import { setBackButton } from "../../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from "../../../../../../Redux/Actions/ChangeTitle";
 import CustomAjax from '../../../../../../CustomAjax';
+import createTitle from '../../Helper Functions/createTitle';
 
 export default function NoteContents() {
 
@@ -20,16 +21,6 @@ export default function NoteContents() {
     const dispatch = useDispatch();
     const location = useLocation();
     const noteID = location.state.noteID;
-
-    const createTitle = (noteURL) => {
-        return noteURL
-                        .replaceAll('-', ' ')
-                        .split(' ')
-                        .map((word) => {
-                            const firstLetter = word[0].toUpperCase();
-                            return `${firstLetter}${word.slice(1)} `
-                        });
-    }
 
     const updateNoteContents = (noteContents) => {
         const data = {
