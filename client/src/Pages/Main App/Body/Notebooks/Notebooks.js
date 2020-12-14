@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { List, Dialog, Typography, styled, Fab, DialogTitle, TextField, DialogActions, Button, Box } from '@material-ui/core';
+import { List, Box, styled } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { Add } from '@material-ui/icons';
 
 import CustomAjax from '../../../../CustomAjax';
 import SelectableNotebook from './SelectableNotebook';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
+import FloatingActionButton from './FloatingActionButton';
 
 export default function Notebooks() {
 
     const dispatch = useDispatch();
 
     const [notebooks, setNotebooks] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [newNotebookName, setNewNotebookName] = useState('')
+    const [newNotebookName, setNewNotebookName] = useState('');
 
     dispatch(changeTitle('Notebooks'));
     dispatch(setDrawer());
 
     useEffect(() => {
         loadNotebooks();
-    }, [openDialog]);
+    }, [notebooks]);
 
     const loadNotebooks = () => {
         const ajax = new CustomAjax();
@@ -30,20 +29,23 @@ export default function Notebooks() {
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
-            setNotebooks(response.notebooks);
+            if (notebooks.length < response.notebooks.length) {
+                setNotebooks(response.notebooks);
+            }
         });
     }
 
-    const createNotebookURL = (notebookName) => {
+    const createURL = (notebookName) => {
         return notebookName.replaceAll(' ', '-').toLowerCase();
     }
 
     const displayNotebooks = () => {
         return notebooks.map((notebook) => {
-            const notebookURL = createNotebookURL(notebook.notebook_name);
+            const notebookURL = createURL(notebook.notebook_name);
             const notebookName = notebook.notebook_name;
+            const notebookID = notebook.notebook_id;
 
-            return <SelectableNotebook title={notebookName} notebookURL={notebookURL}/>
+            return <SelectableNotebook title={notebookName} notebookURL={notebookURL} notebookID={notebookID}/>
         });
     }
 
@@ -62,6 +64,11 @@ export default function Notebooks() {
         });
     }
 
+    const handleDialogButtonClick = () => {
+        createNotebook(newNotebookName);
+        loadNotebooks();
+    }
+
     return (
         <NotebooksPage>
             <List>
@@ -70,58 +77,11 @@ export default function Notebooks() {
 
             </List>
 
-            <FloatingActionButton size='large' onClick={() => {setOpenDialog(true)}}>
-                <Add/>
-            </FloatingActionButton>
-
-            <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>
-                <DialogTitle>
-                        <FormTitle>
-                            Create Notebook 
-                        </FormTitle>
-                </DialogTitle>
-                
-                <NoteBookNameInput
-                    autoFocus
-                    label='Notebook Name'
-                    onChange={(event) => {setNewNotebookName(event.target.value)}}
-                />
-
-                <DialogActions>
-                    <Button onClick={() => {
-                        createNotebook(newNotebookName);
-                        setOpenDialog(false);
-                        loadNotebooks();
-                    }}>
-                        <CreateButtonText>
-                            Create
-                        </CreateButtonText>
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNotebookName} label='New Notebook'/>
         </NotebooksPage>
  
     );
 }
-
-const FloatingActionButton = styled(Fab)({
-    position: 'fixed',
-    right: '20px',
-    bottom: '20px'
-});
-
-const FormTitle = styled(Typography)({
-    fontSize: '30px',
-    fontWeight: 'bold'
-});
-
-const NoteBookNameInput = styled(TextField)({
-    margin: '0px 20px 20px 20px',
-});
-
-const CreateButtonText = styled(Typography)({
-    fontWeight: 'bold'
-});
 
 const NotebooksPage = styled(Box)({
     display: 'flex',
