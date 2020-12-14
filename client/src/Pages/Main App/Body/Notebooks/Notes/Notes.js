@@ -1,79 +1,110 @@
-import { List, ListItem, Typography, styled } from "@material-ui/core";
+import { List, Box, styled } from "@material-ui/core";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
+import CustomAjax from "../../../../../CustomAjax";
 import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigation";
-import changeTitle from '../../../../../Redux/Actions/ChangeTitle'
+import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
+import FloatingActionButton from '../FloatingActionButton';
+import SelectableNote from './SelectableNote';
 
-export default function Notes() {
-
-    // To do:
-    // Use database data to get proper note title for header and contents
+export default function Notes(props) {
 
     const { notebookTitle } = useParams();
 
-    const dispatch = useDispatch();
+    const [newNoteName, setNewNoteName] = useState('');
+    const [notes, setNotes] = useState([]);
 
-    dispatch(changeTitle(notebookTitle));
+    const dispatch = useDispatch();
+    const location = useLocation();
+
+    useEffect(() => {
+        loadNotes();
+    }, [notes]);
+
+    const createTitle = (notebookURL) => {
+        return notebookURL
+                        .replaceAll('-', ' ')
+                        .split(' ')
+                        .map((word) => {
+                            const firstLetter = word[0].toUpperCase();
+                            return `${firstLetter}${word.slice(1)} `
+                        });
+    }
+
+    const createURL = (noteName) => {
+        return noteName.replaceAll(' ', '-').toLowerCase();
+    }
+
+    const handleDialogButtonClick = () => {
+        createNewNote(newNoteName);
+    }
+
+    const createNewNote = (noteName) => {
+        const ajax = new CustomAjax();
+
+        const data = {
+            noteName: noteName,
+            notebookID: location.state.notebookID
+        }
+
+        ajax.post('http://localhost:2727/notebooks/notes', data, true);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setNotes(response.notes);
+        });
+    }
+
+    const loadNotes = () => {
+        const ajax = new CustomAjax();
+
+        ajax.get('http://localhost:2727/notebooks/notes');
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            if (notes.length < response.notes.length) {
+                setNotes(response.notes);
+            }
+        });
+    }
+
+    // const parsePostgresDate = (postgresDate) => {
+    //     return (new Date)
+    // }
+
+    const displayNotes = () => {
+        return notes.map((note) => {
+            return <SelectableNote 
+                        notebookTitle={notebookTitle}
+                        dateEdited={note.date_edited}
+                        noteTitle={note.note_title}
+                        contents={note.note_contents}
+                        noteURL={createURL(note.note_title)}
+                    />
+        });
+    }
+
+    dispatch(changeTitle(createTitle(notebookTitle)));
     dispatch(setBackButton());
 
     return (
-        <List>
+        <NotesPage>
+            <List>
 
-            <CustomLink to={`/notebooks/${notebookTitle}/note-1`}>
-                <Note button>
-                    <DateText>
-                        01/27/2000
-                    </DateText>
+                {displayNotes()}        
 
-                    <NoteTitle>
-                        note 1
-                    </NoteTitle>
+            </List>
 
-                    <NotePreview noWrap>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-                    </NotePreview>
-                </Note>
-            </CustomLink>
-
-            <CustomLink to={`/notebooks/${notebookTitle}/note-2`}>
-                <Note button>
-                    <NoteTitle>
-                        note 2
-                    </NoteTitle>
-                </Note>
-            </CustomLink>
-        </List>
+            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNoteName} label='New Note'/>
+        </NotesPage>
     );
 }
 
-const CustomLink = styled(Link)({
-    textDecoration: 'none',
-    color: 'white'
-});
-
-const Note = styled(ListItem)({
-    backgroundColor: 'grey',
-    padding: '15px',
-    margin: '10px 0px',
-    '&:hover': {
-        backgroundColor: 'rgb(102, 102, 102)'
-    },
-    display: 'block',
-    textAlign: 'left',
-    color: 'white'
-});
-
-const NoteTitle = styled(Typography)({
-    fontSize: '30px',
-    fontWeight: 'bold'
-});
-
-const DateText = styled(Typography)({
-    fontSize: '15px'
-});
-
-const NotePreview = styled(Typography)({
-    fontSize: '20px',
-    width: '80%'
+const NotesPage = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'black'
 });
