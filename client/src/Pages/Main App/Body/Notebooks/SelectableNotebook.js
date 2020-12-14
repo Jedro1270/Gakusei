@@ -6,7 +6,7 @@ export default function SelectableNotebook(props) {
 
     return (
 
-        <CustomLink to={`/notebooks/${props.notebookURL}`}>
+        <CustomLink to={{ pathname: `/notebooks/${props.notebookURL}`, state: {notebookID: props.notebookID}}}>
             <Notebook button>
                 <NotebookTitle>
                     {props.title}
