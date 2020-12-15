@@ -15,7 +15,7 @@ export default function Groups() {
 
     const [groups, setGroups] = useState([]);
 
-    const user = useSelector((state) => {return state.userState});
+    const token = useSelector((state) => {return state.tokenState});
 
     useEffect(() => {
         loadGroups();
@@ -25,9 +25,10 @@ export default function Groups() {
     dispatch(setDrawer());
 
     const loadGroups = () => {
+
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/groups');
+        ajax.get('http://localhost:2727/groups', token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
