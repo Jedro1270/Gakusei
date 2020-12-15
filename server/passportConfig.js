@@ -1,5 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { Strategy as localStrategy } from 'passport-local';
+import passportJwt from 'passport-jwt';
+
+const JWTStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
 
 export default function passportStrategy(passport, database) {
 
@@ -12,7 +16,8 @@ export default function passportStrategy(passport, database) {
                 `,
                 (error, results) => {
                     if (error) {
-                        console.log(`ERROR: ${error}`)
+                        console.log(`ERROR: ${error}`);
+                        return done(error, false)
                       } else {
 
                         if (results.rows.length === 0) {
@@ -23,7 +28,8 @@ export default function passportStrategy(passport, database) {
 
                         bcrypt.compare( password, user.password, (error, result) => {
                             if (error) {
-                                console.log(`ERROR: ${error}`)
+                                console.log(`ERROR: ${error}`);
+                                return done(error, false)
                             } else if (result === true) {
                                 return done(null, user);
                             } else {
@@ -36,21 +42,20 @@ export default function passportStrategy(passport, database) {
         })
     );
 
-    passport.serializeUser((user, done) => {
-        done(null, user.user_id)
-    });
-
-    passport.deserializeUser((id, done) => {
-        database.query(
-            `
-                SELECT * FROM "users"
-                    WHERE "user_id" = ${id}
-            `,
-            (error, results) => {
-                const user = results.rows[0];
-
-                done(error, user)
+    passport.use(
+        new JWTStrategy(
+            {
+                secretOrKey: process.env.TOKEN_SECRET,
+                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            },
+            (token, done) => {
+                try {
+                    return done(null, token.user);
+                } catch (error) {
+                    console.log(error)
+                    return done(error);
+                }
             }
         )
-    });
+    );
 }
