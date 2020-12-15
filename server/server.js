@@ -4,11 +4,17 @@ import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
 import passport from 'passport';
-import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
-import session from 'express-session';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import passportStrategy from './passportConfig.js';
+
+dotenv.config();
+
+if (process.env.TOKEN_SECRET == undefined) {
+  process.exit(1);
+}
 
 const pool = new pg.Pool({
   user: 'postgres',
@@ -48,14 +54,7 @@ pool.connect((error, client) => {
           origin: 'http://localhost:3000',
           credentials: true
         }))
-        .use(session({
-          secret: 'secretCode',
-          resave: true,
-          saveUninitialized: true
-        }))
-        .use(cookieParser('secretCode'))
         .use(passport.initialize())
-        .use(passport.session());
 
         passportStrategy(passport, database);
 
@@ -68,14 +67,24 @@ pool.connect((error, client) => {
               console.log('No User exists');
               response.json({message: 'Invalid Username or Password'});
             } else {
-              request.logIn(user, (error) => {
+              request.logIn(user, {session: false}, (error) => {
                 if (error) {
-                  console.log(`ERROR: ${error}`)
+                  console.log(`ERROR: ${error}`);
+                  return next(error);
                 }
+
+                const body = {
+                  id: user.user_id,
+                  username: user.user_name,
+                  profilePicture: user.profile_picture,
+                  points: user.points
+                }
+
+                const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
 
                 response.json({
                   message: 'Successfully Authenticated',
-                  user: request.user
+                  token: token,
                 });
               });
             }
@@ -110,7 +119,8 @@ pool.connect((error, client) => {
         });
 
         // Groups
-        app.get('/groups', (request, response) => {
+        app.get('/groups', passport.authenticate('jwt', { session: false }),
+          (request, response) => {
             try {
                 database.query(
                   `
