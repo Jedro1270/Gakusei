@@ -14,8 +14,10 @@ export default class CustomAjax {
         }
     }
 
-    get = (url) => {
+    get = (url, token) => {
         this.xhr.open('GET', url, true);
+
+        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
 
         this.xhr.send();
     }
