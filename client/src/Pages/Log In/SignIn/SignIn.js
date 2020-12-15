@@ -3,7 +3,7 @@ import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CustomAjax from '../../../CustomAjax';
-import setUser from '../../../Redux/Actions/SetUserState';
+import setToken from '../../../Redux/Actions/SetTokenState';
 
 import React, { useState } from 'react';
 import Title from '../Title';
@@ -32,7 +32,7 @@ export default function SignIn() {
     ajax.stateListener((response) => {
       response = JSON.parse(response);
       if (response.message === 'Successfully Authenticated') {
-        dispatch(setUser(response.user));
+        dispatch(setToken(response.token));
         setLoggedIn(true);
       } else {
         setInvalidCredentials(true);
