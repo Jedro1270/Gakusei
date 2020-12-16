@@ -26,9 +26,9 @@ export default function notebooksRoutes(app, secureRoute, database) {
             database.query(
                 `
                 INSERT INTO "notebooks"(group_id, notebook_name)
-                    VALUES(1, '${request.body.notebookName}')
+                    VALUES(1, $1)
                     RETURNING *;
-                `,
+                `, [request.body.notebookName],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -67,9 +67,9 @@ export default function notebooksRoutes(app, secureRoute, database) {
             database.query(
                 `
             INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
-                VALUES(${request.body.notebookID}, '${request.body.noteName}', '', '${new Date().toLocaleString()}')
+                VALUES($1, $2, '', $3)
                 RETURNING *;
-            `,
+            `, [request.body.notebookID, request.body.noteName, new Date().toLocaleString()],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -89,11 +89,11 @@ export default function notebooksRoutes(app, secureRoute, database) {
                 `
             UPDATE "notes" 
             SET 
-                "note_content" = '${request.body.contents}',
-                "date_edited" = '${new Date().toLocaleString()}'
-            WHERE "note_id" = ${request.body.noteID}
+                "note_content" = $1,
+                "date_edited" = $2
+            WHERE "note_id" = $3
             RETURNING *;
-            `,
+            `, [request.body.contents, new Date().toLocaleString(), request.body.noteID],
                 (error, results) => {
                     if (error) {
                         console.log(error)

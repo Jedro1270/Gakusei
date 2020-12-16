@@ -12,8 +12,8 @@ export default function passportStrategy(passport, database) {
             database.query(
                 `
                     SELECT * FROM "users"
-                        WHERE "username" = '${username}';
-                `,
+                        WHERE "username" = $1;
+                `, [username],
                 (error, results) => {
                     if (error) {
                         console.log(`ERROR: ${error}`);

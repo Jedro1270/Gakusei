@@ -101,10 +101,10 @@ pool.connect((error, client) => {
       database.query(
         `
               INSERT INTO "users"(username, password, points)
-                VALUES('${request.body.username}', '${hashedPassword}', 0)
+                VALUES($1, $2, 0)
                 ON CONFLICT (username) DO NOTHING
                 RETURNING *;
-            `,
+            `, [request.body.username, hashedPassword],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`)
@@ -135,8 +135,9 @@ pool.connect((error, client) => {
       })(request, response, next);
     }
 
-    app.get('/api', secureRoute, (request, response) => {
+    app.get('/api', secureRoute, (request, response, next) => {
       console.log('Token Verified');
+      next();
     });
 
     groupsRoutes(app, secureRoute, upload, database);

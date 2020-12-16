@@ -23,8 +23,8 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
       database.query(
         `
           SELECT * FROM "groups"
-            WHERE "group_name" ILIKE '%${request.body.groupname}%';
-        `,
+            WHERE "group_name" ILIKE $1;
+        `, [`%${request.body.groupname}%`],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`)
@@ -43,9 +43,9 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
       database.query(
         `
           INSERT INTO "groups"(group_name, group_picture)
-            VALUES('${request.body.groupname}', '${request.file.filename}')
+            VALUES($1, $2)
             RETURNING *;
-        `,
+        `, [request.body.groupname, request.file.filename],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`)
