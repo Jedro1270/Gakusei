@@ -23,7 +23,7 @@ export default function NoteContents() {
     const location = useLocation();
 
     const noteID = location.state.noteID;
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
     verifyToken(token, history);
@@ -77,19 +77,19 @@ export default function NoteContents() {
     let noteSavedAlert = null;
 
     if (noteSaved) {
-        noteSavedAlert = <Alert severity='success' onClose={() => {setNoteSaved(false)}}>Note Saved!</Alert>
+        noteSavedAlert = <Alert severity='success' onClose={() => { setNoteSaved(false) }}>Note Saved!</Alert>
     }
 
     return (
-       <NoteContentsPage>
-           {noteSavedAlert}
-           <CKEditor
+        <NoteContentsPage>
+            {noteSavedAlert}
+            <CKEditor
                 editor={ClassicEditor}
                 data={contents}
-                onChange={(event, editor) => {setContents(editor.getData())}}
-           />
-           <SaveButton>
-               <SaveButtonText 
+                onChange={(event, editor) => { setContents(editor.getData()) }}
+            />
+            <SaveButton>
+                <SaveButtonText
                     onClick={() => {
                         updateNoteContents(contents);
                         setNoteSaved(true);
@@ -97,8 +97,8 @@ export default function NoteContents() {
                 >
                     SAVE
                </SaveButtonText>
-           </SaveButton>
-       </NoteContentsPage>
+            </SaveButton>
+        </NoteContentsPage>
     );
 }
 

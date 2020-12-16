@@ -8,8 +8,8 @@ export default function NavigationMenu() {
     return (
         <NavigationList>
 
-            <UserAvatar/>
-            
+            <UserAvatar />
+
             <UsernameDisplay>
                 Username
             </UsernameDisplay>
@@ -18,7 +18,7 @@ export default function NavigationMenu() {
                 Level 1 (50 Pts)
             </LevelDisplay>
 
-            <LevelProgressBar value={50}/>
+            <LevelProgressBar value={50} />
 
             <CustomLink to='/api/groups' >
                 <NavigationContainer button>

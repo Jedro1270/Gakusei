@@ -17,7 +17,7 @@ export default function JoinGroup() {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
 
     verifyToken(token, history);
 
@@ -40,22 +40,22 @@ export default function JoinGroup() {
     const displayAvailableGroups = () => {
         return availableGroups.map((availableGroup) => {
             return (
-                <JoinableGroup groupname={availableGroup.group_name} groupImage={availableGroup.group_picture}/>
+                <JoinableGroup groupname={availableGroup.group_name} groupImage={availableGroup.group_picture} />
             );
         });
     }
 
     return (
-        <SelectableGroupsSection> 
+        <SelectableGroupsSection>
 
-            <SearchBar> 
-                <SearchInput placeholder='Search by group name' onChange={(event) => {setSearchValue(event.target.value)}}/>
-                <IconButton onClick={() => {getGroups(searchValue)}}>
-                    <SearchIcon/>
+            <SearchBar>
+                <SearchInput placeholder='Search by group name' onChange={(event) => { setSearchValue(event.target.value) }} />
+                <IconButton onClick={() => { getGroups(searchValue) }}>
+                    <SearchIcon />
                 </IconButton>
             </SearchBar>
 
-           {displayAvailableGroups()}
+            {displayAvailableGroups()}
 
         </SelectableGroupsSection>
     );

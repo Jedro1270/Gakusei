@@ -37,7 +37,7 @@ export default function SignUp() {
   }
 
   if (loggedIn) {
-    
+
     history.push('/sign-in');
     return null;
 
@@ -45,61 +45,61 @@ export default function SignUp() {
     let alert = null;
 
     if (usernameTaken) {
-      alert = <Alert severity='error' onClose={() => {setUsernameTaken(false)}} >Username is already taken!</Alert>
+      alert = <Alert severity='error' onClose={() => { setUsernameTaken(false) }} >Username is already taken!</Alert>
     }
 
     return (
       <SignUpBody>
 
-          <AppLogo/>
+        <AppLogo />
 
-          <Title title='Sign Up'/>
+        <Title title='Sign Up' />
 
-          {alert}
+        {alert}
 
-          <form>
-            <Grid container spacing={2}>
+        <form>
+          <Grid container spacing={2}>
 
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete='fname'
-                  name='username'
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='username'
-                  label='Username'
-                  autoFocus
-                  onChange={(event) => setRegisterUsername(event.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  name='password'
-                  label='Password'
-                  type='password'
-                  id='password'
-                  autoComplete='current-password'
-                  onChange={(event) => setRegisterPassword(event.target.value)}
-                />
-              </Grid>
-
+            <Grid item xs={12}>
+              <TextField
+                autoComplete='fname'
+                name='username'
+                variant='outlined'
+                required
+                fullWidth
+                id='username'
+                label='Username'
+                autoFocus
+                onChange={(event) => setRegisterUsername(event.target.value)}
+              />
             </Grid>
 
-            <SubmitButton text='SUBMIT' submit={register}/>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+                onChange={(event) => setRegisterPassword(event.target.value)}
+              />
+            </Grid>
 
-            <Grid container justify='flex-end'>
-              <Grid item>
-                <Link href='/sign-in' variant='body2'>
-                  Already have an account? Sign in   
+          </Grid>
+
+          <SubmitButton text='SUBMIT' submit={register} />
+
+          <Grid container justify='flex-end'>
+            <Grid item>
+              <Link href='/sign-in' variant='body2'>
+                Already have an account? Sign in
                 </Link>
-              </Grid>
             </Grid>
-          </form>
+          </Grid>
+        </form>
 
       </SignUpBody>
     );

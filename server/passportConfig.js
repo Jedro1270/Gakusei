@@ -18,15 +18,15 @@ export default function passportStrategy(passport, database) {
                     if (error) {
                         console.log(`ERROR: ${error}`);
                         return done(error, false)
-                      } else {
+                    } else {
 
                         if (results.rows.length === 0) {
-                          return done(null, false)
+                            return done(null, false)
                         }
 
                         const user = results.rows[0];
 
-                        bcrypt.compare( password, user.password, (error, result) => {
+                        bcrypt.compare(password, user.password, (error, result) => {
                             if (error) {
                                 console.log(`ERROR: ${error}`);
                                 return done(error, false)
@@ -36,7 +36,7 @@ export default function passportStrategy(passport, database) {
                                 return done(null, false);
                             }
                         });
-                      }
+                    }
                 }
             )
         })

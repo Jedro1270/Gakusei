@@ -41,7 +41,7 @@ export default function SignIn() {
   }
 
   if (loggedIn) {
-    
+
     history.push('/api/groups');
     return null;
 
@@ -49,62 +49,62 @@ export default function SignIn() {
     let alert = null;
 
     if (invalidCredentials) {
-      alert = <Alert severity='error' onClose={() => {setInvalidCredentials(false)}} >Invalid username or password!</Alert>
+      alert = <Alert severity='error' onClose={() => { setInvalidCredentials(false) }} >Invalid username or password!</Alert>
     }
 
     return (
       <SignInBody>
-  
-          <AppLogo/>
-  
-          <Title title='Sign In'/>
 
-          {alert}
-  
-          <form>
-            <Grid container spacing={2}>
-  
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete='fname'
-                  name='username'
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='username'
-                  label='Username'
-                  autoFocus
-                  onChange={(event) => setLoginUsername(event.target.value)}
-                />
-              </Grid>
-  
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  name='password'
-                  label='Password'
-                  type='password'
-                  id='password'
-                  autoComplete='current-password'
-                  onChange={(event) => setLoginPassword(event.target.value)}
-                />
-              </Grid>
-  
+        <AppLogo />
+
+        <Title title='Sign In' />
+
+        {alert}
+
+        <form>
+          <Grid container spacing={2}>
+
+            <Grid item xs={12}>
+              <TextField
+                autoComplete='fname'
+                name='username'
+                variant='outlined'
+                required
+                fullWidth
+                id='username'
+                label='Username'
+                autoFocus
+                onChange={(event) => setLoginUsername(event.target.value)}
+              />
             </Grid>
-  
-            <SubmitButton text='SIGN IN' submit={logIn}/>
-  
-            <Grid container justify='flex-end'>
-              <Grid item>
-                <Link href='/sign-up' variant='body2'>
-                  Don't have an account? Sign Up   
+
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+                onChange={(event) => setLoginPassword(event.target.value)}
+              />
+            </Grid>
+
+          </Grid>
+
+          <SubmitButton text='SIGN IN' submit={logIn} />
+
+          <Grid container justify='flex-end'>
+            <Grid item>
+              <Link href='/sign-up' variant='body2'>
+                Don't have an account? Sign Up
                 </Link>
-              </Grid>
             </Grid>
-          </form>
-  
+          </Grid>
+        </form>
+
       </SignInBody>
     );
   }

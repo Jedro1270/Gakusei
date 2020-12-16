@@ -1,4 +1,4 @@
-import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core'; 
+import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,7 @@ export default function CreateGroup() {
     const [temporaryFile, setTemporaryFile] = useState(null);
 
     const dispatch = useDispatch();
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
     verifyToken(token, history);
@@ -40,10 +40,10 @@ export default function CreateGroup() {
         });
     }
 
-     return (
+    return (
         <CreateGroupForm>
 
-            <GroupIcon src={temporaryFile}/>
+            <GroupIcon src={temporaryFile} />
 
             <UploadImageButton variant='outlined' component='label'>
                 <UploadButtonLabel>
@@ -54,19 +54,19 @@ export default function CreateGroup() {
 
                     setFile(chosenFile);
                     setTemporaryFile(URL.createObjectURL(chosenFile));
-                }}/>
+                }} />
             </UploadImageButton>
 
             <GroupNameForm>
-                <GroupNameInput placeholder='Group Name' onChange={(event) => {setGroupname(event.target.value)}}/>
+                <GroupNameInput placeholder='Group Name' onChange={(event) => { setGroupname(event.target.value) }} />
             </GroupNameForm>
 
-            <SubmitButton onClick={() => {submitForm()}}>
+            <SubmitButton onClick={() => { submitForm() }}>
                 CREATE
             </SubmitButton>
 
         </CreateGroupForm>
-     );
+    );
 }
 
 const CreateGroupForm = styled(Box)({

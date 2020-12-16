@@ -12,7 +12,7 @@ export default function Pomodoro(props) {
     const [secondsLeft, setSecondsLeft] = useState(1500);
     const [timerStart, setTimerStart] = useState(false);
 
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
     verifyToken(token, history);
@@ -28,7 +28,7 @@ export default function Pomodoro(props) {
             setSecondsLeft(1500)
         } else if (secondsLeft <= 0) {
             // add pomodoro
-        } 
+        }
     }, [secondsLeft, timerStart]);
 
     const displayTimer = () => {
@@ -45,13 +45,13 @@ export default function Pomodoro(props) {
     const displayToggleButton = () => {
         if (timerStart) {
             return (
-                <ToggleButton onClick={() => {setTimerStart(false)}}>
+                <ToggleButton onClick={() => { setTimerStart(false) }}>
                     RESET
                 </ToggleButton>
             )
         } else {
             return (
-                <ToggleButton onClick={() => {setTimerStart(true)}}>    
+                <ToggleButton onClick={() => { setTimerStart(true) }}>
                     START
                 </ToggleButton>
             )
@@ -63,29 +63,29 @@ export default function Pomodoro(props) {
             <PomodoroMembersSection>
 
                 <Member>
-                    <OfflineStatusIndicator/>
+                    <OfflineStatusIndicator />
                     Groupmate Name
                 </Member>
 
                 <Member>
-                    <OnlineStatusIndicator/>
+                    <OnlineStatusIndicator />
                     Groupmate Name
                 </Member>
 
                 <Member>
-                    <OnlineStatusIndicator/>
+                    <OnlineStatusIndicator />
                     Groupmate Name
                 </Member>
 
                 <Member>
-                    <OnlineStatusIndicator/>
+                    <OnlineStatusIndicator />
                     Groupmate Name
                 </Member>
 
             </PomodoroMembersSection>
 
             <PomodoroCounter>
-                Pomodoros Finished: 5         
+                Pomodoros Finished: 5
             </PomodoroCounter>
 
             {displayTimer()}
@@ -130,7 +130,7 @@ const OnlineStatusIndicator = styled(Avatar)({
     backgroundColor: 'rgb(51, 204, 51)',
     color: 'rgb(51, 204, 51)'
 });
-  
+
 const PomodoroCounter = styled(Typography)({
     fontSize: '30px',
     fontWeight: 'bold'

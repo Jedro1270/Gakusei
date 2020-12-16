@@ -8,21 +8,21 @@ export default function FloatingActionButton(props) {
 
     return (
         <div>
-            <ActionButton size='large' onClick={() => {setOpenDialog(true)}}>
-                <Add/>
+            <ActionButton size='large' onClick={() => { setOpenDialog(true) }}>
+                <Add />
             </ActionButton>
 
-            <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>
+            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
                 <DialogTitle>
-                        <FormTitle>
-                            Create {props.label}
-                        </FormTitle>
+                    <FormTitle>
+                        Create {props.label}
+                    </FormTitle>
                 </DialogTitle>
-                
+
                 <NoteBookNameInput
                     autoFocus
                     label={`${props.label} Name`}
-                    onChange={(event) => {props.setNewName(event.target.value)}}
+                    onChange={(event) => { props.setNewName(event.target.value) }}
                 />
 
                 <DialogActions>

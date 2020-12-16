@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 export default function Notebooks() {
 
     const dispatch = useDispatch();
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
     verifyToken(token, history);
@@ -48,7 +48,7 @@ export default function Notebooks() {
             const notebookName = notebook.notebook_name;
             const notebookID = notebook.notebook_id;
 
-            return <SelectableNotebook title={notebookName} notebookURL={notebookURL} notebookID={notebookID}/>
+            return <SelectableNotebook title={notebookName} notebookURL={notebookURL} notebookID={notebookID} />
         });
     }
 
@@ -75,14 +75,14 @@ export default function Notebooks() {
     return (
         <NotebooksPage>
             <List>
-            
+
                 {displayNotebooks()}
 
             </List>
 
-            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNotebookName} label='New Notebook'/>
+            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNotebookName} label='New Notebook' />
         </NotebooksPage>
- 
+
     );
 }
 

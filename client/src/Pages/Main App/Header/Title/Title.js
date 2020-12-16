@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 export default function Title() {
-    const title = useSelector((state) => {return state.headerTitle});
+    const title = useSelector((state) => { return state.headerTitle });
 
     return (
         <TitleContent>

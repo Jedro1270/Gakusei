@@ -16,7 +16,7 @@ export default function Groups() {
 
     const [groups, setGroups] = useState([]);
 
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
 
     verifyToken(token, history);
 
@@ -42,7 +42,7 @@ export default function Groups() {
     const displayGroups = () => {
         return groups.map((group) => {
             return (
-                <SelectableGroup groupname={group.group_name} groupImage={group.group_picture}/>
+                <SelectableGroup groupname={group.group_name} groupImage={group.group_picture} />
             );
         });
     }
@@ -50,10 +50,10 @@ export default function Groups() {
     return (
         <div>
             <GroupButtonsSection>
-                <GroupButton onClick={() => {history.push('/api/groups/create-group')}}>
+                <GroupButton onClick={() => { history.push('/api/groups/create-group') }}>
                     Create
                 </GroupButton>
-                <GroupButton onClick={() => {history.push('/api/groups/join-group')}}>
+                <GroupButton onClick={() => { history.push('/api/groups/join-group') }}>
                     Join
                 </GroupButton>
             </GroupButtonsSection>
@@ -61,7 +61,7 @@ export default function Groups() {
             <SelectableGroupsSection>
 
                 {displayGroups()}
-                
+
             </SelectableGroupsSection>
         </div>
     );

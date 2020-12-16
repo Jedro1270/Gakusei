@@ -5,21 +5,21 @@ export default function Notes(props) {
 
     return (
 
-            <CustomLink to={{pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: {noteID: props.noteID}}}>
-                <Note button>
-                    <DateText>
-                        {props.dateEdited}
-                    </DateText>
+        <CustomLink to={{ pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: { noteID: props.noteID } }}>
+            <Note button>
+                <DateText>
+                    {props.dateEdited}
+                </DateText>
 
-                    <NoteTitle>
-                        {props.noteTitle}
-                    </NoteTitle>
+                <NoteTitle>
+                    {props.noteTitle}
+                </NoteTitle>
 
-                    <NotePreview noWrap>
-                        {props.contents}
-                    </NotePreview>
-                </Note>
-            </CustomLink>
+                <NotePreview noWrap>
+                    {props.contents}
+                </NotePreview>
+            </Note>
+        </CustomLink>
     );
 }
 

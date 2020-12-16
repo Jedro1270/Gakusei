@@ -22,7 +22,7 @@ export default function Notes(props) {
 
     const dispatch = useDispatch();
     const location = useLocation();
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
     const notebookID = location.state.notebookID;
 
@@ -79,14 +79,14 @@ export default function Notes(props) {
 
     const displayNotes = () => {
         return notes.map((note) => {
-            return <SelectableNote 
-                        notebookTitle={notebookTitle}
-                        dateEdited={note.date_edited}
-                        noteTitle={note.note_title}
-                        contents={note.note_contents}
-                        noteURL={createURL(note.note_title)}
-                        noteID={note.note_id}
-                    />
+            return <SelectableNote
+                notebookTitle={notebookTitle}
+                dateEdited={note.date_edited}
+                noteTitle={note.note_title}
+                contents={note.note_contents}
+                noteURL={createURL(note.note_title)}
+                noteID={note.note_id}
+            />
         });
     }
 
@@ -97,11 +97,11 @@ export default function Notes(props) {
         <NotesPage>
             <List>
 
-                {displayNotes()}        
+                {displayNotes()}
 
             </List>
 
-            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNoteName} label='New Note'/>
+            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNoteName} label='New Note' />
         </NotesPage>
     );
 }

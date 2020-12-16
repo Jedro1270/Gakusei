@@ -7,15 +7,15 @@ export default function JoinableGroup(props) {
 
     return (
         <div>
-            <Button onClick={() => {setOpenDialog(true)}}>
-                <GroupIcon src={`/images/group-icons/${props.groupImage}`}/>
+            <Button onClick={() => { setOpenDialog(true) }}>
+                <GroupIcon src={`/images/group-icons/${props.groupImage}`} />
             </Button>
 
             <GroupName>
                 {props.groupname}
             </GroupName>
 
-            <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>
+            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
                 <List>
                     <ListItem button>
                         <SelectGroupText>

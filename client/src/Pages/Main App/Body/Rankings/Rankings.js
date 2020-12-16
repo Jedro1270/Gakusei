@@ -8,11 +8,11 @@ export default function Rankings() {
 
     const dispatch = useDispatch();
 
-    const token = useSelector((state) => {return state.tokenState});
+    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
     verifyToken(token, history);
-    
+
     dispatch(changeTitle('Rankings and Badges'));
 
     return (

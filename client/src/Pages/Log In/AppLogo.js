@@ -3,7 +3,7 @@ import { Box, styled } from '@material-ui/core';
 export default function AppLogo() {
     return (
         <AppLogoComponent>
-            <img src='/gakusei-logo.png' alt='App Logo'/>
+            <img src='/gakusei-logo.png' alt='App Logo' />
         </AppLogoComponent>
     );
 }

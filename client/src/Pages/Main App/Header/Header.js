@@ -9,23 +9,23 @@ import Title from './Title/Title';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 
 export default function Header(props) {
-    
+
     const [open, setOpen] = useState(false);
     const history = useHistory();
 
-    const headerNavigation = useSelector((state) => {return state.headerNavigation})
+    const headerNavigation = useSelector((state) => { return state.headerNavigation })
 
     function navigationType() {
         if (headerNavigation === 'DRAWER') {
             return (
-                <IconButton onClick={() => {setOpen(true)}}>
-                    <MenuButton/>
+                <IconButton onClick={() => { setOpen(true) }}>
+                    <MenuButton />
                 </IconButton>
             );
         } else if (headerNavigation === 'BACK_BUTTON') {
             return (
-                <IconButton onClick={() => {history.goBack()}}>
-                    <BackButton/>
+                <IconButton onClick={() => { history.goBack() }}>
+                    <BackButton />
                 </IconButton>
             );
         }
@@ -39,11 +39,11 @@ export default function Header(props) {
             <Drawer
                 anchor='left'
                 open={open}
-                onClose={()=> {setOpen(false)}}
+                onClose={() => { setOpen(false) }}
             >
-                <NavigationMenu/>
+                <NavigationMenu />
             </Drawer>
-            <Title/>
+            <Title />
         </TitleBar>
     );
 }

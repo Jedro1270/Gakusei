@@ -3,7 +3,7 @@ import { Button, styled } from '@material-ui/core';
 export default function SubmitButton(props) {
 
     return (
-        <SubmitButtonComponent fullWidth onClick={() => {props.submit()}}>
+        <SubmitButtonComponent fullWidth onClick={() => { props.submit() }}>
             {props.text}
         </SubmitButtonComponent>
     );
