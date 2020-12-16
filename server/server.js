@@ -9,6 +9,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import passportStrategy from './passportConfig.js';
+import groupsRoutes from './Routes/groups.js'
+import notebooksRoutes from './Routes/notebooks.js';
+import pomodoroRoutes from './Routes/pomodoro.js';
 
 dotenv.config();
 
@@ -27,10 +30,10 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: (request, file, callback) => {
-    callback(null, 'client/public/images/group-icons'); 
+    callback(null, 'client/public/images/group-icons');
   },
   filename: (request, file, callback) => {
-    callback(null, Date.now() + file.originalname)    
+    callback(null, Date.now() + file.originalname)
   }
 });
 
@@ -48,265 +51,100 @@ pool.connect((error, client) => {
     database = client;
 
     app
-        .use(bodyParser.json())
-        .use(bodyParser.urlencoded({extended: true}))
-        .use(cors({
-          origin: 'http://localhost:3000',
-          credentials: true
-        }))
-        .use(passport.initialize())
+      .use(bodyParser.json())
+      .use(bodyParser.urlencoded({ extended: true }))
+      .use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true
+      }))
+      .use(passport.initialize())
 
-        passportStrategy(passport, database);
+    passportStrategy(passport, database);
 
-        // Sign In
-        app.post('/sign-in', (request, response, next) => {
-          passport.authenticate('local', (error, user) => {
+    // Sign In
+    app.post('/sign-in', (request, response, next) => {
+      passport.authenticate('local', (error, user) => {
+        if (error) {
+          console.log(`ERROR: ${error}`)
+        } else if (!user) {
+          console.log('No User exists');
+          response.json({ message: 'Invalid Username or Password' });
+        } else {
+          request.logIn(user, { session: false }, (error) => {
             if (error) {
-              console.log(`ERROR: ${error}`)
-            } else if (!user) {
-              console.log('No User exists');
-              response.json({message: 'Invalid Username or Password'});
-            } else {
-              request.logIn(user, {session: false}, (error) => {
-                if (error) {
-                  console.log(`ERROR: ${error}`);
-                  return next(error);
-                }
-
-                const body = {
-                  id: user.user_id,
-                  username: user.user_name,
-                  profilePicture: user.profile_picture,
-                  points: user.points
-                }
-
-                const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
-
-                response.json({
-                  message: 'Successfully Authenticated',
-                  token: token,
-                });
-              });
+              console.log(`ERROR: ${error}`);
+              return next(error);
             }
-          })(request, response, next);
-        });
 
-        // Sign Up
-        app.post('/sign-up', async (request, response) => {
-          const hashedPassword = await bcrypt.hash(request.body.password, 10);
+            const body = {
+              id: user.user_id,
+              username: user.username,
+              profilePicture: user.profile_picture,
+              points: user.points
+            }
 
-          database.query(
-            `
+            const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
+
+            response.json({
+              message: 'Successfully Authenticated',
+              token: token,
+            });
+          });
+        }
+      })(request, response, next);
+    });
+
+    // Sign Up
+    app.post('/sign-up', async (request, response) => {
+      const hashedPassword = await bcrypt.hash(request.body.password, 10);
+
+      database.query(
+        `
               INSERT INTO "users"(username, password, points)
                 VALUES('${request.body.username}', '${hashedPassword}', 0)
                 ON CONFLICT (username) DO NOTHING
                 RETURNING *;
             `,
-            (error, results) => {
-              if (error) {
-                console.log(`ERROR: ${error}`)
-              } else {
-                if (results.rows.length === 0) {
-                  console.log('Username taken');
-                  response.json({message: 'Username taken'});
-                } else {
-                  console.log('User inserted');
-                  response.json({message: 'User Inserted'});
-                }
-              }
+        (error, results) => {
+          if (error) {
+            console.log(`ERROR: ${error}`)
+          } else {
+            if (results.rows.length === 0) {
+              console.log('Username taken');
+              response.json({ message: 'Username taken' });
+            } else {
+              console.log('User inserted');
+              response.json({ message: 'User Inserted' });
             }
-          );
-        });
-
-        // Groups
-        app.get('/groups', passport.authenticate('jwt', { session: false }),
-          (request, response) => {
-            try {
-                database.query(
-                  `
-                    SELECT * FROM "groups";
-                  `,
-                  (error, results) => {
-                    if (error) {
-                      console.log(`ERROR: ${error}`)
-                    } else {         
-                      response.json({groups: results.rows});
-                    }
-                  }
-                )
-            } catch (error) {
-              console.log(error);
-            }
-        });
-
-        // Join group
-        app.post('/groups/join-group/search', (request, response) => {
-          try {
-            database.query(
-              `
-                SELECT * FROM "groups"
-                  WHERE "group_name" ILIKE '%${request.body.groupname}%';
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(`ERROR: ${error}`)
-                } else {         
-                  response.json({groups: results.rows});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
           }
-        });
+        }
+      );
+    });
 
-        // Create Group
-        app.post('/groups/create-group', upload.single('file'), (request, response) => {
-          try {
-            database.query(
-              `
-                INSERT INTO "groups"(group_name, group_picture)
-                  VALUES('${request.body.groupname}', '${request.file.filename}')
-                  RETURNING *;
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(`ERROR: ${error}`)
-                } else {
-                  if (results.rows.length === 0) {
-                    console.log('ERROR: Data not inserted to database!');
-                  } else {
-                    console.log('Group inserted');
-                    response.json({message: 'Group Inserted'});
-                  }
-                }
-              }
-            );
-          } catch (error) {
-            console.log(error);
-          }
-        });
+    const secureRoute = (request, response, next) => {
+      passport.authenticate('jwt', { session: false }, (error, user) => {
+        if (error) {
+          console.log(`ERROR: ${error}`)
+        } else if (!user) {
+          console.log('Invalid User!');
+          response.json({ message: 'Invalid User' });
+        } else {
+          request.user = user;
+          next();
+        }
+      })(request, response, next);
+    }
 
-        // Pomodoro 
-        app.get('/pomodoro', (request, response) => {
-          try {
-            
-          } catch (error) {
-            console.log(error);
-          }
-        })
-        .listen(2727, () => {
-          console.log('Server started!');
-        });
+    app.get('/api', secureRoute, (request, response) => {
+      console.log('Token Verified');
+    });
 
-        // Notebooks
-        app.get('/notebooks', (request, response) => {
-          try {
-            database.query(
-              `
-                SELECT * FROM "notebooks";
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(error)
-                } else {
-                  
-                  response.json({notebooks: results.rows});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
-          }
-        });
+    groupsRoutes(app, secureRoute, upload, database);
+    notebooksRoutes(app, secureRoute, database);
+    pomodoroRoutes(app, secureRoute, database);
 
-        app.post('/notebooks', (request, response) => {
-          try {
-            database.query(
-              `
-                INSERT INTO "notebooks"(group_id, notebook_name)
-                  VALUES(1, '${request.body.notebookName}')
-                  RETURNING *;
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(error)
-                } else {
-                  response.json({notebooks: results.rows});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
-          }
-        });
-
-        // Notes
-        app.get('/notebooks/notes', (request, response) => {
-          try {
-            database.query(
-              `
-                SELECT * FROM "notes";
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(error)
-                } else {
-                  
-                  response.json({notes: results.rows});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
-          }
-        });
-
-        app.post('/notebooks/notes', (request, response) => {
-          try {
-            database.query(
-              `
-                INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
-                  VALUES(${request.body.notebookID}, '${request.body.noteName}', '', '${new Date().toLocaleString()}')
-                  RETURNING *;
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(error)
-                } else {
-                  response.json({notes: results.rows});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
-          }
-        });
-
-        app.put('/notebooks/notes/note-contents', (request, response) => {
-          try {
-            database.query(
-              `
-                UPDATE "notes" 
-                SET 
-                  "note_content" = '${request.body.contents}',
-                  "date_edited" = '${new Date().toLocaleString()}'
-                WHERE "note_id" = ${request.body.noteID}
-                RETURNING *;
-              `,
-              (error, results) => {
-                if (error) {
-                  console.log(error)
-                } else {
-                  response.json({note: results.rows[0]});
-                }
-              }
-            )
-          } catch (error) {
-            console.log(error);
-          }
-        });
+    app.listen(2727, () => {
+      console.log('Server started!');
+    });
   }
 });
-
-
