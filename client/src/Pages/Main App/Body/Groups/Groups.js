@@ -7,6 +7,7 @@ import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import CustomAjax from '../../../../CustomAjax';
 import SelectableGroup from './SelectableGroup';
+import verifyToken from '../../Helper Functions/verifyToken';
 
 export default function Groups() {
 
@@ -16,6 +17,8 @@ export default function Groups() {
     const [groups, setGroups] = useState([]);
 
     const token = useSelector((state) => {return state.tokenState});
+
+    verifyToken(token, history);
 
     useEffect(() => {
         loadGroups();
@@ -28,7 +31,7 @@ export default function Groups() {
 
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/groups', token);
+        ajax.get('http://localhost:2727/api/groups', token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -47,10 +50,10 @@ export default function Groups() {
     return (
         <div>
             <GroupButtonsSection>
-                <GroupButton onClick={() => {history.push('/groups/create-group')}}>
+                <GroupButton onClick={() => {history.push('/api/groups/create-group')}}>
                     Create
                 </GroupButton>
-                <GroupButton onClick={() => {history.push('/groups/join-group')}}>
+                <GroupButton onClick={() => {history.push('/api/groups/join-group')}}>
                     Join
                 </GroupButton>
             </GroupButtonsSection>

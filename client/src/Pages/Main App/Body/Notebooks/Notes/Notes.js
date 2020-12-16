@@ -1,7 +1,7 @@
 import { List, Box, styled } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 import CustomAjax from "../../../../../CustomAjax";
@@ -11,6 +11,7 @@ import FloatingActionButton from '../FloatingActionButton';
 import SelectableNote from './SelectableNote';
 import createURL from '../Helper Functions/createURL';
 import createTitle from '../Helper Functions/createTitle';
+import verifyToken from "../../../Helper Functions/verifyToken";
 
 export default function Notes(props) {
 
@@ -21,7 +22,11 @@ export default function Notes(props) {
 
     const dispatch = useDispatch();
     const location = useLocation();
-    const notebookID = location.state.notebookID
+    const token = useSelector((state) => {return state.tokenState});
+    const history = useHistory();
+    const notebookID = location.state.notebookID;
+
+    verifyToken(token, history);
 
     useEffect(() => {
         loadNotes();
@@ -39,7 +44,7 @@ export default function Notes(props) {
             notebookID: notebookID
         }
 
-        ajax.post('http://localhost:2727/notebooks/notes', data, true);
+        ajax.post('http://localhost:2727/api/notebooks/notes', data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -50,7 +55,7 @@ export default function Notes(props) {
     const loadNotes = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/notebooks/notes');
+        ajax.get('http://localhost:2727/api/notebooks/notes', token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 

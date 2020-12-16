@@ -1,11 +1,13 @@
 import { styled, Box, Paper, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import CustomAjax from "../../../../../CustomAjax";
 import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from "../../../../../Redux/Actions/ChangeTitle";
+import verifyToken from "../../../Helper Functions/verifyToken";
 import JoinableGroup from './JoinableGroup'
 
 export default function JoinGroup() {
@@ -14,6 +16,10 @@ export default function JoinGroup() {
     const [availableGroups, setAvailableGroups] = useState([]);
 
     const dispatch = useDispatch();
+    const history = useHistory();
+    const token = useSelector((state) => {return state.tokenState});
+
+    verifyToken(token, history);
 
     dispatch(changeTitle('Join Group'));
     dispatch(setBackButton());
@@ -23,7 +29,7 @@ export default function JoinGroup() {
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/groups/join-group/search', data, true);
+        ajax.post('http://localhost:2727/api/groups/join-group/search', data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 

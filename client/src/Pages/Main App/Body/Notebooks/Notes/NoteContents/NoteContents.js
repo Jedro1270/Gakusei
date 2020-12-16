@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -11,6 +11,7 @@ import { setBackButton } from "../../../../../../Redux/Actions/ChangeHeaderNavig
 import changeTitle from "../../../../../../Redux/Actions/ChangeTitle";
 import CustomAjax from '../../../../../../CustomAjax';
 import createTitle from '../../Helper Functions/createTitle';
+import verifyToken from "../../../../Helper Functions/verifyToken";
 
 export default function NoteContents() {
 
@@ -20,7 +21,12 @@ export default function NoteContents() {
 
     const dispatch = useDispatch();
     const location = useLocation();
+
     const noteID = location.state.noteID;
+    const token = useSelector((state) => {return state.tokenState});
+    const history = useHistory();
+
+    verifyToken(token, history);
 
     const updateNoteContents = (noteContents) => {
         const data = {
@@ -30,7 +36,7 @@ export default function NoteContents() {
 
         const ajax = new CustomAjax();
 
-        ajax.put('http://localhost:2727/notebooks/notes/note-contents', data, true);
+        ajax.put('http://localhost:2727/api/notebooks/notes/note-contents', data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -41,7 +47,7 @@ export default function NoteContents() {
     const getNoteContents = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/notebooks/notes');
+        ajax.get('http://localhost:2727/api/notebooks/notes', token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 

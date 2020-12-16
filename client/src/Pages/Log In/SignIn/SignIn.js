@@ -42,7 +42,7 @@ export default function SignIn() {
 
   if (loggedIn) {
     
-    history.push('/groups');
+    history.push('/api/groups');
     return null;
 
   } else {

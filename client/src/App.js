@@ -32,7 +32,7 @@ export default function App() {
                 <SignIn/>
               )}
             />
-            <Route exact path='/groups' render={() => (
+            <Route exact path='/api/groups' render={() => (
               <div className='App-body'>
                   <Header/>
                   <Groups/>
@@ -40,7 +40,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/groups/join-group' render={() => (
+            <Route exact path='/api/groups/join-group' render={() => (
               <div className='App-body'>
                   <Header/>
                   <JoinGroup/>
@@ -48,7 +48,7 @@ export default function App() {
 
               )} 
             />
-            <Route exact path='/groups/create-group' render={() => (
+            <Route exact path='/api/groups/create-group' render={() => (
               <div className='App-body'>
                   <Header/>
                   <CreateGroup />
@@ -56,7 +56,7 @@ export default function App() {
 
               )} 
             />
-            <Route exact path='/pomodoro' render={() => (
+            <Route exact path='/api/pomodoro' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <Pomodoro />
@@ -64,7 +64,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/notebooks' render={() => (
+            <Route exact path='/api/notebooks' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <Notebooks />
@@ -72,7 +72,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/notebooks/:notebookTitle' render={() => (
+            <Route exact path='/api/notebooks/:notebookTitle' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <Notes />
@@ -80,7 +80,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/notebooks/:notebookTitle/:noteTitle' render={() => (
+            <Route exact path='/api/notebooks/:notebookTitle/:noteTitle' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <NoteContents />
@@ -88,7 +88,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/chat' render={() => (
+            <Route exact path='/api/chat' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <Chat />
@@ -96,7 +96,7 @@ export default function App() {
                 
               )} 
             />
-            <Route exact path='/rankings' render={() => (
+            <Route exact path='/api/rankings' render={() => (
                 <div className='App-body'>
                   <Header/>
                   <Rankings/>

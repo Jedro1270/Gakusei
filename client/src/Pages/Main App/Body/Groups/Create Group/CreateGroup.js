@@ -1,11 +1,12 @@
 import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core'; 
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomAjax from '../../../../../CustomAjax';
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import { setBackButton } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
+import verifyToken from '../../../Helper Functions/verifyToken';
 
 export default function CreateGroup() {
 
@@ -14,8 +15,10 @@ export default function CreateGroup() {
     const [temporaryFile, setTemporaryFile] = useState(null);
 
     const dispatch = useDispatch();
-
+    const token = useSelector((state) => {return state.tokenState});
     const history = useHistory();
+
+    verifyToken(token, history);
 
     dispatch(changeTitle('Create Group'));
     dispatch(setBackButton());
@@ -28,7 +31,7 @@ export default function CreateGroup() {
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/groups/create-group', formData, false);
+        ajax.post('http://localhost:2727/api/groups/create-group', formData, false);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
             if (response.message === 'Group Inserted') {

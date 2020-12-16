@@ -1,7 +1,9 @@
 import { Avatar, Box, Typography, Button, styled } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
+import verifyToken from '../../Helper Functions/verifyToken';
 
 export default function Pomodoro(props) {
 
@@ -9,6 +11,11 @@ export default function Pomodoro(props) {
 
     const [secondsLeft, setSecondsLeft] = useState(1500);
     const [timerStart, setTimerStart] = useState(false);
+
+    const token = useSelector((state) => {return state.tokenState});
+    const history = useHistory();
+
+    verifyToken(token, history);
 
     dispatch(changeTitle('Pomodoro'));
 

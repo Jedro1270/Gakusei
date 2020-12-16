@@ -20,7 +20,7 @@ export default function NavigationMenu() {
 
             <LevelProgressBar value={50}/>
 
-            <CustomLink to='/groups' >
+            <CustomLink to='/api/groups' >
                 <NavigationContainer button>
                     <NavigationTitle>
                         Groups
@@ -28,7 +28,7 @@ export default function NavigationMenu() {
                 </NavigationContainer>
             </CustomLink>
 
-            <CustomLink to='/pomodoro' >
+            <CustomLink to='/api/pomodoro' >
                 <NavigationContainer button>
                     <NavigationTitle>
                         Pomodoro
@@ -36,7 +36,7 @@ export default function NavigationMenu() {
                 </NavigationContainer>
             </CustomLink>
 
-            <CustomLink to='/notebooks' >
+            <CustomLink to='/api/notebooks' >
                 <NavigationContainer button>
                     <NavigationTitle>
                         Notebooks
@@ -44,7 +44,7 @@ export default function NavigationMenu() {
                 </NavigationContainer>
             </CustomLink>
 
-            <CustomLink to='/chat' >
+            <CustomLink to='/api/chat' >
                 <NavigationContainer button>
                     <NavigationTitle>
                         Chat
@@ -52,7 +52,7 @@ export default function NavigationMenu() {
                 </NavigationContainer>
             </CustomLink>
 
-            <CustomLink to='/rankings' >
+            <CustomLink to='/api/rankings' >
                 <NavigationContainer button>
                     <NavigationTitle>
                         Rankings and Badges

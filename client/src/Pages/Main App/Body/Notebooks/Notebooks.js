@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { List, Box, styled } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomAjax from '../../../../CustomAjax';
 import SelectableNotebook from './SelectableNotebook';
@@ -8,10 +8,16 @@ import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import FloatingActionButton from './FloatingActionButton';
 import createURL from './Helper Functions/createURL';
+import verifyToken from '../../Helper Functions/verifyToken';
+import { useHistory } from 'react-router-dom';
 
 export default function Notebooks() {
 
     const dispatch = useDispatch();
+    const token = useSelector((state) => {return state.tokenState});
+    const history = useHistory();
+
+    verifyToken(token, history);
 
     const [notebooks, setNotebooks] = useState([]);
     const [newNotebookName, setNewNotebookName] = useState('');
@@ -26,7 +32,7 @@ export default function Notebooks() {
     const loadNotebooks = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/notebooks');
+        ajax.get('http://localhost:2727/api/notebooks', token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -53,7 +59,7 @@ export default function Notebooks() {
             notebookName: notebookName
         }
 
-        ajax.post('http://localhost:2727/notebooks', data, true);
+        ajax.post('http://localhost:2727/api/notebooks', data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
