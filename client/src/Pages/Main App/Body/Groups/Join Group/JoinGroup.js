@@ -1,6 +1,6 @@
 import { styled, Box, Paper, InputBase, IconButton } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -19,10 +19,12 @@ export default function JoinGroup() {
     const history = useHistory();
     const token = useSelector((state) => { return state.tokenState });
 
-    verifyToken(token, history);
-
     dispatch(changeTitle('Join Group'));
     dispatch(setBackButton());
+
+    useEffect(() => {
+        verifyToken(token, history);
+    }, []);
 
     const getGroups = (groupname) => {
         const data = { groupname: groupname }

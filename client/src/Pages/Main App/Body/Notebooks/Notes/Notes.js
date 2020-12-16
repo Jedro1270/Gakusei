@@ -26,9 +26,8 @@ export default function Notes(props) {
     const history = useHistory();
     const notebookID = location.state.notebookID;
 
-    verifyToken(token, history);
-
     useEffect(() => {
+        verifyToken(token, history);
         loadNotes();
     }, [notes]);
 

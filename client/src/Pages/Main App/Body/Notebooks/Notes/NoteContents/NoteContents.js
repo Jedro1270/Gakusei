@@ -26,8 +26,6 @@ export default function NoteContents() {
     const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
-    verifyToken(token, history);
-
     const updateNoteContents = (noteContents) => {
         const data = {
             contents: noteContents,
@@ -68,6 +66,7 @@ export default function NoteContents() {
     }
 
     useEffect(() => {
+        verifyToken(token, history);
         getNoteContents();
     }, []);
 

@@ -15,11 +15,10 @@ export default function Pomodoro(props) {
     const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
-    verifyToken(token, history);
-
     dispatch(changeTitle('Pomodoro'));
 
     useEffect(() => {
+        verifyToken(token, history);
         if (secondsLeft > 0 && timerStart) {
             setTimeout(() => {
                 setSecondsLeft(secondsLeft - 1);

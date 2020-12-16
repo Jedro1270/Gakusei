@@ -18,10 +18,9 @@ export default function Groups() {
 
     const token = useSelector((state) => { return state.tokenState });
 
-    verifyToken(token, history);
-
     useEffect(() => {
         loadGroups();
+        verifyToken(token, history);
     }, []);
 
     dispatch(changeTitle('Groups'));

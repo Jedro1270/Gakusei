@@ -1,5 +1,5 @@
 import { Box, InputBase, Paper, Avatar, styled, Button, Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,10 +18,12 @@ export default function CreateGroup() {
     const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
 
-    verifyToken(token, history);
-
     dispatch(changeTitle('Create Group'));
     dispatch(setBackButton());
+
+    useEffect(() => {
+        verifyToken(token, history);
+    }, []);
 
     const submitForm = () => {
         const formData = new FormData();
@@ -35,7 +37,7 @@ export default function CreateGroup() {
         ajax.stateListener((response) => {
             response = JSON.parse(response);
             if (response.message === 'Group Inserted') {
-                history.push('/groups');
+                history.push('/api/groups');
             }
         });
     }
