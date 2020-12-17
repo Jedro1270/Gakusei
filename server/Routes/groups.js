@@ -1,5 +1,10 @@
 export default function groupsRoutes(app, secureRoute, upload, database) {
   app.get('/api/groups', secureRoute, (request, response) => {
+
+    // TO DO:
+    //   Select Group
+    //   Leave Group
+
     try {
       database.query(
         `
@@ -10,7 +15,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
         `, [request.user.id],
         (error, results) => {
           if (error) {
-            console.log(`ERROR: ${error}`)
+            console.log(`ERROR: ${error}`);
           } else {
             response.json({ groups: results.rows });
           }
@@ -21,16 +26,49 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  app.post('/api/groups/join-group', secureRoute, (request, response) => {
+    try {
+      database.query(
+        `
+          INSERT INTO "group_memberships"(user_id, group_id)
+            VALUES($1, $2)
+          RETURNING *;
+        `, [request.body.userId, request.body.groupId],
+        (error, results) => {
+          if (error) {
+            console.log(`ERROR: ${error}`);
+          } else {
+            
+            if (results.rows.length === 0) {
+              console.log('Group Already Joined');
+              response.json({ message: 'Group Already Joined' });
+            } else {
+              response.json({ message: 'Join Group Successful' });
+            }
+
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   app.post('/api/groups/join-group/search', secureRoute, (request, response) => {
     try {
       database.query(
         `
-          SELECT * FROM "groups"
-            WHERE "group_name" ILIKE $1;
-        `, [`%${request.body.groupname}%`],
+          SELECT * FROM "groups" as g
+            INNER JOIN "group_memberships" as gm
+              USING (group_id)
+          WHERE 
+            g.group_name ILIKE $1
+              AND
+            gm.user_id != $2
+        `, [`%${request.body.groupname}%`, request.body.userId],
         (error, results) => {
           if (error) {
-            console.log(`ERROR: ${error}`)
+            console.log(`ERROR: ${error}`);
           } else {
             response.json({ groups: results.rows });
           }
@@ -51,7 +89,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
         `, [request.body.groupname, request.file.filename],
         (error, results) => {
           if (error) {
-            console.log(`ERROR: ${error}`)
+            console.log(`ERROR: ${error}`);
           } else {
             if (results.rows.length === 0) {
               console.log('ERROR: Data not inserted to database!');
@@ -70,7 +108,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
                   `, [request.user.id, request.body.groupname],
                   (error, results) => {
                     if (error) {
-                      console.log(`ERROR: ${error}`)
+                      console.log(`ERROR: ${error}`);
                     } else {
                       if (results.rows.length === 0) {
                         console.log('ERROR: Data not inserted to database!');
@@ -83,7 +121,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
                   }
                 );
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
             }
           }
