@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import Title from '../Title';
 import AppLogo from '../AppLogo';
 import SubmitButton from '../SubmitButton';
+import setUser from '../../../Redux/Actions/setUserState';
 
 export default function SignIn() {
 
@@ -33,6 +34,7 @@ export default function SignIn() {
       response = JSON.parse(response);
       if (response.message === 'Successfully Authenticated') {
         dispatch(setToken(response.token));
+        dispatch(setUser(response.user));
         setLoggedIn(true);
       } else {
         setInvalidCredentials(true);
