@@ -33,7 +33,7 @@ export default function CreateGroup() {
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/api/groups/create-group', formData, false);
+        ajax.post('http://localhost:2727/api/groups/create-group', formData, false, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
             if (response.message === 'Group Inserted') {

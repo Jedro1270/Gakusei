@@ -31,7 +31,7 @@ export default function JoinGroup() {
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/api/groups/join-group/search', data, true);
+        ajax.post('http://localhost:2727/api/groups/join-group/search', data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
