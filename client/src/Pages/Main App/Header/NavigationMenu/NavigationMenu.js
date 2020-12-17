@@ -1,24 +1,28 @@
 import { List, ListItem, Avatar, Typography, styled } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import LevelProgressBar from './LevelProgressBar'
 
 export default function NavigationMenu() {
+
+    const user = useSelector((state) => { return state.userState });
+
     return (
         <NavigationList>
 
             <UserAvatar />
 
             <UsernameDisplay>
-                Username
+                {user.username}
             </UsernameDisplay>
 
             <LevelDisplay>
-                Level 1 (50 Pts)
+                Level {user.level} ({user.points} Pts)
             </LevelDisplay>
 
-            <LevelProgressBar value={50} />
+            <LevelProgressBar value={user.points} />
 
             <CustomLink to='/api/groups' >
                 <NavigationContainer button>
