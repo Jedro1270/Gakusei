@@ -80,7 +80,8 @@ pool.connect((error, client) => {
               id: user.user_id,
               username: user.username,
               profilePicture: user.profile_picture,
-              points: user.points
+              points: user.points,
+              level: user.level_id
             }
 
             const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
@@ -88,6 +89,7 @@ pool.connect((error, client) => {
             response.json({
               message: 'Successfully Authenticated',
               token: token,
+              user: body
             });
           });
         }
@@ -100,21 +102,41 @@ pool.connect((error, client) => {
 
       database.query(
         `
-              INSERT INTO "users"(username, password, points)
-                VALUES($1, $2, 0)
-                ON CONFLICT (username) DO NOTHING
-                RETURNING *;
-            `, [request.body.username, hashedPassword],
+          INSERT INTO "users"(username, password, points)
+            VALUES($1, $2, 0)
+            ON CONFLICT (username) DO NOTHING
+          RETURNING *;
+        `, [request.body.username, hashedPassword],
         (error, results) => {
           if (error) {
-            console.log(`ERROR: ${error}`)
+            console.log(`ERROR: ${error}`);
           } else {
+
             if (results.rows.length === 0) {
+
               console.log('Username taken');
-              response.json({ message: 'Username taken' });
+              response.json({ message: 'Username Taken' });
+
             } else {
-              console.log('User inserted');
-              response.json({ message: 'User Inserted' });
+
+              const user = results.rows[0];
+
+              database.query(
+                `
+                  INSERT INTO "level_achievements"(user_id, level_id)
+                    VALUES($1, $2)
+                  RETURNING *;
+                `, [user.user_id, 1],
+                (error, results) => {
+                  if (error) {
+                    console.log(`ERROR: ${error}`);
+                  } else {
+                      console.log('User inserted');
+                      response.json({ message: 'User Inserted' });
+                  }
+                }
+              );
+
             }
           }
         }
