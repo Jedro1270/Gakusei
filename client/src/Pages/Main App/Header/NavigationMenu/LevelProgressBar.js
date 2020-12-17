@@ -4,7 +4,7 @@ export default function LevelProgressBar(props) {
     return (
         <Box display='flex'>
             <Box width='100%'>
-                <LinearProgress variant='determinate' {...props} />
+                <LinearProgress variant='determinate' value={props.value} />
             </Box>
         </Box>
     );
