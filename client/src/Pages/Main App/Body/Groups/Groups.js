@@ -41,7 +41,11 @@ export default function Groups() {
     const displayGroups = () => {
         return groups.map((group) => {
             return (
-                <SelectableGroup groupname={group.group_name} groupImage={group.group_picture} />
+                <SelectableGroup 
+                    groupname={group.group_name} 
+                    groupImage={group.group_picture}
+                    groupId={group.group_id}
+                />
             );
         });
     }
