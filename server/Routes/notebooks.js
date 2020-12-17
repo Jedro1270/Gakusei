@@ -20,7 +20,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.post('/api/notebooks', (request, response) => {
+    app.post('/api/notebooks', secureRoute, (request, response) => {
         try {
             console.log(request.user, 'from notebook')
             database.query(
@@ -62,7 +62,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.post('/api/notebooks/notes', (request, response) => {
+    app.post('/api/notebooks/notes', secureRoute, (request, response) => {
         try {
             database.query(
                 `
@@ -83,7 +83,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.put('/api/notebooks/notes/note-contents', (request, response) => {
+    app.put('/api/notebooks/notes/note-contents', secureRoute, (request, response) => {
         try {
             database.query(
                 `
