@@ -22,8 +22,10 @@ export default class CustomAjax {
         this.xhr.send();
     }
 
-    post = (url, data, json) => {
+    post = (url, data, json, token) => {
         this.xhr.open('POST', url, true);
+
+        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
         
         if (json) {
             this.xhr.setRequestHeader('Content-Type', 'application/json');
@@ -34,8 +36,10 @@ export default class CustomAjax {
         this.xhr.send(data) 
     }
 
-    put = (url, data, json) => {
+    put = (url, data, json, token) => {
         this.xhr.open('PUT', url, true);
+
+        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
         
         if (json) {
             this.xhr.setRequestHeader('Content-Type', 'application/json');
