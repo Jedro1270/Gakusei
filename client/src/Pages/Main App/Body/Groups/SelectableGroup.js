@@ -1,12 +1,51 @@
-import React, { useState } from 'react';
-import { Avatar, Typography, styled, Button, Dialog, List, ListItem } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Avatar, Typography, styled, Button, Dialog, List, ListItem, Box } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import setCurrentGroup from '../../../../Redux/Actions/setCurrentGroup';
+import ConditionalWrapper from '../../../ConditionalWrapper';
 
 export default function SelectableGroup(props) {
 
     const [openDialog, setOpenDialog] = useState(false);
+    const [selected, setSelected] = useState(false);
+
+    const dispatch = useDispatch();
+    const currentGroup = useSelector((state) => { return state.currentGroupState });
+
+    const group = {
+        groupId: props.groupId,
+        groupname: props.groupname,
+    }
+
+    const displayBody = () => {
+        if (currentGroup.groupId === props.groupId) {
+            setSelected(true);
+        } else {
+            setSelected(false);  
+        }
+    }
+
+    const selectGroup = () => {
+        if (selected) {
+            dispatch(setCurrentGroup({}));
+            setSelected(false);
+        } else {
+            dispatch(setCurrentGroup(group));
+            setSelected(true);
+        }
+    }
+
+    useEffect(() => {
+        displayBody();
+    }, [currentGroup]);
 
     return (
-        <div>
+        <ConditionalWrapper
+            condition={selected}
+            wrapper={(children) => {
+                return <SelectedGroupBody>{children}</SelectedGroupBody>
+            }}
+        >
             <Button onClick={() => { setOpenDialog(true) }}>
                 <GroupIcon src={`/images/group-icons/${props.groupImage}`} />
             </Button>
@@ -17,7 +56,10 @@ export default function SelectableGroup(props) {
 
             <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
                 <List>
-                    <ListItem button>
+                    <ListItem button onClick={() => {
+                        selectGroup();
+                        setOpenDialog(false);
+                    }}>
                         <SelectGroupText>
                             Select Group
                         </SelectGroupText>
@@ -29,7 +71,7 @@ export default function SelectableGroup(props) {
                     </ListItem>
                 </List>
             </Dialog>
-        </div>
+        </ConditionalWrapper>
     );
 }
 
@@ -53,4 +95,10 @@ const SelectGroupText = styled(Typography)({
 
 const LeaveGroupText = styled(SelectGroupText)({
     color: 'red'
+});
+
+const SelectedGroupBody = styled(Box)({
+    margin: '10px',
+    borderRadius: '20px',
+    backgroundColor: 'grey'
 });
