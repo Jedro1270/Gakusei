@@ -18,6 +18,7 @@ export default function JoinGroup() {
     const dispatch = useDispatch();
     const history = useHistory();
     const token = useSelector((state) => { return state.tokenState });
+    const user = useSelector((state) => { return state.userState });
 
     dispatch(changeTitle('Join Group'));
     dispatch(setBackButton());
@@ -27,7 +28,10 @@ export default function JoinGroup() {
     }, []);
 
     const getGroups = (groupname) => {
-        const data = { groupname: groupname }
+        const data = { 
+            groupname: groupname,
+            userId: user.id
+        }
 
         const ajax = new CustomAjax();
 
@@ -42,7 +46,11 @@ export default function JoinGroup() {
     const displayAvailableGroups = () => {
         return availableGroups.map((availableGroup) => {
             return (
-                <JoinableGroup groupname={availableGroup.group_name} groupImage={availableGroup.group_picture} />
+                <JoinableGroup 
+                    groupname={availableGroup.group_name} 
+                    groupImage={availableGroup.group_picture} 
+                    groupId={availableGroup.group_id}
+                />
             );
         });
     }
