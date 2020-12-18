@@ -17,11 +17,12 @@ export default function Groups() {
     const [groups, setGroups] = useState([]);
 
     const token = useSelector((state) => { return state.tokenState });
+    const currentGroup = useSelector((state) => { return state.currentGroupState });
 
     useEffect(() => {
         loadGroups();
         verifyToken(token, history);
-    }, []);
+    }, [currentGroup]);
 
     dispatch(changeTitle('Groups'));
     dispatch(setDrawer());
