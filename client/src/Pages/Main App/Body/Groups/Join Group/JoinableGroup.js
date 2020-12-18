@@ -9,13 +9,11 @@ export default function JoinableGroup(props) {
     const [openDialog, setOpenDialog] = useState(false);
 
     const token = useSelector((state) => { return state.tokenState });
-    const user = useSelector((state) => { return state.userState });
     const history = useHistory();
 
     const joinGroup = () => {
         const data = {
             groupId: props.groupId,
-            userId: user.id
         }
 
         const ajax = new CustomAjax();

@@ -12,7 +12,6 @@ export default function SelectableGroup(props) {
 
     const dispatch = useDispatch();
     const currentGroup = useSelector((state) => { return state.currentGroupState });
-    const user = useSelector((state) => { return state.userState });
     const token = useSelector((state) => { return state.tokenState });
 
     const group = {
@@ -42,7 +41,7 @@ export default function SelectableGroup(props) {
 
         const ajax = new CustomAjax();
 
-        ajax.delete(`http://localhost:2727/api/groups/${props.groupId}&${user.id}`, token);
+        ajax.delete(`http://localhost:2727/api/groups/${props.groupId}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
