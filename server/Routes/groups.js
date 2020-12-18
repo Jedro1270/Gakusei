@@ -1,10 +1,6 @@
 export default function groupsRoutes(app, secureRoute, upload, database) {
   app.get('/api/groups', secureRoute, (request, response) => {
 
-    // TO DO:
-    //   Select Group
-    //   Leave Group
-
     try {
       database.query(
         `
@@ -54,26 +50,59 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
-  app.post('/api/groups/join-group/search', secureRoute, (request, response) => {
+  app.get('/api/groups/join-group/search', secureRoute, (request, response) => {
+    const searchValue = request.query.value;
+
     try {
       database.query(
         `
-          SELECT * FROM "groups" as g
-            INNER JOIN "group_memberships" as gm
-              USING (group_id)
-          WHERE 
-            g.group_name ILIKE $1
-              AND
-            gm.user_id != $2
-        `, [`%${request.body.groupname}%`, request.body.userId],
+          SELECT * FROM "group_memberships"
+            WHERE "user_id" = $1;
+        `, [request.user.id],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
           } else {
-            response.json({ groups: results.rows });
+            if (results.rows.length > 0) {
+              const joinedGroupsArray = results.rows.map((group) => {
+                return parseInt(group.group_id);
+              });
+  
+              const joinedGroups = joinedGroupsArray.join(',');
+  
+              database.query(
+                `
+                  SELECT * FROM "groups"
+                    WHERE 
+                    "group_id" NOT IN (${joinedGroups})
+                      AND
+                    "group_name" ILIKE $1;
+                `, [`%${searchValue}%`],
+                (error, results) => {
+                  if (error) {
+                    console.log(`ERROR: ${error}`);
+                  } else {
+                    response.json({ groups: results.rows });
+                  }
+                }
+              );
+            } else {
+              database.query(
+                `
+                  SELECT * FROM "groups";
+                `,
+                (error, results) => {
+                  if (error) {
+                    console.log(`ERROR: ${error}`);
+                  } else {
+                    response.json({ groups: results.rows });
+                  }
+                }
+              );
+            }
           }
         }
-      )
+      );
     } catch (error) {
       console.log(error);
     }
