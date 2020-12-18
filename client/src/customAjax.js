@@ -33,7 +33,7 @@ export default class CustomAjax {
             data = JSON.stringify(data);
         }
 
-        this.xhr.send(data) 
+        this.xhr.send(data);
     }
 
     put = (url, data, json, token) => {
@@ -47,6 +47,14 @@ export default class CustomAjax {
             data = JSON.stringify(data);
         }
 
-        this.xhr.send(data)
+        this.xhr.send(data);
+    }
+
+    delete = (url, token) => {
+        this.xhr.open('DELETE', url, true);
+
+        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
+
+        this.xhr.send();
     }
 } 
