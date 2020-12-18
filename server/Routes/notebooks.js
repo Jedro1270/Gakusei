@@ -1,11 +1,15 @@
 export default function notebooksRoutes(app, secureRoute, database) {
-    // Notebooks
-    app.get('/api/notebooks', secureRoute, (request, response) => {
+
+    // Get All Notebooks of Group
+    app.get('/api/notebooks/:groupId', secureRoute, (request, response) => {
+        const groupId = request.params.groupId;
+
         try {
-            database.query( // Select all from selected group only
+            database.query(
                 `
-                SELECT * FROM "notebooks";
-                `,
+                SELECT * FROM "notebooks"
+                    WHERE "group_id" = $1;
+                `, [groupId],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -20,15 +24,18 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.post('/api/notebooks', secureRoute, (request, response) => {
+    // Create New Notebook for Group
+    app.post('/api/notebooks/:groupId', secureRoute, (request, response) => {
+        const groupId = request.params.groupId;
+        const notebookName = request.body.notebookName;
+
         try {
-            console.log(request.user, 'from notebook')
             database.query(
                 `
                 INSERT INTO "notebooks"(group_id, notebook_name)
-                    VALUES(1, $1)
-                    RETURNING *;
-                `, [request.body.notebookName],
+                    VALUES($1, $2)
+                RETURNING *;
+                `, [groupId, notebookName],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -42,13 +49,16 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    // Notes
-    app.get('/api/notebooks/notes', secureRoute, (request, response) => {
+    // Get All Notes of Notebook
+    app.get('/api/notebooks/:groupId/:notebookId', secureRoute, (request, response) => {
+        const notebookId = request.params.notebookId;
+
         try {
             database.query(
                 `
                 SELECT * FROM "notes";
-                `,
+                    WHERE "notebook_id" = $1
+                `, [notebookId],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -62,14 +72,19 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.post('/api/notebooks/notes', secureRoute, (request, response) => {
+    // Create New Note for Notebook
+    app.post('/api/notebooks/:groupId/:notebookId', secureRoute, (request, response) => {
+        const notebookId = request.params.notebookId;
+        const noteTitle = request.body.noteName;
+        const date = new Date().toLocaleString();
+
         try {
             database.query(
                 `
-            INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
-                VALUES($1, $2, '', $3)
+                INSERT INTO "notes"(notebook_id, note_title, note_content, date_edited)
+                    VALUES($1, $2, '', $3)
                 RETURNING *;
-            `, [request.body.notebookID, request.body.noteName, new Date().toLocaleString()],
+                `, [notebookId, noteTitle, date],
                 (error, results) => {
                     if (error) {
                         console.log(error)
@@ -83,17 +98,22 @@ export default function notebooksRoutes(app, secureRoute, database) {
         }
     });
 
-    app.put('/api/notebooks/notes/note-contents', secureRoute, (request, response) => {
+    // Update Note Contents
+    app.put('/api/notebooks/:groupId/:notebookId/:noteId', secureRoute, (request, response) => {
+        const noteId = request.params.noteId;
+        const contents = request.body.contents;
+        const date = new Date().toLocaleString();
+
         try {
             database.query(
                 `
-            UPDATE "notes" 
-            SET 
-                "note_content" = $1,
-                "date_edited" = $2
-            WHERE "note_id" = $3
-            RETURNING *;
-            `, [request.body.contents, new Date().toLocaleString(), request.body.noteID],
+                UPDATE "notes" 
+                SET 
+                    "note_content" = $1,
+                    "date_edited" = $2
+                WHERE "note_id" = $3
+                RETURNING *;
+                `, [contents, date, noteId],
                 (error, results) => {
                     if (error) {
                         console.log(error)
