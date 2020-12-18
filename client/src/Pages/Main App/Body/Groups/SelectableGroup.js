@@ -3,6 +3,7 @@ import { Avatar, Typography, styled, Button, Dialog, List, ListItem, Box } from 
 import { useDispatch, useSelector } from 'react-redux';
 import setCurrentGroup from '../../../../Redux/Actions/setCurrentGroup';
 import ConditionalWrapper from '../../../ConditionalWrapper';
+import CustomAjax from '../../../../CustomAjax';
 
 export default function SelectableGroup(props) {
 
@@ -11,6 +12,8 @@ export default function SelectableGroup(props) {
 
     const dispatch = useDispatch();
     const currentGroup = useSelector((state) => { return state.currentGroupState });
+    const user = useSelector((state) => { return state.userState });
+    const token = useSelector((state) => { return state.tokenState });
 
     const group = {
         groupId: props.groupId,
@@ -33,6 +36,20 @@ export default function SelectableGroup(props) {
             dispatch(setCurrentGroup(group));
             setSelected(true);
         }
+    }
+
+    const leaveGroup = () => {
+
+        const ajax = new CustomAjax();
+
+        ajax.delete(`http://localhost:2727/api/groups/${props.groupId}&${user.id}`, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            if (response.message === 'Delete Group Successful') {
+                dispatch(setCurrentGroup({}));
+            }
+        });
     }
 
     useEffect(() => {
@@ -64,7 +81,10 @@ export default function SelectableGroup(props) {
                             Select Group
                         </SelectGroupText>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={() => {
+                        leaveGroup();
+                        setOpenDialog(false);
+                    }}>
                         <LeaveGroupText>
                             Leave Group
                         </LeaveGroupText>
