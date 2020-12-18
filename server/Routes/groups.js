@@ -22,11 +22,10 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
-  app.delete('/api/groups/:groupId&:userId', secureRoute, (request, response) => {
+  app.delete('/api/groups/:groupId', secureRoute, (request, response) => {
     const groupId = request.params.groupId;
-    const userId = request.params.userId;
+    const userId = request.user.id;
 
-    console.log(groupId, userId)
     try {
       database.query(
         `
@@ -56,7 +55,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
           INSERT INTO "group_memberships"(user_id, group_id)
             VALUES($1, $2)
           RETURNING *;
-        `, [request.body.userId, request.body.groupId],
+        `, [request.user.id, request.body.groupId],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
