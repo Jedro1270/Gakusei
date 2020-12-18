@@ -22,7 +22,7 @@ export default function Groups() {
     useEffect(() => {
         loadGroups();
         verifyToken(token, history);
-    }, [currentGroup]);
+    }, [currentGroup, history, token]);
 
     dispatch(changeTitle('Groups'));
     dispatch(setDrawer());
@@ -43,6 +43,7 @@ export default function Groups() {
         return groups.map((group) => {
             return (
                 <SelectableGroup 
+                    key={group.group_id}
                     groupname={group.group_name} 
                     groupImage={group.group_picture}
                     groupId={group.group_id}

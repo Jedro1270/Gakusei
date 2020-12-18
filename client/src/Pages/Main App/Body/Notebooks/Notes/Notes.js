@@ -29,7 +29,7 @@ export default function Notes(props) {
     useEffect(() => {
         verifyToken(token, history);
         loadNotes();
-    }, [notes]);
+    }, [notes, history, token]);
 
     const handleDialogButtonClick = () => {
         createNewNote(newNoteName);
@@ -79,6 +79,7 @@ export default function Notes(props) {
     const displayNotes = () => {
         return notes.map((note) => {
             return <SelectableNote
+                key={note.note_id}
                 notebookTitle={notebookTitle}
                 dateEdited={note.date_edited}
                 noteTitle={note.note_title}

@@ -68,7 +68,7 @@ export default function NoteContents() {
     useEffect(() => {
         verifyToken(token, history);
         getNoteContents();
-    }, []);
+    }, [history, token]);
 
     dispatch(changeTitle(createTitle(noteTitle)));
     dispatch(setBackButton());

@@ -23,7 +23,7 @@ export default function CreateGroup() {
 
     useEffect(() => {
         verifyToken(token, history);
-    }, []);
+    }, [history, token]);
 
     const submitForm = () => {
         const formData = new FormData();

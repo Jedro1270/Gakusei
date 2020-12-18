@@ -48,7 +48,12 @@ export default function Notebooks() {
             const notebookName = notebook.notebook_name;
             const notebookID = notebook.notebook_id;
 
-            return <SelectableNotebook title={notebookName} notebookURL={notebookURL} notebookID={notebookID} />
+            return <SelectableNotebook
+                key={notebookID}
+                title={notebookName}
+                notebookURL={notebookURL}
+                notebookID={notebookID}
+            />
         });
     }
 

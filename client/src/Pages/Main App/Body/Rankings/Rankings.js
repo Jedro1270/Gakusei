@@ -13,7 +13,7 @@ export default function Rankings() {
 
     useEffect(() => {
         verifyToken(token, history);
-    }, []);
+    }, [token, history]);
 
     dispatch(changeTitle('Rankings and Badges'));
 

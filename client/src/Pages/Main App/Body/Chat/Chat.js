@@ -14,7 +14,7 @@ export default function Chat(props) {
 
     useEffect(() => {
         verifyToken(token, history);
-    }, []);
+    }, [history, token]);
 
     dispatch(changeTitle('Chat'));
 
