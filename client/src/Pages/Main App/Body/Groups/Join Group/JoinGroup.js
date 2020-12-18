@@ -28,14 +28,10 @@ export default function JoinGroup() {
     }, []);
 
     const getGroups = (groupname) => {
-        const data = { 
-            groupname: groupname,
-            userId: user.id
-        }
 
         const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/api/groups/join-group/search', data, true, token);
+        ajax.get(`http://localhost:2727/api/groups/join-group/search?value=${groupname}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
