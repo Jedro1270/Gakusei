@@ -15,12 +15,12 @@ export default function SelectableGroup(props) {
     const token = useSelector((state) => { return state.tokenState });
 
     const group = {
-        groupId: props.groupId,
+        id: props.groupId,
         groupname: props.groupname,
     }
 
     const displayBody = () => {
-        if (currentGroup.groupId === props.groupId) {
+        if (currentGroup.id === props.groupId) {
             setSelected(true);
         } else {
             setSelected(false);  
