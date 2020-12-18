@@ -22,6 +22,33 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  app.delete('/api/groups/:groupId&:userId', secureRoute, (request, response) => {
+    const groupId = request.params.groupId;
+    const userId = request.params.userId;
+
+    console.log(groupId, userId)
+    try {
+      database.query(
+        `
+          DELETE FROM "group_memberships"
+          WHERE 
+            "group_id" = $1
+              AND
+            "user_id" = $2;
+        `, [groupId, userId],
+        (error, results) => {
+          if (error) {
+            console.log(`ERROR: ${error}`);
+          } else {
+              response.json({ message: 'Delete Group Successful' });
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   app.post('/api/groups/join-group', secureRoute, (request, response) => {
     try {
       database.query(
