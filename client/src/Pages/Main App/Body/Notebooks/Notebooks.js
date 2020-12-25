@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, Box, styled } from '@material-ui/core';
+import { List, Box, styled, Dialog, DialogContent, Typography, DialogActions, Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomAjax from '../../../../CustomAjax';
@@ -22,6 +22,7 @@ export default function Notebooks() {
 
     const [notebooks, setNotebooks] = useState([]);
     const [newNotebookName, setNewNotebookName] = useState('');
+    const [openDialog, setOpenDialog] = useState(false);
 
     dispatch(changeTitle('Notebooks'));
     dispatch(setDrawer());
@@ -62,16 +63,16 @@ export default function Notebooks() {
         const ajax = new CustomAjax();
 
         if (currentGroup.id == undefined) {
-            alert('No group selected')
+            setOpenDialog(true);
         } else {
             const data = {
                 notebookName: notebookName
             }
-    
+
             ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
             ajax.stateListener((response) => {
                 response = JSON.parse(response);
-    
+
                 setNotebooks(response.notebooks);
             });
         }
@@ -90,9 +91,24 @@ export default function Notebooks() {
 
             </List>
 
+            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
+                <BoldDialogTitle>
+                    No Group Selected
+                </BoldDialogTitle>
+
+                <DialogContent>
+                    Please select a group fom the Groups Page before creating a notebook.
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={() => { setOpenDialog(false) }}>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNotebookName} label='New Notebook' />
         </NotebooksPage>
-
     );
 }
 
@@ -100,4 +116,11 @@ const NotebooksPage = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'black'
+});
+
+const BoldDialogTitle = styled(Typography)({
+    fontSize: '30px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: '20px'
 });
