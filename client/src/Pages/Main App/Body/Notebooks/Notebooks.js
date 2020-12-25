@@ -15,6 +15,7 @@ export default function Notebooks() {
 
     const dispatch = useDispatch();
     const token = useSelector((state) => { return state.tokenState });
+    const currentGroup = useSelector((state) => { return state.currentGroupState })
     const history = useHistory();
 
     verifyToken(token, history);
@@ -32,7 +33,7 @@ export default function Notebooks() {
     const loadNotebooks = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/api/notebooks', token);
+        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -60,16 +61,20 @@ export default function Notebooks() {
     const createNotebook = (notebookName) => {
         const ajax = new CustomAjax();
 
-        const data = {
-            notebookName: notebookName
+        if (currentGroup.id == undefined) {
+            alert('No group selected')
+        } else {
+            const data = {
+                notebookName: notebookName
+            }
+    
+            ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
+            ajax.stateListener((response) => {
+                response = JSON.parse(response);
+    
+                setNotebooks(response.notebooks);
+            });
         }
-
-        ajax.post('http://localhost:2727/api/notebooks', data, true);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            setNotebooks(response.notebooks);
-        });
     }
 
     const handleDialogButtonClick = () => {

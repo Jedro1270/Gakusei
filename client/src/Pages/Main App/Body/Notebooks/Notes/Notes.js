@@ -22,8 +22,11 @@ export default function Notes(props) {
 
     const dispatch = useDispatch();
     const location = useLocation();
-    const token = useSelector((state) => { return state.tokenState });
     const history = useHistory();
+
+    const token = useSelector((state) => { return state.tokenState });
+    const currentGroup = useSelector((state) => { return state.currentGroupState });
+    
     const notebookID = location.state.notebookID;
 
     useEffect(() => {
@@ -39,11 +42,10 @@ export default function Notes(props) {
         const ajax = new CustomAjax();
 
         const data = {
-            noteName: noteName,
-            notebookID: notebookID
+            noteName: noteName
         }
 
-        ajax.post('http://localhost:2727/api/notebooks/notes', data, true);
+        ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -54,7 +56,7 @@ export default function Notes(props) {
     const loadNotes = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/api/notebooks/notes', token);
+        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -81,6 +83,7 @@ export default function Notes(props) {
             return <SelectableNote
                 key={note.note_id}
                 notebookTitle={notebookTitle}
+                notebookId={notebookID}
                 dateEdited={note.date_edited}
                 noteTitle={note.note_title}
                 contents={note.note_contents}
@@ -90,7 +93,7 @@ export default function Notes(props) {
         });
     }
 
-    dispatch(changeTitle(createTitle(notebookTitle)));
+    dispatch(changeTitle(createTitle(notebookTitle))); // Change to original title
     dispatch(setBackButton());
 
     return (

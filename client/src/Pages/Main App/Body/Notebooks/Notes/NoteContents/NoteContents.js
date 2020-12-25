@@ -13,7 +13,7 @@ import CustomAjax from '../../../../../../CustomAjax';
 import createTitle from '../../Helper Functions/createTitle';
 import verifyToken from "../../../../Helper Functions/verifyToken";
 
-export default function NoteContents() {
+export default function NoteContents(props) {
 
     const { noteTitle } = useParams();
     const [contents, setContents] = useState('');
@@ -21,20 +21,21 @@ export default function NoteContents() {
 
     const dispatch = useDispatch();
     const location = useLocation();
+    const history = useHistory();
 
     const noteID = location.state.noteID;
+
     const token = useSelector((state) => { return state.tokenState });
-    const history = useHistory();
+    const currentGroup = useSelector((state) => { return state.currentGroupState});
 
     const updateNoteContents = (noteContents) => {
         const data = {
-            contents: noteContents,
-            noteID: noteID,
+            contents: noteContents
         }
 
         const ajax = new CustomAjax();
 
-        ajax.put('http://localhost:2727/api/notebooks/notes/note-contents', data, true);
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, data, true);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -45,19 +46,11 @@ export default function NoteContents() {
     const getNoteContents = () => {
         const ajax = new CustomAjax();
 
-        ajax.get('http://localhost:2727/api/notebooks/notes', token);
+        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
-            const currentNote = response.notes.filter((note) => {
-                if (note.note_id === noteID) {
-                    return true;
-                }
-
-                return false;
-            })[0];
-
-            const currentNoteContents = currentNote.note_content
+            const currentNoteContents = response.note.note_content;
 
             if (contents.length < currentNoteContents.length) {
                 setContents(currentNoteContents);
