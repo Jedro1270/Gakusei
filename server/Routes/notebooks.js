@@ -56,8 +56,8 @@ export default function notebooksRoutes(app, secureRoute, database) {
         try {
             database.query(
                 `
-                SELECT * FROM "notes";
-                    WHERE "notebook_id" = $1
+                SELECT * FROM "notes"
+                    WHERE "notebook_id" = $1;
                 `, [notebookId],
                 (error, results) => {
                     if (error) {
@@ -90,6 +90,29 @@ export default function notebooksRoutes(app, secureRoute, database) {
                         console.log(error)
                     } else {
                         response.json({ notes: results.rows });
+                    }
+                }
+            )
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    // Get Specific Note
+    app.get('/api/notebooks/:groupId/:notebookId/:noteId', secureRoute, (request, response) => {
+        const noteId = request.params.noteId;
+
+        try {
+            database.query(
+                `
+                SELECT * FROM "notes"
+                    WHERE "note_id" = $1;
+                `, [noteId],
+                (error, results) => {
+                    if (error) {
+                        console.log(error)
+                    } else {
+                        response.json({ note: results.rows[0] });
                     }
                 }
             )
