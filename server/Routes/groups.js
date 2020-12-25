@@ -1,5 +1,7 @@
 export default function groupsRoutes(app, secureRoute, upload, database) {
+
   app.get('/api/groups', secureRoute, (request, response) => {
+    const userId = request.user.id
 
     try {
       database.query(
@@ -8,7 +10,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
             INNER JOIN "group_memberships" as gm
               USING (group_id)
           WHERE gm.user_id = $1
-        `, [request.user.id],
+        `, [userId],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
@@ -49,13 +51,16 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
   });
 
   app.post('/api/groups/join-group', secureRoute, (request, response) => {
+    const userId = request.user.id;
+    const groupId = request.body.groupId;
+
     try {
       database.query(
         `
           INSERT INTO "group_memberships"(user_id, group_id)
             VALUES($1, $2)
           RETURNING *;
-        `, [request.user.id, request.body.groupId],
+        `, [userId, groupId],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
@@ -77,6 +82,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
   });
 
   app.get('/api/groups/join-group/search', secureRoute, (request, response) => {
+    const userId = request.user.id;
     const searchValue = request.query.value;
 
     try {
@@ -84,7 +90,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
         `
           SELECT * FROM "group_memberships"
             WHERE "user_id" = $1;
-        `, [request.user.id],
+        `, [userId],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
@@ -135,13 +141,16 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
   });
 
   app.post('/api/groups/create-group', secureRoute, upload.single('file'), (request, response) => {
+    const groupname = request.body.groupname;
+    const filename = request.file.filename;
+
     try {
       database.query(
         `
           INSERT INTO "groups"(group_name, group_picture)
             VALUES($1, $2)
           RETURNING *;
-        `, [request.body.groupname, request.file.filename],
+        `, [groupname, filename],
         (error, results) => {
           if (error) {
             console.log(`ERROR: ${error}`);
