@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -10,7 +10,6 @@ import { Box, Button, styled, Typography } from "@material-ui/core";
 import { setBackButton } from "../../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from "../../../../../../Redux/Actions/ChangeTitle";
 import CustomAjax from '../../../../../../CustomAjax';
-import createTitle from '../../Helper Functions/createTitle';
 import verifyToken from "../../../../Helper Functions/verifyToken";
 
 export default function NoteContents(props) {
@@ -35,7 +34,7 @@ export default function NoteContents(props) {
 
         const ajax = new CustomAjax();
 
-        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, data, true, token);
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${noteID}`, data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -47,7 +46,7 @@ export default function NoteContents(props) {
     const getNoteContents = () => {
         const ajax = new CustomAjax();
 
-        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, token);
+        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${noteID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -79,9 +78,9 @@ export default function NoteContents(props) {
         <NoteContentsPage>
             {noteSavedAlert}
             <CKEditor
-                editor={ClassicEditor}
-                data={contents}
-                onChange={(event, editor) => { setContents(editor.getData()) }}
+                editor={ ClassicEditor }
+                data={ contents }
+                onChange={ (event, editor) => { setContents(editor.getData()) } }
             />
             <SaveButton>
                 <SaveButtonText
