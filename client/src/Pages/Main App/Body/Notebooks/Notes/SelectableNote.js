@@ -18,7 +18,7 @@ export default function Notes(props) {
             title: newTitle
         }
 
-        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${props.noteID}`, data, true, token);
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${props.noteID}`, data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -27,7 +27,7 @@ export default function Notes(props) {
     }
 
     const deleteNote = () => {
-        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${props.noteID}`, token);
+        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${props.noteID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -37,7 +37,7 @@ export default function Notes(props) {
 
     return (
         <SelectableNoteBody>
-            <CustomLink to={{ pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: { noteID: props.noteID } }}>
+            <CustomLink to={{ pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: { noteID: props.noteID, notebookID: props.notebookID } }}>
                 <Note button>
                     <DateText>
                         {props.dateEdited}
