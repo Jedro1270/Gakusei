@@ -26,7 +26,7 @@ export default function Notes(props) {
 
     const token = useSelector((state) => { return state.tokenState });
     const currentGroup = useSelector((state) => { return state.currentGroupState });
-    
+
     const notebookID = location.state.notebookID;
 
     useEffect(() => {
@@ -53,7 +53,7 @@ export default function Notes(props) {
         });
     }
 
-    const loadNotes = () => {
+    const loadNotes = (changesMade) => {
         const ajax = new CustomAjax();
 
         ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, token);
@@ -68,7 +68,7 @@ export default function Notes(props) {
                 return false;
             });
 
-            if (notes.length < sameNotebookNotes.length) {
+            if (notes.length < sameNotebookNotes.length || changesMade) {
                 setNotes(sameNotebookNotes);
             }
         });
@@ -80,15 +80,16 @@ export default function Notes(props) {
 
     const displayNotes = () => {
         return notes.map((note) => {
+
             return <SelectableNote
                 key={note.note_id}
                 notebookTitle={notebookTitle}
                 notebookId={notebookID}
                 dateEdited={note.date_edited}
                 noteTitle={note.note_title}
-                contents={note.note_contents}
                 noteURL={createURL(note.note_title)}
                 noteID={note.note_id}
+                loadNotes={loadNotes}
             />
         });
     }
