@@ -38,7 +38,7 @@ export default function SelectableNotebook(props) {
     return (
 
         <SelectableNotebookBody>
-            <CustomLink to={{ pathname: `/api/notebooks/${props.notebookURL}`, state: { notebookID: props.notebookID } }}>
+            <CustomLink to={{ pathname: `/api/notebooks/${props.notebookURL}`, state: { notebookID: props.notebookID, notebookTitle: props.title } }}>
                 <Notebook button>
                     <NotebookTitle>
                         {props.title}
