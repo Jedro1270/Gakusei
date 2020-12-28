@@ -120,8 +120,16 @@ export default function notebooksRoutes(app, secureRoute, database) {
         try {
             database.query(
                 `
-                SELECT * FROM "notes"
-                    WHERE "notebook_id" = $1;
+                SELECT 
+                    "note_title",
+                    "note_content",
+                    "notebook_id",
+                    "note_id",
+                    TO_CHAR(
+                    "date_edited", 'MON-DD-YYYY HH12:MIPM'
+                    ) AS date_edited
+                FROM "notes"
+                WHERE "notebook_id" = $1;
                 `, [notebookId],
                 (error, results) => {
                     if (error) {
