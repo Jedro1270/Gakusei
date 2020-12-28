@@ -13,9 +13,7 @@ import createURL from '../Helper Functions/createURL';
 import createTitle from '../Helper Functions/createTitle';
 import verifyToken from "../../../Helper Functions/verifyToken";
 
-export default function Notes(props) {
-
-    const { notebookTitle } = useParams();
+export default function Notes() {
 
     const [newNoteName, setNewNoteName] = useState('');
     const [notes, setNotes] = useState([]);
@@ -28,6 +26,7 @@ export default function Notes(props) {
     const currentGroup = useSelector((state) => { return state.currentGroupState });
 
     const notebookID = location.state.notebookID;
+    const notebookTitle = location.state.notebookTitle;
 
     useEffect(() => {
         verifyToken(token, history);
@@ -94,7 +93,7 @@ export default function Notes(props) {
         });
     }
 
-    dispatch(changeTitle(createTitle(notebookTitle))); // Change to original title
+    dispatch(changeTitle(notebookTitle));
     dispatch(setBackButton());
 
     return (
