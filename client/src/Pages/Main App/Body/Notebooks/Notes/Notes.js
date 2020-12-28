@@ -73,10 +73,6 @@ export default function Notes() {
         });
     }
 
-    // const parsePostgresDate = (postgresDate) => {
-    //     return (new Date)
-    // }
-
     const displayNotes = () => {
         return notes.map((note) => {
 
@@ -93,7 +89,7 @@ export default function Notes() {
                 noteTitle={ noteTitle }
                 noteURL={ noteURL }
                 noteID={ noteID }
-                loadNotes={loadNotes}
+                loadNotes={ loadNotes }
             />
         });
     }
