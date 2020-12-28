@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Drawer, IconButton, styled } from '@material-ui/core';
+import { AppBar, Button, Drawer, IconButton, styled, Typography } from '@material-ui/core';
 import { Menu, ArrowBack } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import NavigationMenu from './NavigationMenu/NavigationMenu';
 
 export default function Header(props) {
 
-    const [open, setOpen] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const history = useHistory();
 
     const headerNavigation = useSelector((state) => { return state.headerNavigation })
@@ -18,7 +18,7 @@ export default function Header(props) {
     function navigationType() {
         if (headerNavigation === 'DRAWER') {
             return (
-                <IconButton onClick={() => { setOpen(true) }}>
+                <IconButton onClick={() => { setOpenDrawer(true) }}>
                     <MenuButton />
                 </IconButton>
             );
@@ -38,12 +38,14 @@ export default function Header(props) {
 
             <Drawer
                 anchor='left'
-                open={open}
-                onClose={() => { setOpen(false) }}
+                open={openDrawer}
+                onClose={() => { setOpenDrawer(false) }}
             >
                 <NavigationMenu />
             </Drawer>
+
             <Title />
+
         </TitleBar>
     );
 }
