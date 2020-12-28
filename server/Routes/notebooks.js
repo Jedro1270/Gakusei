@@ -237,7 +237,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
     });
 
     // Update Note Contents
-    app.put('/api/notebooks/:groupId/:notebookId/:noteId', secureRoute, (request, response) => {
+    app.put('/api/notebooks/:groupId/:notebookId/:noteId/contents', secureRoute, (request, response) => {
         const noteId = request.params.noteId;
         const contents = request.body.contents;
         const date = new Date().toLocaleString();

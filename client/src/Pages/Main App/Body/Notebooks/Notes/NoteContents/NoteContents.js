@@ -23,6 +23,7 @@ export default function NoteContents(props) {
     const history = useHistory();
 
     const noteID = location.state.noteID;
+    const notebookID = location.state.notebookID;
 
     const token = useSelector((state) => { return state.tokenState });
     const currentGroup = useSelector((state) => { return state.currentGroupState});
@@ -34,7 +35,7 @@ export default function NoteContents(props) {
 
         const ajax = new CustomAjax();
 
-        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${noteID}`, data, true, token);
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}/${noteID}/contents`, data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
@@ -46,12 +47,12 @@ export default function NoteContents(props) {
     const getNoteContents = () => {
         const ajax = new CustomAjax();
 
-        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${noteID}`, token);
+        ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}/${noteID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
             const currentNoteContents = response.note.note_content;
-            const currentNoteTitle = response.note.note_title
+            const currentNoteTitle = response.note.note_title;
 
             if (contents.length < currentNoteContents.length || title.length < currentNoteTitle.length) {
                 setContents(currentNoteContents);
