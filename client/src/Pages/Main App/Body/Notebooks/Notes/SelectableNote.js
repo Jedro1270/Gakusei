@@ -1,31 +1,75 @@
-import { ListItem, Typography, styled } from "@material-ui/core";
+import { ListItem, Typography, styled, Box } from "@material-ui/core";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import CustomAjax from "../../../../../CustomAjax";
+import ActionButtons from "../ActionButtons";
 
 export default function Notes(props) {
 
+    const currentGroup = useSelector((state) => { return state.currentGroupState });
+    const token = useSelector((state) => { return state.tokenState });
+    const ajax = new CustomAjax();
+
+    const [newTitle, setNewTitle] = useState('');
+
+    const renameNote = () => {
+        const data = {
+            title: newTitle
+        }
+
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${props.noteID}`, data, true, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            props.loadNotes(true);
+        });
+    }
+
+    const deleteNote = () => {
+        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${props.noteID}`, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            props.loadNotes(true);
+        });
+    }
+
     return (
+        <SelectableNoteBody>
+            <CustomLink to={{ pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: { noteID: props.noteID } }}>
+                <Note button>
+                    <DateText>
+                        {props.dateEdited}
+                    </DateText>
 
-        <CustomLink to={{ pathname: `/api/notebooks/${props.notebookTitle}/${props.noteURL}`, state: { noteID: props.noteID } }}>
-            <Note button>
-                <DateText>
-                    {props.dateEdited}
-                </DateText>
+                    <NoteTitle>
+                        {props.noteTitle}
+                    </NoteTitle>
 
-                <NoteTitle>
-                    {props.noteTitle}
-                </NoteTitle>
+                </Note>
+            </CustomLink>
 
-                <NotePreview noWrap>
-                    {props.contents}
-                </NotePreview>
-            </Note>
-        </CustomLink>
+            <ActionButtons 
+                setNewTitle={ setNewTitle }
+                rename={ renameNote }
+                delete={ deleteNote }
+                label={ 'Note' }
+                selectedTitle={ props.noteTitle }
+            />
+        </SelectableNoteBody>
     );
 }
 
+const SelectableNoteBody = styled(Box)({
+    display: 'flex',
+    flexDirection: 'row'
+});
+
 const CustomLink = styled(Link)({
     textDecoration: 'none',
-    color: 'white'
+    color: 'white',
+    flex: '3'
 });
 
 const Note = styled(ListItem)({
@@ -47,9 +91,4 @@ const NoteTitle = styled(Typography)({
 
 const DateText = styled(Typography)({
     fontSize: '15px'
-});
-
-const NotePreview = styled(Typography)({
-    fontSize: '20px',
-    width: '80%'
 });
