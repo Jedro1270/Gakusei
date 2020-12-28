@@ -31,14 +31,14 @@ export default function Notebooks() {
         loadNotebooks();
     }, [notebooks]);
 
-    const loadNotebooks = () => {
+    const loadNotebooks = (changesMade) => {
         const ajax = new CustomAjax();
 
         ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
-            if (notebooks.length < response.notebooks.length) {
+            if (notebooks.length < response.notebooks.length || changesMade) {
                 setNotebooks(response.notebooks);
             }
         });
@@ -51,10 +51,11 @@ export default function Notebooks() {
             const notebookID = notebook.notebook_id;
 
             return <SelectableNotebook
-                key={notebookID}
-                title={notebookName}
-                notebookURL={notebookURL}
-                notebookID={notebookID}
+                key={ notebookID }
+                title={ notebookName }
+                notebookURL={ notebookURL }
+                notebookID={ notebookID }
+                loadNotebooks={ loadNotebooks }
             />
         });
     }
@@ -87,7 +88,7 @@ export default function Notebooks() {
         <NotebooksPage>
             <List>
 
-                {displayNotebooks()}
+                { displayNotebooks() }
 
             </List>
 
@@ -102,12 +103,14 @@ export default function Notebooks() {
 
                 <DialogActions>
                     <Button onClick={() => { setOpenDialog(false) }}>
-                        Close
+                        <BoldDialogAction>
+                            Close
+                        </BoldDialogAction>
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNotebookName} label='New Notebook' />
+            <FloatingActionButton handleDialogButtonClick={ handleDialogButtonClick } setNewName={ setNewNotebookName } label='New Notebook' />
         </NotebooksPage>
     );
 }
@@ -124,3 +127,7 @@ const BoldDialogTitle = styled(Typography)({
     textAlign: 'center',
     margin: '20px'
 });
+
+const BoldDialogAction = styled(Typography)({
+    fontWeight: 'bold'
+})
