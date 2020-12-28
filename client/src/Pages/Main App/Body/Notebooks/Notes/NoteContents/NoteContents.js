@@ -15,8 +15,8 @@ import verifyToken from "../../../../Helper Functions/verifyToken";
 
 export default function NoteContents(props) {
 
-    const { noteTitle } = useParams();
     const [contents, setContents] = useState('');
+    const [title, setTitle] = useState('');
     const [noteSaved, setNoteSaved] = useState(false);
 
     const dispatch = useDispatch();
@@ -35,11 +35,12 @@ export default function NoteContents(props) {
 
         const ajax = new CustomAjax();
 
-        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, data, true);
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookId}/${noteID}`, data, true, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
 
             setContents(response.note.note_content);
+            setTitle(response.note.note_title);
         });
     }
 
@@ -51,9 +52,11 @@ export default function NoteContents(props) {
             response = JSON.parse(response);
 
             const currentNoteContents = response.note.note_content;
+            const currentNoteTitle = response.note.note_title
 
-            if (contents.length < currentNoteContents.length) {
+            if (contents.length < currentNoteContents.length || title.length < currentNoteTitle.length) {
                 setContents(currentNoteContents);
+                setTitle(currentNoteTitle);
             }
         });
     }
@@ -63,7 +66,7 @@ export default function NoteContents(props) {
         getNoteContents();
     }, [history, token]);
 
-    dispatch(changeTitle(createTitle(noteTitle)));
+    dispatch(changeTitle(title));
     dispatch(setBackButton());
 
     let noteSavedAlert = null;
