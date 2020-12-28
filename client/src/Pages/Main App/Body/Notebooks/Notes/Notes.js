@@ -80,14 +80,19 @@ export default function Notes() {
     const displayNotes = () => {
         return notes.map((note) => {
 
+            const dateEdited = note.date_edited;
+            const noteTitle = note.note_title;
+            const noteURL = createURL(note.note_title);
+            const noteID = note.note_id;
+
             return <SelectableNote
-                key={note.note_id}
-                notebookTitle={notebookTitle}
-                notebookId={notebookID}
-                dateEdited={note.date_edited}
-                noteTitle={note.note_title}
-                noteURL={createURL(note.note_title)}
-                noteID={note.note_id}
+                key={ note.note_id }
+                notebookTitle={ notebookTitle }
+                notebookID={ notebookID }
+                dateEdited={ dateEdited }
+                noteTitle={ noteTitle }
+                noteURL={ noteURL }
+                noteID={ noteID }
                 loadNotes={loadNotes}
             />
         });
