@@ -41,7 +41,7 @@ export default function Header(props) {
                 open={openDrawer}
                 onClose={() => { setOpenDrawer(false) }}
             >
-                <NavigationMenu />
+                <NavigationMenu openDrawer={openDrawer}/>
             </Drawer>
 
             <Title />
