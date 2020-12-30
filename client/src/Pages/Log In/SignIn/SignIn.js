@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import Title from '../Title';
 import AppLogo from '../AppLogo';
 import SubmitButton from '../SubmitButton';
-import setUser from '../../../Redux/Actions/setUserState';
+import setUser from '../../../Redux/Actions/SetUserState';
 
 export default function SignIn() {
 
