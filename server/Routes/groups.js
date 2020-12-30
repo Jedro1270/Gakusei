@@ -1,5 +1,6 @@
 export default function groupsRoutes(app, secureRoute, upload, database) {
 
+  // Get All Joined Groups
   app.get('/api/groups', secureRoute, (request, response) => {
     const userId = request.user.id
 
@@ -24,6 +25,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  // Leave Group
   app.delete('/api/groups/:groupId', secureRoute, (request, response) => {
     const groupId = request.params.groupId;
     const userId = request.user.id;
@@ -50,6 +52,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  // Join Group
   app.post('/api/groups/join-group', secureRoute, (request, response) => {
     const userId = request.user.id;
     const groupId = request.body.groupId;
@@ -81,6 +84,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  // Search Groups
   app.get('/api/groups/join-group/search', secureRoute, (request, response) => {
     const userId = request.user.id;
     const searchValue = request.query.value;
@@ -140,6 +144,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
     }
   });
 
+  // Create Group
   app.post('/api/groups/create-group', secureRoute, upload.single('file'), (request, response) => {
     const groupname = request.body.groupname;
     const filename = request.file.filename;
