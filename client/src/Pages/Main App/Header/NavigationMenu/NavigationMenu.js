@@ -1,18 +1,70 @@
-import { List, ListItem, Avatar, Typography, styled } from '@material-ui/core';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { List, ListItem, Avatar, Typography, styled, Button } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import CustomAjax from '../../../../CustomAjax';
+import setUser from '../../../../Redux/Actions/SetUserState';
 
 import LevelProgressBar from './LevelProgressBar'
 
-export default function NavigationMenu() {
+export default function NavigationMenu(props) {
 
     const user = useSelector((state) => { return state.userState });
+    const token = useSelector((state) => { return state.tokenState });
+
+    const [file, setFile] = useState(null);
+    const [temporaryFile, setTemporaryFile] = useState(null);
+
+    const dispatch = useDispatch();
+
+    const changeProfilePicture = () => {
+        const formData = new FormData();
+
+        formData.append('file', file);
+
+        const ajax = new CustomAjax();
+
+        ajax.put('http://localhost:2727/api/users', formData, false, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            const updatedUser = {
+                id: response.user.user_id,
+                username: response.user.username,
+                profilePicture: response.user.profile_picture,
+                points: response.user.points,
+                level: response.user.level_id
+            }
+
+            dispatch(setUser(updatedUser));
+        });
+    }
+
+    useEffect(() => {
+        if (!props.openDrawer && file !== null) {
+            changeProfilePicture();
+        }
+    }, [props.openDrawer]);
 
     return (
         <NavigationList>
 
-            <UserAvatar />
+            <UserAvatar 
+                src={temporaryFile !== null ? temporaryFile : `/images/profile-pictures/${user.profilePicture}`}
+            />
+
+            <ChangeProfilePictureButton component='label'>
+                Change Profile Picture
+
+                <input type='file' accept='image/*' hidden onChange={(event) => {
+                    event.preventDefault()
+                    const chosenFile = event.target.files[0]
+
+                    setFile(chosenFile);
+                    setTemporaryFile(URL.createObjectURL(chosenFile));
+                }} />
+            </ChangeProfilePictureButton>
 
             <UsernameDisplay>
                 {user.username}
@@ -93,6 +145,15 @@ const UserAvatar = styled(Avatar)({
     width: '100px',
     height: '100px',
     margin: '30px auto'
+});
+
+const ChangeProfilePictureButton = styled(Button)({
+    margin: '0px 18% 0px 18%',
+    padding: '10px',
+    backgroundColor: 'white',
+    '&:hover': {
+        backgroundColor: 'rgb(191, 191, 191)'
+    },
 });
 
 const UsernameDisplay = styled(Typography)({
