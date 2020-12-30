@@ -12,6 +12,7 @@ import passportStrategy from './passportConfig.js';
 import groupsRoutes from './Routes/groups.js'
 import notebooksRoutes from './Routes/notebooks.js';
 import pomodoroRoutes from './Routes/pomodoro.js';
+import usersRoutes from './Routes/users.js';
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ const pool = new pg.Pool({
 
 const app = express();
 
-const storage = multer.diskStorage({
+const groupImageStorage = multer.diskStorage({
   destination: (request, file, callback) => {
     callback(null, 'client/public/images/group-icons');
   },
@@ -37,8 +38,21 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({
-  storage: storage
+const profilePictureStorage = multer.diskStorage({
+  destination: (request, file, callback) => {
+    callback(null, 'client/public/images/profile-pictures');
+  },
+  filename: (request, file, callback) => {
+    callback(null, Date.now() + file.originalname)
+  }
+});
+
+const uploadGroupImage = multer({
+  storage: groupImageStorage
+});
+
+const uploadProfilePicture = multer({
+  storage: profilePictureStorage
 });
 
 let database;
@@ -162,9 +176,10 @@ pool.connect((error, client) => {
       next();
     });
 
-    groupsRoutes(app, secureRoute, upload, database);
+    groupsRoutes(app, secureRoute, uploadGroupImage, database);
     notebooksRoutes(app, secureRoute, database);
     pomodoroRoutes(app, secureRoute, database);
+    usersRoutes(app, secureRoute, uploadProfilePicture, database);
 
     app.listen(2727, () => {
       console.log('Server started!');
