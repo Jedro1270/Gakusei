@@ -36,12 +36,6 @@ export default function NoteContents(props) {
         const ajax = new CustomAjax();
 
         ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}/${noteID}/contents`, data, true, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            setContents(response.note.note_content);
-            setTitle(response.note.note_title);
-        });
     }
 
     const getNoteContents = () => {
@@ -81,18 +75,11 @@ export default function NoteContents(props) {
             <CKEditor
                 editor={ ClassicEditor }
                 data={ contents }
-                onChange={ (event, editor) => { setContents(editor.getData()) } }
+                onChange={(event, editor) => { 
+                    setContents(editor.getData());
+                    updateNoteContents(editor.getData());
+                }}
             />
-            <SaveButton>
-                <SaveButtonText
-                    onClick={() => {
-                        updateNoteContents(contents);
-                        setNoteSaved(true);
-                    }}
-                >
-                    SAVE
-               </SaveButtonText>
-            </SaveButton>
         </NoteContentsPage>
     );
 }
@@ -103,11 +90,6 @@ const SaveButton = styled(Button)({
         backgroundColor: 'lightgrey'
     },
     margin: '20px',
-});
-
-const SaveButtonText = styled(Typography)({
-    fontWeight: 'bold',
-    fontSize: '25px'
 });
 
 const NoteContentsPage = styled(Box)({
