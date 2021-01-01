@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Typography, styled, Button, Dialog, List, ListItem, Box } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import setCurrentGroup from '../../../../Redux/Actions/setCurrentGroup';
+import setCurrentGroup from '../../../../Redux/Actions/SetCurrentGroup';
 import ConditionalWrapper from '../../../ConditionalWrapper';
 import CustomAjax from '../../../../CustomAjax';
 
@@ -83,6 +83,7 @@ export default function SelectableGroup(props) {
                     <ListItem button onClick={() => {
                         leaveGroup();
                         setOpenDialog(false);
+                        dispatch(setCurrentGroup({}));
                     }}>
                         <LeaveGroupText>
                             Leave Group
