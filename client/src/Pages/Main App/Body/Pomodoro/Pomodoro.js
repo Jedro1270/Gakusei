@@ -1,19 +1,42 @@
-import { Avatar, Box, Typography, Button, styled } from '@material-ui/core';
+import { Box, Typography, Button, styled } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import CustomAjax from '../../../../CustomAjax';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import verifyToken from '../../Helper Functions/verifyToken';
 
 export default function Pomodoro() {
 
+    const ajax = new CustomAjax();
+
     const dispatch = useDispatch();
 
     const [secondsLeft, setSecondsLeft] = useState(1500);
     const [timerStart, setTimerStart] = useState(false);
+    const [pomodorosCompleted, setPomodorosCompleted] = useState(0);
+    const [restPeriod, setRestPeriod] = useState(false);
 
     const token = useSelector((state) => { return state.tokenState });
+
     const history = useHistory();
+
+    const recordPomodoro = () => {
+        const data = {
+            pomodoroAmount: 1
+        }
+
+        ajax.post(`http://localhost:2727/api/pomodoro`, data, true, token);
+    }
+
+    const getPomodorosCompleted = () => {
+        ajax.get(`http://localhost:2727/api/pomodoro`, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setPomodorosCompleted(response.pomodoros.length);
+        });
+    }
 
     dispatch(changeTitle('Pomodoro'));
     verifyToken(token, history);
@@ -24,11 +47,32 @@ export default function Pomodoro() {
                 setSecondsLeft(secondsLeft - 1);
             }, 1000);
         } else if (!timerStart) {
-            setSecondsLeft(1500)
+            if (restPeriod) {
+                setSecondsLeft(300);
+            } else {
+                setSecondsLeft(1500);
+            }
         } else if (secondsLeft <= 0) {
-            // add pomodoro
+            if (!restPeriod) {
+                recordPomodoro();
+                setPomodorosCompleted(pomodorosCompleted + 1);
+            }
+
+            setRestPeriod(!restPeriod);
         }
     }, [secondsLeft, timerStart, history, token]);
+
+    useEffect(() => {
+        getPomodorosCompleted();
+    }, []);
+
+    const displayTimerType = () => {
+        if (restPeriod) {
+            return <TimerType>Enjoy Your Break!</TimerType>
+        } else {
+            return <TimerType>Time for Work!</TimerType>
+        }
+    }
 
     const displayTimer = () => {
         const minutes = Math.floor(secondsLeft / 60);
@@ -59,33 +103,12 @@ export default function Pomodoro() {
 
     return (
         <PomodoroBody>
-            <PomodoroMembersSection>
-
-                <Member>
-                    <OfflineStatusIndicator />
-                    Groupmate Name
-                </Member>
-
-                <Member>
-                    <OnlineStatusIndicator />
-                    Groupmate Name
-                </Member>
-
-                <Member>
-                    <OnlineStatusIndicator />
-                    Groupmate Name
-                </Member>
-
-                <Member>
-                    <OnlineStatusIndicator />
-                    Groupmate Name
-                </Member>
-
-            </PomodoroMembersSection>
 
             <PomodoroCounter>
-                Pomodoros Finished: 5
+                Pomodoros Completed: {pomodorosCompleted}
             </PomodoroCounter>
+
+            {displayTimerType()}
 
             {displayTimer()}
 
@@ -99,40 +122,16 @@ const PomodoroBody = styled(Box)({
     color: 'white'
 });
 
-const PomodoroMembersSection = styled(Box)({
-    padding: '50px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-});
-
-const Member = styled(Box)({
-    margin: '5px',
-    display: 'flex',
-    flexDirection: 'row',
-    fontSize: '20px',
-    fontWeight: 'bold',
-});
-
-const OfflineStatusIndicator = styled(Avatar)({
-    height: '25px',
-    width: '25px',
-    marginRight: '10px',
-    backgroundColor: 'red',
-    color: 'red'
-});
-
-const OnlineStatusIndicator = styled(Avatar)({
-    height: '25px',
-    width: '25px',
-    marginRight: '10px',
-    backgroundColor: 'rgb(51, 204, 51)',
-    color: 'rgb(51, 204, 51)'
-});
-
 const PomodoroCounter = styled(Typography)({
-    fontSize: '30px',
+    marginTop: '10%',
+    fontSize: '25px',
     fontWeight: 'bold'
+});
+
+const TimerType = styled(Typography)({
+    fontWeight: 'bold',
+    margin: '30px',
+    fontSize: '40px'
 });
 
 const PomodoroTimer = styled(Typography)({
