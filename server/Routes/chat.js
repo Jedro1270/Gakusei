@@ -33,6 +33,7 @@ export default function chatRoutes(app, secureRoute, database) {
       response.json({ message: responseMessage });
     });
 
+    // Get Previous Messages of Group
     app.get('/api/chat/:groupId', secureRoute, (request, response) => {
       const groupId = request.params.groupId;
       const limit = request.query.limit;
