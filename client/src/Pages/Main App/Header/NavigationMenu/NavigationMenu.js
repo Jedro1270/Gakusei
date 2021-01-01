@@ -1,10 +1,12 @@
 import { List, ListItem, Avatar, Typography, styled, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import CustomAjax from '../../../../CustomAjax';
 import setUser from '../../../../Redux/Actions/SetUserState';
+import setToken from '../../../../Redux/Actions/SetTokenState';
+import setCurrentGroup from '../../../../Redux/Actions/SetCurrentGroup';
 
 import LevelProgressBar from './LevelProgressBar'
 
@@ -17,6 +19,7 @@ export default function NavigationMenu(props) {
     const [temporaryFile, setTemporaryFile] = useState(null);
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const changeProfilePicture = () => {
         const formData = new FormData();
@@ -115,6 +118,15 @@ export default function NavigationMenu(props) {
                     </NavigationTitle>
                 </NavigationContainer>
             </CustomLink>
+
+            <LogoutButton onClick={() => {
+                dispatch(setToken({}));
+                dispatch(setUser({}));
+                dispatch(setCurrentGroup({}));
+                history.push('/')
+            }}>
+                Log Out
+            </LogoutButton>
         </NavigationList>
     );
 }
@@ -148,17 +160,18 @@ const UserAvatar = styled(Avatar)({
 });
 
 const ChangeProfilePictureButton = styled(Button)({
-    margin: '0px 18% 0px 18%',
+    margin: '0px 19%',
     padding: '10px',
     backgroundColor: 'white',
     '&:hover': {
         backgroundColor: 'rgb(191, 191, 191)'
     },
+    borderRadius: '10px'
 });
 
 const UsernameDisplay = styled(Typography)({
     textAlign: 'center',
-    margin: '10px',
+    margin: '20px',
     fontSize: '30px',
     color: 'white'
 });
@@ -167,5 +180,10 @@ const LevelDisplay = styled(Typography)({
     textAlign: 'center',
     fontSize: '35px',
     color: 'white',
+    fontWeight: 'bold'
+});
+
+const LogoutButton = styled(ChangeProfilePictureButton)({
+    margin: '0px 33%',
     fontWeight: 'bold'
 });
