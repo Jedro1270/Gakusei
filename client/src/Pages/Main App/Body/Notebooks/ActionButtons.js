@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Button, styled, Box } from '@material-ui/core';
 
-import DeleteDialog from './Dialogs/DeleteDialog';
-import RenameDialog from './Dialogs/RenameDialog';
+import DeleteDialog from './Notebook Dialogs/DeleteDialog';
+import RenameDialog from './Notebook Dialogs/RenameDialog';
 
 export default function ActionButtons(props) {
 
