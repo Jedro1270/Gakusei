@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import CustomAjax from '../../../../CustomAjax';
 import verifyToken from '../../Helper Functions/verifyToken';
+import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
 
 
 export default function Chat() {
@@ -15,7 +16,6 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     const [composedMessage, setComposedMessage] = useState('');
     const [messagesLimit, setMessagesLimit] = useState(20);
-    const [openDialog, setOpenDialog] = useState(false);
 
     const token = useSelector((state) => { return state.tokenState });
     const currentGroup = useSelector((state) => { return state.currentGroupState });
@@ -73,35 +73,14 @@ export default function Chat() {
             getMessages();
         }, 500);
 
-        if (currentGroup.id == null) {
-            setOpenDialog(true);
-        }
-
         return () => clearInterval(interval)
     }, [messagesLimit]);
 
     return (
         <ChatPageBody>
-            <Dialog open={openDialog}>
-                <BoldDialogTitle>
-                    No Group Selected
-                </BoldDialogTitle>
-
-                <DialogContent>
-                    Please select a group fom the Groups Page before accessing the Chat.
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={() => { 
-                        setOpenDialog(false);
-                        history.push('/api/groups');
-                    }}>
-                        <BoldDialogAction>
-                            Close
-                        </BoldDialogAction>
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <NoGroupSelectedDialog 
+                page='Chat'
+            />
 
             <LoadMoreButton onClick={() => {
                 setMessagesLimit(messagesLimit + 20);
@@ -185,15 +164,4 @@ const InputArea = styled(Box)({ // Make this scrollable
 
 const LoadMoreButton = styled(Button)({
     color: 'white'
-});
-
-const BoldDialogAction = styled(Typography)({
-    fontWeight: 'bold'
-});
-
-const BoldDialogTitle = styled(Typography)({
-    fontSize: '30px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: '20px'
 });

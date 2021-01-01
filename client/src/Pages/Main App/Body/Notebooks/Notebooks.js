@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { List, Box, styled, Dialog, DialogContent, Typography, DialogActions, Button } from '@material-ui/core';
+import { List, Box, styled } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import CustomAjax from '../../../../CustomAjax';
 import SelectableNotebook from './SelectableNotebook';
@@ -9,7 +10,7 @@ import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import FloatingActionButton from './FloatingActionButton';
 import createURL from './Helper Functions/createURL';
 import verifyToken from '../../Helper Functions/verifyToken';
-import { useHistory } from 'react-router-dom';
+import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
 
 export default function Notebooks() {
 
@@ -22,7 +23,6 @@ export default function Notebooks() {
 
     const [notebooks, setNotebooks] = useState([]);
     const [newNotebookName, setNewNotebookName] = useState('');
-    const [openDialog, setOpenDialog] = useState(false);
 
     dispatch(changeTitle('Notebooks'));
     dispatch(setDrawer());
@@ -63,20 +63,16 @@ export default function Notebooks() {
     const createNotebook = (notebookName) => {
         const ajax = new CustomAjax();
 
-        if (currentGroup.id == undefined) {
-            setOpenDialog(true);
-        } else {
-            const data = {
-                notebookName: notebookName
-            }
-
-            ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
-            ajax.stateListener((response) => {
-                response = JSON.parse(response);
-
-                setNotebooks(response.notebooks);
-            });
+        const data = {
+            notebookName: notebookName
         }
+
+        ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setNotebooks(response.notebooks);
+        });
     }
 
     const handleDialogButtonClick = () => {
@@ -86,29 +82,15 @@ export default function Notebooks() {
 
     return (
         <NotebooksPage>
+            <NoGroupSelectedDialog
+                page='Notebooks'
+            />
+
             <List>
 
                 { displayNotebooks() }
 
             </List>
-
-            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }}>
-                <BoldDialogTitle>
-                    No Group Selected
-                </BoldDialogTitle>
-
-                <DialogContent>
-                    Please select a group fom the Groups Page before creating a notebook.
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={() => { setOpenDialog(false) }}>
-                        <BoldDialogAction>
-                            Close
-                        </BoldDialogAction>
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
             <FloatingActionButton handleDialogButtonClick={ handleDialogButtonClick } setNewName={ setNewNotebookName } label='New Notebook' />
         </NotebooksPage>
@@ -120,14 +102,3 @@ const NotebooksPage = styled(Box)({
     flexDirection: 'column',
     backgroundColor: 'black'
 });
-
-const BoldDialogTitle = styled(Typography)({
-    fontSize: '30px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: '20px'
-});
-
-const BoldDialogAction = styled(Typography)({
-    fontWeight: 'bold'
-})
