@@ -1,5 +1,5 @@
-import { Box, styled, Typography, Button, TextField, Icon, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
+import { Box, styled, Button, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatFeed } from 'react-chat-ui';
 import SendIcon from '@material-ui/icons/Send';
