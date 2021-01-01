@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import verifyToken from '../../Helper Functions/verifyToken';
 
-export default function Pomodoro(props) {
+export default function Pomodoro() {
 
     const dispatch = useDispatch();
 
@@ -16,9 +16,9 @@ export default function Pomodoro(props) {
     const history = useHistory();
 
     dispatch(changeTitle('Pomodoro'));
+    verifyToken(token, history);
 
     useEffect(() => {
-        verifyToken(token, history);
         if (secondsLeft > 0 && timerStart) {
             setTimeout(() => {
                 setSecondsLeft(secondsLeft - 1);
