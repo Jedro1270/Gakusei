@@ -13,6 +13,7 @@ import groupsRoutes from './Routes/groups.js'
 import notebooksRoutes from './Routes/notebooks.js';
 import pomodoroRoutes from './Routes/pomodoro.js';
 import usersRoutes from './Routes/users.js';
+import chatRoutes from './Routes/chat.js';
 
 dotenv.config();
 
@@ -180,6 +181,7 @@ pool.connect((error, client) => {
     notebooksRoutes(app, secureRoute, database);
     pomodoroRoutes(app, secureRoute, database);
     usersRoutes(app, secureRoute, uploadProfilePicture, database);
+    chatRoutes(app, secureRoute, database);
 
     app.listen(2727, () => {
       console.log('Server started!');
