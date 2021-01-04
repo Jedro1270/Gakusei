@@ -11,14 +11,17 @@ export default function SelectableBadge(props) {
         <SelectableBadgeBody>
             <Button
                 onClick={() => {
-                    history.push(`/api/rankings/badges/${createURL(props.badgeName)}`)
+                    history.push({
+                        pathname: `/api/rankings/badges/${createURL(props.badge.badge_name)}`,
+                        state: { badge: props.badge }
+                    });
                 }}
             >
-                <BadgeAvatar src={`/images/badge-icons/${props.badgeIcon}`}/>
+                <BadgeAvatar src={`/images/badge-icons/${props.badge.badge_icon}`}/>
             </Button>
 
             <BadgeTitle>
-                {props.badgeName}
+                {props.badge.badge_name}
             </BadgeTitle>
         </SelectableBadgeBody>
     );
