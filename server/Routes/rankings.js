@@ -7,13 +7,18 @@ export default function rankingsRoutes(app, secureRoute, database) {
         try {
             database.query(
                 `
-                    SELECT * FROM "users"
+                    SELECT 
+                        DISTINCT ON (username) username,
+                        level_id,
+                        points 
+                    FROM "users"
                         INNER JOIN "level_achievements"
                             USING (user_id)
                         INNER JOIN "group_memberships"
                             USING (user_id)
                     WHERE "group_id" = $1
                         ORDER BY
+                            "username" ASC,
                             "points" DESC;
                 `, [groupId],
                 (error, results) => {
