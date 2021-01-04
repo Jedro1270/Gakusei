@@ -146,6 +146,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
 
   // Create Group
   app.post('/api/groups/create-group', secureRoute, upload.single('file'), (request, response) => {
+    const userId = request.user.id;
     const groupname = request.body.groupname;
     const filename = request.file.filename;
 
@@ -174,7 +175,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
                         )
                       )
                     RETURNING *;
-                  `, [request.user.id, request.body.groupname],
+                  `, [userId, groupname],
                   (error, results) => {
                     if (error) {
                       console.log(`ERROR: ${error}`);
