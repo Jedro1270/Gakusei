@@ -8,7 +8,7 @@ import SelectableNotebook from './SelectableNotebook';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import FloatingActionButton from './FloatingActionButton';
-import createURL from './Helper Functions/createURL';
+import createURL from '../../Helper Functions/createURL';
 import verifyToken from '../../Helper Functions/verifyToken';
 import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
 
@@ -16,7 +16,7 @@ export default function Notebooks() {
 
     const dispatch = useDispatch();
     const token = useSelector((state) => { return state.tokenState });
-    const currentGroup = useSelector((state) => { return state.currentGroupState })
+    const currentGroup = useSelector((state) => { return state.currentGroupState });
     const history = useHistory();
 
     verifyToken(token, history);
