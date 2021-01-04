@@ -12,8 +12,12 @@ export default function passportStrategy(passport, database) {
             database.query(
                 `
                     SELECT * FROM "users"
-                        INNER JOIN "level_achievements" USING (user_id)
-                    WHERE "username" = $1;
+                        INNER JOIN "level_achievements" 
+                            USING (user_id)
+                        INNER JOIN "levels"
+                            USING (level_id)
+                    WHERE "username" = $1
+                    ORDER BY "level_id" DESC;
                 `, [username],
                 (error, results) => {
                     if (error) {
