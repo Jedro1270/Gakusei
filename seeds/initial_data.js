@@ -24,7 +24,6 @@ exports.seed = function(knex) {
           ('MILESTONE', 'scholar-badge.png', 'Scholar', 'Create your First Note', 50),
           ('MILESTONE', 'philosopher-badge.png', 'Philosopher', 'Create 5 Notes', 200),
           ('MILESTONE', 'sage-badge.png', 'Sage', 'Create 15 Notes', 500),
-          ('SPECIAL', 'sensei-badge.gif', 'Sensei', 'Create a Group', 200),
           ('SPECIAL', 'soke-badge.png', 'Soke', 'Become the Highest Ranking Member of your Group', 400);
     `
   );
