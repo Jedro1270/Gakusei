@@ -6,6 +6,7 @@ import CustomAjax from '../../../../../CustomAjax';
 import { setBackButton } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import LevelProgressBar from '../../../Header/NavigationMenu/LevelProgressBar';
+import solveLevelUpRatio from '../../../Helper Functions/solveLevelUpRatio';
 import verifyToken from '../../../Helper Functions/verifyToken';
 import SelectableBadge from './SelectableBadge';
 
@@ -41,13 +42,9 @@ export default function Badges(props) {
         });
 
         return milestoneBadges.map((milestoneBadge) => {
-            const badgeName = milestoneBadge.badge_name;
-            const badgeIcon = milestoneBadge.badge_icon;
-
             return (
                 <SelectableBadge 
-                    badgeName={badgeName}
-                    badgeIcon={badgeIcon}
+                    badge={milestoneBadge}
                 />
             );
         });
@@ -59,13 +56,9 @@ export default function Badges(props) {
         });
 
         return specialBadges.map((specialBadge) => {
-            const badgeName = specialBadge.badge_name;
-            const badgeIcon = specialBadge.badge_icon;
-
             return (
                 <SelectableBadge 
-                    badgeName={badgeName}
-                    badgeIcon={badgeIcon}
+                    badge={specialBadge}
                 />
             );
         });
@@ -79,7 +72,7 @@ export default function Badges(props) {
             <LevelDisplay>
                 Level {user.level} ({user.points} Pts)
             </LevelDisplay>
-            <LevelProgressBar value={20}/>
+            <LevelProgressBar value={solveLevelUpRatio(user.levelPointsMin, user.levelPointsMax, user.points)}/>
 
             <BadgesSection>
                 <BadgeSectionTitle>
@@ -104,7 +97,8 @@ export default function Badges(props) {
 
 const BadgesPageBody = styled(Box)({
     backgroundColor: 'black',
-    height: '75%'
+    display: 'flex',
+    flexDirection: 'column'
 });
 
 const LevelDisplay = styled(Typography)({
