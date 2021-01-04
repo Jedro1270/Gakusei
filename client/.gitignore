@@ -10,7 +10,8 @@
 
 # production
 /build
-/public/images
+/public/images/group-icons
+/public/images/profile-pictures
 
 # misc
 .DS_Store
