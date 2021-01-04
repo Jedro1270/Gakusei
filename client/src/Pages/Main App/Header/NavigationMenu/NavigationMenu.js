@@ -179,7 +179,7 @@ const UserAvatar = styled(Avatar)({
 });
 
 const ChangeProfilePictureButton = styled(Button)({
-    margin: '0px 19%',
+    margin: '0px auto',
     padding: '10px',
     backgroundColor: 'white',
     '&:hover': {
@@ -203,6 +203,6 @@ const LevelDisplay = styled(Typography)({
 });
 
 const LogoutButton = styled(ChangeProfilePictureButton)({
-    margin: '0px 33%',
+    margin: '20px',
     fontWeight: 'bold'
 });
