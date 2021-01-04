@@ -9,6 +9,7 @@ import setToken from '../../../../Redux/Actions/SetTokenState';
 import setCurrentGroup from '../../../../Redux/Actions/SetCurrentGroup';
 
 import LevelProgressBar from './LevelProgressBar'
+import solveLevelUpRatio from '../../Helper Functions/solveLevelUpRatio';
 
 export default function NavigationMenu(props) {
 
@@ -78,8 +79,7 @@ export default function NavigationMenu(props) {
                 Level {user.level} ({user.points} Pts)
             </LevelDisplay>
 
-            <LevelProgressBar value={user.points} /> 
-            {/* Fix percentage of progress bar above */}
+            <LevelProgressBar value={solveLevelUpRatio(user.levelPointsMin, user.levelPointsMax, user.points)} /> 
 
             <CustomLink to='/api/groups' >
                 <NavigationContainer 
