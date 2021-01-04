@@ -13,6 +13,7 @@ import NoteContents from './Pages/Main App/Body/Notebooks/Notes/Note Contents/No
 import SignUp from './Pages/Log In/SignUp/SignUp';
 import SignIn from './Pages/Log In/SignIn/SignIn';
 import JoinGroup from './Pages/Main App/Body/Groups/Join Group/JoinGroup';
+import CreateGroup from './Pages/Main App/Body/Groups/Create Group/CreateGroup';
 
 export default function App() {
 
