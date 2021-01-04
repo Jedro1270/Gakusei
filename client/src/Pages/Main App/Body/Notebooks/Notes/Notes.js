@@ -9,8 +9,7 @@ import { setBackButton } from "../../../../../Redux/Actions/ChangeHeaderNavigati
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import FloatingActionButton from '../FloatingActionButton';
 import SelectableNote from './SelectableNote';
-import createURL from '../Helper Functions/createURL';
-import createTitle from '../Helper Functions/createTitle';
+import createURL from '../../../Helper Functions/createURL';
 import verifyToken from "../../../Helper Functions/verifyToken";
 
 export default function Notes() {
