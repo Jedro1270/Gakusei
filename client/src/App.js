@@ -15,6 +15,7 @@ import SignIn from './Pages/Log In/SignIn/SignIn';
 import JoinGroup from './Pages/Main App/Body/Groups/Join Group/JoinGroup';
 import CreateGroup from './Pages/Main App/Body/Groups/Create Group/CreateGroup';
 import Badges from './Pages/Main App/Body/Rankings/Badges/Badges';
+import BadgeDetails from './Pages/Main App/Body/Rankings/Badges/Badge Details/BadgeDetails';
 
 export default function App() {
 
@@ -109,6 +110,14 @@ export default function App() {
                 <div className='App-body'>
                   <Header/>
                   <Badges/>
+                </div>
+                
+              )} 
+            />
+            <Route exact path='/api/rankings/badges/:badgeName' render={() => (
+                <div className='App-body'>
+                  <Header/>
+                  <BadgeDetails/>
                 </div>
                 
               )} 
