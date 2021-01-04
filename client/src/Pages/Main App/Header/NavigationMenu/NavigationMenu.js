@@ -14,6 +14,7 @@ export default function NavigationMenu(props) {
 
     const user = useSelector((state) => { return state.userState });
     const token = useSelector((state) => { return state.tokenState });
+    const header = useSelector((state) => { return state.headerTitle });
 
     const [file, setFile] = useState(null);
     const [temporaryFile, setTemporaryFile] = useState(null);
@@ -77,10 +78,14 @@ export default function NavigationMenu(props) {
                 Level {user.level} ({user.points} Pts)
             </LevelDisplay>
 
-            <LevelProgressBar value={user.points} />
+            <LevelProgressBar value={user.points} /> 
+            {/* Fix percentage of progress bar above */}
 
             <CustomLink to='/api/groups' >
-                <NavigationContainer button>
+                <NavigationContainer 
+                    button
+                    selected={header === 'Groups'}
+                >
                     <NavigationTitle>
                         Groups
                     </NavigationTitle>
@@ -88,7 +93,10 @@ export default function NavigationMenu(props) {
             </CustomLink>
 
             <CustomLink to='/api/pomodoro' >
-                <NavigationContainer button>
+                <NavigationContainer 
+                    button
+                    selected={header === 'Pomodoro'}
+                >
                     <NavigationTitle>
                         Pomodoro
                     </NavigationTitle>
@@ -96,7 +104,10 @@ export default function NavigationMenu(props) {
             </CustomLink>
 
             <CustomLink to='/api/notebooks' >
-                <NavigationContainer button>
+                <NavigationContainer 
+                    button
+                    selected={header === 'Notebooks'}
+                >
                     <NavigationTitle>
                         Notebooks
                     </NavigationTitle>
@@ -104,7 +115,10 @@ export default function NavigationMenu(props) {
             </CustomLink>
 
             <CustomLink to='/api/chat' >
-                <NavigationContainer button>
+                <NavigationContainer 
+                    button
+                    selected={header === 'Chat'}
+                >
                     <NavigationTitle>
                         Chat
                     </NavigationTitle>
@@ -112,7 +126,10 @@ export default function NavigationMenu(props) {
             </CustomLink>
 
             <CustomLink to='/api/rankings' >
-                <NavigationContainer button>
+                <NavigationContainer 
+                    button
+                    selected={header === 'Rankings and Badges'}
+                >
                     <NavigationTitle>
                         Rankings and Badges
                     </NavigationTitle>
@@ -133,11 +150,13 @@ export default function NavigationMenu(props) {
 
 const NavigationContainer = styled(ListItem)({
     width: '100%',
-    height: '10%',
+    height: '100%',
 });
 
 const NavigationList = styled(List)({
-    backgroundColor: 'rgb(121, 121, 121)',
+    backgroundColor: 'rgb(153, 153, 153)',
+    display: 'flex',
+    flexDirection: 'column',
     height: '100%',
 });
 
