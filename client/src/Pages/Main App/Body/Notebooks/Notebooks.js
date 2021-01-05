@@ -15,9 +15,10 @@ import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
 export default function Notebooks() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const token = useSelector((state) => { return state.tokenState });
     const currentGroup = useSelector((state) => { return state.currentGroupState });
-    const history = useHistory();
 
     verifyToken(token, history);
 
