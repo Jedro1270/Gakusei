@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { AppBar, Button, Drawer, IconButton, styled, Typography } from '@material-ui/core';
+import { useState } from 'react';
+import { AppBar, Drawer, IconButton, styled } from '@material-ui/core';
 import { Menu, ArrowBack } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-
 import Title from './Title/Title';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 
-export default function Header(props) {
+export default function Header() {
 
     const [openDrawer, setOpenDrawer] = useState(false);
     const history = useHistory();
