@@ -2,9 +2,11 @@ import { Box, Typography, Button, styled } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
 import CustomAjax from '../../../../CustomAjax';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import verifyToken from '../../Helper Functions/verifyToken';
+import BadgeEarned from '../Snackbar Notifications/BadgeEarned';
 
 export default function Pomodoro() {
 
@@ -12,10 +14,13 @@ export default function Pomodoro() {
 
     const dispatch = useDispatch();
 
+    const [pomodorosCompleted, setPomodorosCompleted] = useState(0);
     const [secondsLeft, setSecondsLeft] = useState(1500);
     const [timerStart, setTimerStart] = useState(false);
-    const [pomodorosCompleted, setPomodorosCompleted] = useState(0);
     const [restPeriod, setRestPeriod] = useState(false);
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [badgeTitle, setBadgeTitle] = useState('');
 
     const token = useSelector((state) => { return state.tokenState });
 
@@ -35,6 +40,11 @@ export default function Pomodoro() {
             response = JSON.parse(response);
 
             setPomodorosCompleted(response.pomodoros.length);
+
+            if (response.badgeTitle.length > 0) {
+                setBadgeTitle(response.badgeTitle);
+                setOpenSnackbar(true);
+            }
         });
     }
 
@@ -60,11 +70,9 @@ export default function Pomodoro() {
 
             setRestPeriod(!restPeriod);
         }
-    }, [secondsLeft, timerStart, history, token]);
 
-    useEffect(() => {
         getPomodorosCompleted();
-    }, []);
+    }, [secondsLeft, timerStart, history, token]);
 
     const displayTimerType = () => {
         if (restPeriod) {
@@ -103,6 +111,12 @@ export default function Pomodoro() {
 
     return (
         <PomodoroBody>
+
+            <BadgeEarned
+                openSnackbar={openSnackbar}
+                setOpenSnackbar={setOpenSnackbar}
+                badgeTitle={badgeTitle}
+            />
 
             <PomodoroCounter>
                 Pomodoros Completed: {pomodorosCompleted}
