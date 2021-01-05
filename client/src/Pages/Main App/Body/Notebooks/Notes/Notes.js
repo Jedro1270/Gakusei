@@ -1,7 +1,7 @@
 import { List, Box, styled } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 import CustomAjax from "../../../../../CustomAjax";
@@ -13,6 +13,8 @@ import createURL from '../../../Helper Functions/createURL';
 import verifyToken from "../../../Helper Functions/verifyToken";
 
 export default function Notes() {
+
+    const ajax = new CustomAjax();
 
     const [newNoteName, setNewNoteName] = useState('');
     const [notes, setNotes] = useState([]);
@@ -37,23 +39,15 @@ export default function Notes() {
     }
 
     const createNewNote = (noteName) => {
-        const ajax = new CustomAjax();
-
         const data = {
             noteName: noteName
         }
 
         ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, data, true, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            setNotes(response.notes);
-        });
+        loadNotes();
     }
 
     const loadNotes = (changesMade) => {
-        const ajax = new CustomAjax();
-
         ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
