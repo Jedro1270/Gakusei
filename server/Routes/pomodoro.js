@@ -1,3 +1,5 @@
+import badgeAchievement from '../Helper Functions/badgeAchievement.js';
+
 export default function pomodoroRoutes(app, secureRoute, database) {
 
     // Get Pomodoros Completed of User
@@ -14,7 +16,31 @@ export default function pomodoroRoutes(app, secureRoute, database) {
                   if (error) {
                     console.log(`ERROR: ${error}`);
                   } else {
-                    response.json({ pomodoros: results.rows });
+                    let badgeId = 0;
+
+                    switch(results.rows.length) {
+                      case 2:
+                        badgeId = 1;
+                        break;
+                      case 8:
+                        badgeId = 2;
+                        break;
+                      case 16:
+                        badgeId = 3;
+                        break;
+                      case 32:
+                        badgeId = 4;
+                        break;
+                      
+                    }
+
+                    if (badgeId !== 0) {
+                      badgeAchievement(userId, badgeId, database, (badgeTitle) => {
+                        response.json({ pomodoros: results.rows, badgeTitle: badgeTitle });
+                      });
+                    } else {
+                      response.json({ pomodoros: results.rows, badgeTitle: '' });
+                    }
                   }
                 }
               );
