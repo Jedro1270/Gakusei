@@ -2,6 +2,7 @@ import { Box, styled, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 import CustomAjax from '../../../../../CustomAjax';
 import { setBackButton } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
@@ -10,7 +11,7 @@ import solveLevelUpRatio from '../../../Helper Functions/solveLevelUpRatio';
 import verifyToken from '../../../Helper Functions/verifyToken';
 import SelectableBadge from './SelectableBadge';
 
-export default function Badges(props) {
+export default function Badges() {
 
     const ajax = new CustomAjax();
 
