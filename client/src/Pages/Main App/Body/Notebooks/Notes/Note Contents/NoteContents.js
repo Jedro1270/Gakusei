@@ -5,14 +5,14 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Alert } from '@material-ui/lab';
-import { Box, Button, styled, Typography } from "@material-ui/core";
+import { Box, styled } from "@material-ui/core";
 
 import { setBackButton } from "../../../../../../Redux/Actions/ChangeHeaderNavigation";
 import changeTitle from "../../../../../../Redux/Actions/ChangeTitle";
 import CustomAjax from '../../../../../../CustomAjax';
 import verifyToken from "../../../../Helper Functions/verifyToken";
 
-export default function NoteContents(props) {
+export default function NoteContents() {
 
     const [contents, setContents] = useState('');
     const [title, setTitle] = useState('');
@@ -83,14 +83,6 @@ export default function NoteContents(props) {
         </NoteContentsPage>
     );
 }
-
-const SaveButton = styled(Button)({
-    backgroundColor: 'white',
-    '&:hover': {
-        backgroundColor: 'lightgrey'
-    },
-    margin: '20px',
-});
 
 const NoteContentsPage = styled(Box)({
     backgroundColor: 'black',
