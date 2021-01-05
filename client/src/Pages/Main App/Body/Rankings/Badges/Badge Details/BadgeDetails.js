@@ -1,5 +1,5 @@
 import { Avatar, Box, styled, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -7,7 +7,7 @@ import { setBackButton } from '../../../../../../Redux/Actions/ChangeHeaderNavig
 import changeTitle from '../../../../../../Redux/Actions/ChangeTitle';
 import verifyToken from '../../../../Helper Functions/verifyToken';
 
-export default function BadgeDetails(props) {
+export default function BadgeDetails() {
 
     const dispatch = useDispatch();
     const history = useHistory();
