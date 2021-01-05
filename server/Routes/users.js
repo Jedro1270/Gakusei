@@ -87,6 +87,34 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
       );
     });
 
+    // Get User Details
+    app.get('/api/users', secureRoute, (request, response) => {
+      const userId = request.user.id;
+  
+      try {
+        database.query(
+          `
+            SELECT * FROM "users"
+              INNER JOIN "level_achievements" 
+                  USING (user_id)
+              INNER JOIN "levels"
+                  USING (level_id)
+            WHERE "user_id" = $1
+            ORDER BY "level_id" DESC;
+          `, [userId],
+          (error, results) => {
+            if (error) {
+              console.log(`ERROR: ${error}`);
+            } else {
+              response.json({ user: results.rows[0] });
+            }
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
     // Update user profile picture
     app.put('/api/users', secureRoute, upload.single('file'), (request, response) => {
       const userId = request.user.id;
