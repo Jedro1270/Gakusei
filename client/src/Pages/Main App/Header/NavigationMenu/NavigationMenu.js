@@ -13,6 +13,8 @@ import solveLevelUpRatio from '../../Helper Functions/solveLevelUpRatio';
 
 export default function NavigationMenu(props) {
 
+    const ajax = new CustomAjax();
+
     const user = useSelector((state) => { return state.userState });
     const token = useSelector((state) => { return state.tokenState });
     const header = useSelector((state) => { return state.headerTitle });
@@ -27,8 +29,6 @@ export default function NavigationMenu(props) {
         const formData = new FormData();
 
         formData.append('file', file);
-
-        const ajax = new CustomAjax();
 
         ajax.put('http://localhost:2727/api/users', formData, false, token);
         ajax.stateListener((response) => {
@@ -46,11 +46,39 @@ export default function NavigationMenu(props) {
         });
     }
 
+    const updateUserState = () => {
+        ajax.get('http://localhost:2727/api/users', token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            const updatedUser = {
+                id: response.user.user_id,
+                username: response.user.username,
+                profilePicture: response.user.profile_picture,
+                points: response.user.points,
+                level: response.user.level_id,
+                levelPointsMax: response.user.maximum_points,
+                levelPointsMin: response.user.minimum_points
+            }
+
+            dispatch(setUser(updatedUser));
+        });
+    }
+
     useEffect(() => {
         if (!props.openDrawer && file !== null) {
             changeProfilePicture();
         }
     }, [props.openDrawer]);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            updateUserState();
+            console.log('updating')
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [user]);
 
     return (
         <NavigationList>
