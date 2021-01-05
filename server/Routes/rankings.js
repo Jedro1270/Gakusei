@@ -34,7 +34,7 @@ export default function rankingsRoutes(app, secureRoute, database) {
                     const topMemberId = results.rows[0].user_id;
 
                     if (topMemberId === userId) {
-                        const badgeId = 8;
+                        const badgeId = 5;
 
                         badgeAchievement(userId, badgeId, database, (badgeTitle) => {
                             response.json({ members: results.rows, badgeTitle: badgeTitle });
