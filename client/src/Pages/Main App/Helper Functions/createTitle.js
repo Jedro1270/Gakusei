@@ -1,4 +1,4 @@
-const createTitle = (name) => {
+export default function createTitle(name) {
     return name
         .replaceAll('-', ' ')
         .split(' ')
@@ -7,5 +7,3 @@ const createTitle = (name) => {
             return `${firstLetter}${word.slice(1)} `
         });
 }
-
-export default createTitle;

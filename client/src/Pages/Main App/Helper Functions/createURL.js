@@ -1,5 +1,3 @@
-const createURL = (name) => {
+export default function createURL(name) {
     return name.replaceAll(' ', '-').toLowerCase();
 }
-
-export default createURL;
