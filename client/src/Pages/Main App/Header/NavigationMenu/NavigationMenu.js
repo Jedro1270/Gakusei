@@ -74,7 +74,6 @@ export default function NavigationMenu(props) {
     useEffect(() => {
         const interval = setInterval(() => {
             updateUserState();
-            console.log('updating')
         }, 1000);
 
         return () => clearInterval(interval);
