@@ -39,7 +39,9 @@ export default function rankingsRoutes(app, secureRoute, database) {
                         badgeAchievement(userId, badgeId, database, (badgeTitle) => {
                             response.json({ members: results.rows, badgeTitle: badgeTitle });
                         });
-                    }   
+                    } else {
+                        response.json({ members: results.rows, badgeTitle: '' });
+                    }
                   }
                 }
               );
