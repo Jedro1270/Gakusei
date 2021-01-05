@@ -1,5 +1,4 @@
 import { Snackbar } from '@material-ui/core';
-import React from 'react';
 
 export default function BadgeEarned(props) {
     return (

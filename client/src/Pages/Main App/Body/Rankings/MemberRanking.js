@@ -1,5 +1,4 @@
 import { Box, styled, Typography } from '@material-ui/core';
-import React from 'react';
 
 export default function MemberRanking(props) {
 

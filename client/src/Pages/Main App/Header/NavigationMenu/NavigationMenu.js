@@ -1,5 +1,5 @@
 import { List, ListItem, Avatar, Typography, styled, Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -7,7 +7,6 @@ import CustomAjax from '../../../../CustomAjax';
 import setUser from '../../../../Redux/Actions/SetUserState';
 import setToken from '../../../../Redux/Actions/SetTokenState';
 import setCurrentGroup from '../../../../Redux/Actions/SetCurrentGroup';
-
 import LevelProgressBar from './LevelProgressBar'
 import solveLevelUpRatio from '../../Helper Functions/solveLevelUpRatio';
 

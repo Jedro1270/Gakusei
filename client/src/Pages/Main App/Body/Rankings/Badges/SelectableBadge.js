@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, styled, Typography } from '@material-ui/core';
-import React from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 import createURL from '../../../Helper Functions/createURL';
 
 export default function SelectableBadge(props) {
