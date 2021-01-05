@@ -8,6 +8,7 @@ import { setDrawer } from '../../../../Redux/Actions/ChangeHeaderNavigation';
 import changeTitle from '../../../../Redux/Actions/ChangeTitle';
 import verifyToken from '../../Helper Functions/verifyToken';
 import MemberRanking from './MemberRanking';
+import BadgeEarned from '../Snackbar Notifications/BadgeEarned'
 
 export default function Rankings() {
 
@@ -16,6 +17,8 @@ export default function Rankings() {
     const ajax = new CustomAjax();
 
     const [teamMembers, setTeamMembers] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [badgeTitle, setBadgeTitle] = useState('');
 
     const token = useSelector((state) => { return state.tokenState });
     const currentGroup = useSelector((state) => { return state.currentGroupState })
@@ -33,6 +36,12 @@ export default function Rankings() {
             response = JSON.parse(response);
 
             setTeamMembers(response.members);
+                        
+            if (response.badgeTitle.length > 0) {
+                setBadgeTitle(response.badgeTitle);
+                setOpenSnackbar(true);
+                getTeamMembers();
+            }
         });
     }
 
@@ -59,6 +68,12 @@ export default function Rankings() {
 
     return (
         <RankingsBody>
+            <BadgeEarned
+                openSnackbar={openSnackbar}
+                setOpenSnackbar={setOpenSnackbar}
+                badgeTitle={badgeTitle}
+            />
+
             <GroupButton
                 onClick={() => {
                     history.push('/api/rankings/badges')
