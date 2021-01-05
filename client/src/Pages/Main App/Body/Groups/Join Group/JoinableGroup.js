@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Typography, styled, Button, Dialog, List, ListItem } from '@material-ui/core';
 import CustomAjax from '../../../../../CustomAjax';
 import { useSelector } from 'react-redux';

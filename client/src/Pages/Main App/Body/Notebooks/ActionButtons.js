@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Typography, Button, styled, Box } from '@material-ui/core';
 
 import DeleteDialog from './Notebook Dialogs/DeleteDialog';

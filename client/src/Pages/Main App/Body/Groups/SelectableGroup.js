@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, Typography, styled, Button, Dialog, List, ListItem, Box } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import setCurrentGroup from '../../../../Redux/Actions/SetCurrentGroup';
