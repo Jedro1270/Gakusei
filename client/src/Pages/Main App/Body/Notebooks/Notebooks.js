@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { List, Box, styled } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,8 @@ import verifyToken from '../../Helper Functions/verifyToken';
 import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
 
 export default function Notebooks() {
+
+    const ajax = new CustomAjax();
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -33,8 +35,6 @@ export default function Notebooks() {
     }, [notebooks]);
 
     const loadNotebooks = (changesMade) => {
-        const ajax = new CustomAjax();
-
         ajax.get(`http://localhost:2727/api/notebooks/${currentGroup.id}`, token);
         ajax.stateListener((response) => {
             response = JSON.parse(response);
@@ -62,18 +62,11 @@ export default function Notebooks() {
     }
 
     const createNotebook = (notebookName) => {
-        const ajax = new CustomAjax();
-
         const data = {
             notebookName: notebookName
         }
 
         ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            setNotebooks(response.notebooks);
-        });
     }
 
     const handleDialogButtonClick = () => {
@@ -93,7 +86,11 @@ export default function Notebooks() {
 
             </List>
 
-            <FloatingActionButton handleDialogButtonClick={ handleDialogButtonClick } setNewName={ setNewNotebookName } label='New Notebook' />
+            <FloatingActionButton 
+                handleDialogButtonClick={ handleDialogButtonClick }
+                setNewName={ setNewNotebookName }
+                label='New Notebook'
+            />
         </NotebooksPage>
     );
 }
