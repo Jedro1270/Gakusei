@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ListItem, Typography, styled, Box } from '@material-ui/core';
 import ActionButtons from './ActionButtons';
-import CustomAjax from '../../../../CustomAjax';
 import { useSelector } from 'react-redux';
+
+import CustomAjax from '../../../../CustomAjax';
 
 export default function SelectableNotebook(props) {
 
