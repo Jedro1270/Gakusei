@@ -14,47 +14,37 @@ export default class CustomAjax {
         }
     }
 
-    get = (url, token) => {
-        this.xhr.open('GET', url, true);
+    #requestBody = (url, data, json, token, method) => {
+        this.xhr.open(method, url, true);
 
         this.xhr.setRequestHeader('authorization', `bearer ${token}`);
+        
+        if (json) {
+            this.xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            data = JSON.stringify(data);
+        }
 
-        this.xhr.send();
+        if (data) {
+            this.xhr.send(data);
+        } else {
+            this.xhr.send();
+        }
+    }
+
+    get = (url, token) => {
+        this.#requestBody(url, null, null, token, 'GET');
     }
 
     post = (url, data, json, token) => {
-        this.xhr.open('POST', url, true);
-
-        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
-        
-        if (json) {
-            this.xhr.setRequestHeader('Content-Type', 'application/json');
-            
-            data = JSON.stringify(data);
-        }
-
-        this.xhr.send(data);
+        this.#requestBody(url, data, json, token, 'POST');
     }
 
     put = (url, data, json, token) => {
-        this.xhr.open('PUT', url, true);
-
-        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
-        
-        if (json) {
-            this.xhr.setRequestHeader('Content-Type', 'application/json');
-            
-            data = JSON.stringify(data);
-        }
-
-        this.xhr.send(data);
+        this.#requestBody(url, data, json, token, 'PUT');
     }
 
     delete = (url, token) => {
-        this.xhr.open('DELETE', url, true);
-
-        this.xhr.setRequestHeader('authorization', `bearer ${token}`);
-
-        this.xhr.send();
+        this.#requestBody(url, null, null, token, 'DELETE');
     }
 } 
