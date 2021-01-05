@@ -21,9 +21,6 @@ exports.seed = function(knex) {
           ('MILESTONE', 'pomo-samurai-badge.jpg', 'Pomo Samurai', 'Successfuly Finish 8 Pomodoro Timers', 200),
           ('MILESTONE', 'pomo-daimyo-badge.gif', 'Pomo Daimyo', 'Successfuly Finish 16 Pomodoro Timers', 400),
           ('MILESTONE', 'pomo-daimyo-badge.png', 'Pomo Shogun', 'Successfuly Finish 32 Pomodoro Timers', 800),
-          ('MILESTONE', 'scholar-badge.png', 'Scholar', 'Create your First Note', 50),
-          ('MILESTONE', 'philosopher-badge.png', 'Philosopher', 'Create 5 Notes', 200),
-          ('MILESTONE', 'sage-badge.png', 'Sage', 'Create 15 Notes', 500),
           ('SPECIAL', 'soke-badge.png', 'Soke', 'Become the Highest Ranking Member of your Group', 400);
     `
   );
