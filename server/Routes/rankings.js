@@ -1,7 +1,10 @@
+import badgeAchievement from '../Helper Functions/badgeAchievement.js';
+
 export default function rankingsRoutes(app, secureRoute, database) {
 
     // Get Team Members of Group
     app.get('/api/rankings/:groupId', secureRoute, (request, response) => {
+        const userId = request.user.id;
         const groupId = request.params.groupId;
 
         try {
@@ -9,6 +12,7 @@ export default function rankingsRoutes(app, secureRoute, database) {
                 `
                     SELECT 
                         DISTINCT ON (username) username,
+                        user_id,
                         level_id,
                         points 
                     FROM "users"
@@ -19,13 +23,23 @@ export default function rankingsRoutes(app, secureRoute, database) {
                     WHERE "group_id" = $1
                         ORDER BY
                             "username" ASC,
-                            "points" DESC;
+                            "points" DESC,
+                            "level_id" DESC;
                 `, [groupId],
                 (error, results) => {
                   if (error) {
                     console.log(`ERROR: ${error}`);
                   } else {
-                    response.json({ members: results.rows });
+
+                    const topMemberId = results.rows[0].user_id;
+
+                    if (topMemberId === userId) {
+                        const badgeId = 8;
+
+                        badgeAchievement(userId, badgeId, database, (badgeTitle) => {
+                            response.json({ members: results.rows, badgeTitle: badgeTitle });
+                        });
+                    }   
                   }
                 }
               );
