@@ -2,10 +2,10 @@ import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+
 import CustomAjax from '../../../CustomAjax';
 import setToken from '../../../Redux/Actions/SetTokenState';
-
-import React, { useState } from 'react';
 import Title from '../Title';
 import AppLogo from '../AppLogo';
 import SubmitButton from '../SubmitButton';
