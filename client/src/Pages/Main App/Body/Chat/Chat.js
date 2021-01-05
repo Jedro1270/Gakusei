@@ -153,7 +153,7 @@ const MessageInput = styled(TextField)({
     flex: '5',
 });
 
-const InputArea = styled(Box)({ // Make this scrollable
+const InputArea = styled(Box)({
     position: 'fixed',
     bottom: '20px',
     right: '0px',
