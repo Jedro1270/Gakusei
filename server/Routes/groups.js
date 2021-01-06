@@ -10,7 +10,8 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
           SELECT * FROM "groups"
             INNER JOIN "group_memberships" as gm
               USING (group_id)
-          WHERE gm.user_id = $1
+            WHERE gm.user_id = $1
+          ORDER BY "group_name" ASC;
         `, [userId],
         (error, results) => {
           if (error) {
