@@ -1,40 +1,9 @@
 import { ListItem, Typography, styled, Box } from "@material-ui/core";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import CustomAjax from "../../../../../CustomAjax";
 import ActionButtons from "../ActionButtons";
 
 export default function Notes(props) {
-
-    const currentGroup = useSelector((state) => { return state.currentGroupState });
-    const token = useSelector((state) => { return state.tokenState });
-    const ajax = new CustomAjax();
-
-    const [newTitle, setNewTitle] = useState('');
-
-    const renameNote = () => {
-        const data = {
-            title: newTitle
-        }
-
-        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${props.noteID}`, data, true, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            props.loadNotes(true);
-        });
-    }
-
-    const deleteNote = () => {
-        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${props.notebookID}/${props.noteID}`, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-
-            props.loadNotes(true);
-        });
-    }
 
     return (
         <SelectableNoteBody>
@@ -52,9 +21,9 @@ export default function Notes(props) {
             </CustomLink>
 
             <ActionButtons 
-                setNewTitle={ setNewTitle }
-                rename={ renameNote }
-                delete={ deleteNote }
+                setNewTitle={ props.setNewTitle }
+                rename={() => {props.renameNote(props.noteID)}}
+                delete={() => {props.deleteNote(props.noteID)}}
                 label={ 'Note' }
                 selectedTitle={ props.noteTitle }
             />
