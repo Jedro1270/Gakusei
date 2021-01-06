@@ -34,3 +34,6 @@ jobs:
 
     - name: Install Project Dependencies
       run: yarn install
+
+    - name: Test Pure Functions
+      run: yarn test
