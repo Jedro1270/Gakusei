@@ -130,7 +130,8 @@ export default function notebooksRoutes(app, secureRoute, database) {
                     "date_edited", 'MON-DD-YYYY HH12:MIPM'
                     ) AS date_edited
                 FROM "notes"
-                WHERE "notebook_id" = $1;
+                WHERE "notebook_id" = $1
+                ORDER BY "note_id" ASC;
                 `, [notebookId],
                 (error, results) => {
                     if (error) {
@@ -162,7 +163,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
                     if (error) {
                         console.log(error)
                     } else {
-                        response.json({ notes: results.rows });
+                        response.json({ note: results.rows[0] });
                     }
                 }
             )
