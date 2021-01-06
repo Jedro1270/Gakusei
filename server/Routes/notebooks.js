@@ -8,7 +8,8 @@ export default function notebooksRoutes(app, secureRoute, database) {
             database.query(
                 `
                 SELECT * FROM "notebooks"
-                    WHERE "group_id" = $1;
+                    WHERE "group_id" = $1
+                ORDER BY "notebook_id" ASC;
                 `, [groupId],
                 (error, results) => {
                     if (error) {
@@ -40,7 +41,7 @@ export default function notebooksRoutes(app, secureRoute, database) {
                     if (error) {
                         console.log(error)
                     } else {
-                        response.json({ notebooks: results.rows });
+                        response.json({ notebook: results.rows[0] });
                     }
                 }
             );
