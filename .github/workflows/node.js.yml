@@ -34,3 +34,7 @@ jobs:
 
     - name: Install Project Dependencies
       run: yarn install
+
+    - name: Test Pure Functions
+      working-directory: ./client
+      run: yarn test
