@@ -26,6 +26,8 @@ export default function Notebooks() {
 
     const [notebooks, setNotebooks] = useState([]);
     const [newNotebookName, setNewNotebookName] = useState('');
+    const [previousNotebookId, setPreviousNotebookId] = useState('');
+    const [renamedTitle, setRenamedTitle] = useState('');
 
     dispatch(changeTitle('Notebooks'));
     dispatch(setDrawer());
@@ -57,6 +59,9 @@ export default function Notebooks() {
                 notebookURL={ notebookURL }
                 notebookID={ notebookID }
                 loadNotebooks={ loadNotebooks }
+                renameNotebook={ renameNotebook }
+                deleteNotebook={ deleteNotebook }
+                setRenamedTitle={ setRenamedTitle }
             />
         });
     }
@@ -67,6 +72,33 @@ export default function Notebooks() {
         }
 
         ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}`, data, true, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setPreviousNotebookId(response.notebook.notebook_id);
+        });
+    }
+
+    const renameNotebook = (notebookId) => {
+        const data = {
+            title: renamedTitle
+        }
+
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookId}`, data, true, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            loadNotebooks(true);
+        });
+    }
+
+    const deleteNotebook = (notebookId) => {
+        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookId}`, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            loadNotebooks(true);
+        });
     }
 
     const handleDialogButtonClick = () => {
