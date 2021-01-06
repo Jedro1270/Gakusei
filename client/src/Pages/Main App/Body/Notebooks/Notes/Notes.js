@@ -11,6 +11,7 @@ import FloatingActionButton from '../FloatingActionButton';
 import SelectableNote from './SelectableNote';
 import createURL from '../../../Helper Functions/createURL';
 import verifyToken from "../../../Helper Functions/verifyToken";
+import UndoAction from "../../Snackbar Notifications/UndoAction";
 
 export default function Notes() {
 
@@ -20,6 +21,7 @@ export default function Notes() {
     const [notes, setNotes] = useState([]);
     const [newTitle, setNewTitle] = useState('');
     const [previousNoteId, setPreviousNoteId] = useState('');
+    const [openUndoSnackbar, setOpenUndoSnackbar] = useState(false);
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -120,6 +122,7 @@ export default function Notes() {
                 loadNotes={ loadNotes }
                 deleteNote={ deleteNote }
                 renameNote={ renameNote }
+                setNewTitle={ setNewTitle }
             />
         });
     }
@@ -139,6 +142,13 @@ export default function Notes() {
                 handleDialogButtonClick={handleDialogButtonClick}
                 setNewName={setNewNoteName}
                 label='New Note'
+            />
+
+            <UndoAction
+                openSnackbar={openUndoSnackbar}
+                setOpenSnackbar={setOpenUndoSnackbar}
+                message={'Note Created'}
+                undo={handleUndo}
             />
         </NotesPage>
     );
