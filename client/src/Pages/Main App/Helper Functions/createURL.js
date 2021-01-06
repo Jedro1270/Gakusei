@@ -1,3 +1,3 @@
 export default function createURL(name) {
-    return name.replaceAll(' ', '-').toLowerCase();
+    return name.split(' ').join('-').toLowerCase();
 }
