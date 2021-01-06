@@ -11,6 +11,7 @@ import FloatingActionButton from './FloatingActionButton';
 import createURL from '../../Helper Functions/createURL';
 import verifyToken from '../../Helper Functions/verifyToken';
 import NoGroupSelectedDialog from '../Error Dialogs/NoGroupSelectedDialog';
+import UndoAction from '../Snackbar Notifications/UndoAction';
 
 export default function Notebooks() {
 
@@ -28,6 +29,7 @@ export default function Notebooks() {
     const [newNotebookName, setNewNotebookName] = useState('');
     const [previousNotebookId, setPreviousNotebookId] = useState('');
     const [renamedTitle, setRenamedTitle] = useState('');
+    const [openUndoSnackbar, setOpenUndoSnackbar] = useState(false);
 
     dispatch(changeTitle('Notebooks'));
     dispatch(setDrawer());
@@ -76,6 +78,8 @@ export default function Notebooks() {
             response = JSON.parse(response);
 
             setPreviousNotebookId(response.notebook.notebook_id);
+            setOpenUndoSnackbar(true);
+            loadNotebooks();
         });
     }
 
@@ -103,7 +107,11 @@ export default function Notebooks() {
 
     const handleDialogButtonClick = () => {
         createNotebook(newNotebookName);
-        loadNotebooks();
+    }
+
+    const handleUndo = () => {
+        deleteNotebook(previousNotebookId);
+        setOpenUndoSnackbar(false);
     }
 
     return (
@@ -122,6 +130,13 @@ export default function Notebooks() {
                 handleDialogButtonClick={ handleDialogButtonClick }
                 setNewName={ setNewNotebookName }
                 label='New Notebook'
+            />
+
+            <UndoAction
+                openSnackbar={openUndoSnackbar}
+                setOpenSnackbar={setOpenUndoSnackbar}
+                message={'Notebook Created'}
+                undo={handleUndo}
             />
         </NotebooksPage>
     );
