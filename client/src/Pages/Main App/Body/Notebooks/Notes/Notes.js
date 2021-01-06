@@ -18,6 +18,8 @@ export default function Notes() {
 
     const [newNoteName, setNewNoteName] = useState('');
     const [notes, setNotes] = useState([]);
+    const [newTitle, setNewTitle] = useState('');
+    const [previousNoteId, setPreviousNoteId] = useState('');
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -44,7 +46,35 @@ export default function Notes() {
         }
 
         ajax.post(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}`, data, true, token);
-        loadNotes();
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            setPreviousNoteId(response.note.note_id);
+            setOpenUndoSnackbar(true);
+            loadNotes();
+        });
+    }
+
+    const renameNote = (noteId) => {
+        const data = {
+            title: newTitle
+        }
+
+        ajax.put(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}/${noteId}`, data, true, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            loadNotes(true);
+        });
+    }
+
+    const deleteNote = (noteId) => {
+        ajax.delete(`http://localhost:2727/api/notebooks/${currentGroup.id}/${notebookID}/${noteId}`, token);
+        ajax.stateListener((response) => {
+            response = JSON.parse(response);
+
+            loadNotes(true);
+        });
     }
 
     const loadNotes = (changesMade) => {
@@ -66,6 +96,11 @@ export default function Notes() {
         });
     }
 
+    const handleUndo = () => {
+        deleteNote(previousNoteId);
+        setOpenUndoSnackbar(false);
+    }
+
     const displayNotes = () => {
         return notes.map((note) => {
 
@@ -83,6 +118,8 @@ export default function Notes() {
                 noteURL={ noteURL }
                 noteID={ noteID }
                 loadNotes={ loadNotes }
+                deleteNote={ deleteNote }
+                renameNote={ renameNote }
             />
         });
     }
@@ -98,7 +135,11 @@ export default function Notes() {
 
             </List>
 
-            <FloatingActionButton handleDialogButtonClick={handleDialogButtonClick} setNewName={setNewNoteName} label='New Note' />
+            <FloatingActionButton 
+                handleDialogButtonClick={handleDialogButtonClick}
+                setNewName={setNewNoteName}
+                label='New Note'
+            />
         </NotesPage>
     );
 }
