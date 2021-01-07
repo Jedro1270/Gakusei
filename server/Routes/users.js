@@ -3,7 +3,21 @@ import jwt from 'jsonwebtoken';
 
 export default function usersRoutes(app, secureRoute, upload, database, passport) {
 
-    // Sign In
+    app.get('/sign-in', (request, response) => {
+      if (request.session.passport) {
+        console.log(request.session.passport.user.user, request.session.passport.signInDetails.token)
+        const user = request.session.passport.user.user;
+        const token = request.session.passport.user.token
+
+        response.json({
+          message: 'Successfully Authenticated',
+          token: token,
+          user: user
+        });
+      }
+    });
+
+    // Sign In Locally
     app.post('/sign-in', (request, response, next) => {
       passport.authenticate('local', (error, user) => {
         if (error) {
@@ -28,7 +42,7 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
               levelPointsMin: user.minimum_points
             }
 
-            const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
+            const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET);
 
             response.json({
               message: 'Successfully Authenticated',
@@ -85,6 +99,11 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
           }
         }
       );
+    });
+
+    app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+    app.get('/auth/google/redirect', passport.authenticate('google'), (request, response) => {
+      response.redirect('http://localhost:3000/api/groups');
     });
 
     // Get User Details
