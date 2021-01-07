@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Strategy as localStrategy } from 'passport-local';
 import { Strategy as googleStrategy } from 'passport-google-oauth20';
-// import { Strategy as facebookStrategy } from 'passport-facebook';
+import { Strategy as facebookStrategy } from 'passport-facebook';
 import passportJwt from 'passport-jwt';
 
 const JWTStrategy = passportJwt.Strategy;
@@ -80,18 +80,18 @@ export default function passportStrategy(passport, database) {
         )
     );
 
-    // passport.use(
-    //     new facebookStrategy(
-    //         {
-    //             clientID: process.env.FACEBOOK_ID,
-    //             clientSecret: process.env.FACEBOOK_SECRET,
-    //             callbackURL: 'http://localhost:3000/auth/facebook/redirect'
-    //         },
-    //         function (accessToken, refreshToken, profile, done) {
-    //             done(null, profile);
-    //         }
-    //     )
-    // );
+    passport.use(
+        new facebookStrategy(
+            {
+                clientID: process.env.FACEBOOK_ID,
+                clientSecret: process.env.FACEBOOK_SECRET,
+                callbackURL: 'http://localhost:3000/auth/facebook/redirect'
+            },
+            function (accessToken, refreshToken, profile, done) {
+                done(null, profile);
+            }
+        )
+    );
 
     passport.serializeUser((user, done) => {
 
