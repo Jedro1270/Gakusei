@@ -5,6 +5,7 @@ import multer from 'multer';
 import cors from 'cors';
 import passport from 'passport';
 import dotenv from 'dotenv';
+import cookieSession from 'cookie-session';
 
 import passportStrategy from './passportConfig.js';
 import groupsRoutes from './Routes/groups.js'
@@ -68,11 +69,16 @@ pool.connect((error, client) => {
     app
       .use(bodyParser.json())
       .use(bodyParser.urlencoded({ extended: true }))
+      .use(cookieSession({
+        name: 'gakusei-session',
+        keys: ['key1', 'key2']
+      }))
       .use(cors({
         origin: 'http://localhost:3000',
         credentials: true
       }))
       .use(passport.initialize())
+      .use(passport.session())
 
     passportStrategy(passport, database);
 
