@@ -106,6 +106,11 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
       response.redirect('http://localhost:3000/api/groups');
     });
 
+    app.get('/auth/facebook', passport.authenticate('google', { scope: ['profile', 'email'] }));
+    app.get('/auth/google/facebook', passport.authenticate('google'), (request, response) => {
+      response.redirect('http://localhost:3000/api/groups');
+    });
+
     // Get User Details
     app.get('/api/users', secureRoute, (request, response) => {
       const userId = request.user.id;
