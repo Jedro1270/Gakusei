@@ -2,11 +2,11 @@ import { Grid, Link, TextField, styled, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import CustomAjax from '../../../CustomAjax';
 import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 
-import React, { useState } from 'react';
-import Title from '../Title';
-import AppLogo from '../AppLogo';
-import SubmitButton from '../SubmitButton';
+import Title from '.././Log In Components/Title';
+import AppLogo from '.././Log In Components/AppLogo';
+import SubmitButton from '.././Log In Components/SubmitButton';
 
 export default function SignUp() {
 
