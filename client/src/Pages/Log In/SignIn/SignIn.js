@@ -68,8 +68,6 @@ export default function SignIn() {
 
             <Grid item xs={12}>
               <TextField
-                autoComplete='fname'
-                name='username'
                 variant='outlined'
                 required
                 fullWidth
@@ -85,11 +83,8 @@ export default function SignIn() {
                 variant='outlined'
                 required
                 fullWidth
-                name='password'
                 label='Password'
                 type='password'
-                id='password'
-                autoComplete='current-password'
                 onChange={(event) => setLoginPassword(event.target.value)}
               />
             </Grid>
