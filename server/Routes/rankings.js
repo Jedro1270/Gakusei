@@ -23,7 +23,6 @@ export default function rankingsRoutes(app, secureRoute, database) {
                     WHERE "group_id" = $1
                         ORDER BY
                             "username" ASC,
-                            "points" DESC,
                             "level_id" DESC;
                 `, [groupId],
                 (error, results) => {
