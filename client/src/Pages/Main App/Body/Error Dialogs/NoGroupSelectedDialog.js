@@ -1,8 +1,10 @@
-import { styled, Typography, Button, Dialog, DialogContent, DialogActions } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogActions } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import BoldDialogAction from './Dialog Components/BoldDialogAction';
+import BoldDialogTitle from './Dialog Components/BoldDialogTitle';
 
 export default function NoGroupSelectedDialog(props) {
 
@@ -20,9 +22,9 @@ export default function NoGroupSelectedDialog(props) {
 
     return (
             <Dialog open={openDialog}>
-                <BoldDialogTitle>
-                    No Group Selected
-                </BoldDialogTitle>
+                <BoldDialogTitle
+                    content='No Group Selected'
+                />
 
                 <DialogContent>
                     Please select a group fom the Groups Page before accessing {props.page}.
@@ -33,22 +35,11 @@ export default function NoGroupSelectedDialog(props) {
                         setOpenDialog(false);
                         history.push('/api/groups');
                     }}>
-                        <BoldDialogAction>
-                            Close
-                        </BoldDialogAction>
+                        <BoldDialogAction
+                            content='Close'
+                        />
                     </Button>
                 </DialogActions>
             </Dialog>
     );
 }
-
-const BoldDialogAction = styled(Typography)({
-    fontWeight: 'bold'
-});
-
-const BoldDialogTitle = styled(Typography)({
-    fontSize: '30px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: '20px'
-});
