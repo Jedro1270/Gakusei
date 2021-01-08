@@ -69,14 +69,11 @@ export default function SignUp() {
 
             <Grid item xs={12}>
               <TextField
-                autoComplete='fname'
-                name='username'
                 variant='outlined'
                 required
                 fullWidth
-                id='username'
                 label='Username'
-                autoFocus
+                autoFocus 
                 onChange={(event) => setRegisterUsername(event.target.value)}
               />
             </Grid>
@@ -86,11 +83,8 @@ export default function SignUp() {
                 variant='outlined'
                 required
                 fullWidth
-                name='password'
                 label='Password'
                 type='password'
-                id='password'
-                autoComplete='current-password'
                 onChange={(event) => setRegisterPassword(event.target.value)}
               />
             </Grid>
@@ -116,8 +110,6 @@ export default function SignUp() {
 const SignUpBody = styled(Box)({
   padding: '5px',
   component: 'main',
-  maxWidth: 'false',
-  width: '100%',
   height: '100%',
   backgroundColor: 'white',
   display: 'flex',
