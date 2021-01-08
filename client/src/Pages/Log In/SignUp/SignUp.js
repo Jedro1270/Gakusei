@@ -15,28 +15,33 @@ export default function SignUp() {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [usernameTaken, setUsernameTaken] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [incompleteFields, setIncompleteFields] = useState(false);
+  const [successfulSignUp, setSuccessfulSignUp] = useState(false);
 
   const register = () => {
-    const data = {
-      username: registerUsername,
-      password: registerPassword
-    }
-
-    const ajax = new CustomAjax();
-
-    ajax.post('http://localhost:2727/sign-up', data, true);
-    ajax.stateListener((response) => {
-      response = JSON.parse(response);
-      if (response.message === 'Username Taken') {
-        setUsernameTaken(true);
-      } else {
-        setLoggedIn(true);
+    if (registerUsername.trim().length > 0 && registerPassword.trim().length > 0) {
+      const data = {
+        username: registerUsername,
+        password: registerPassword
       }
-    });
+  
+      const ajax = new CustomAjax();
+  
+      ajax.post('http://localhost:2727/sign-up', data, true);
+      ajax.stateListener((response) => {
+        response = JSON.parse(response);
+        if (response.message === 'Username Taken') {
+          setUsernameTaken(true);
+        } else {
+          setSuccessfulSignUp(true);
+        }
+      });
+    } else {
+      setIncompleteFields(true);
+    }
   }
 
-  if (loggedIn) {
+  if (successfulSignUp) {
 
     history.push('/sign-in');
     return null;
@@ -46,6 +51,8 @@ export default function SignUp() {
 
     if (usernameTaken) {
       alert = <Alert severity='error' onClose={() => { setUsernameTaken(false) }} >Username is already taken!</Alert>
+    } else if (incompleteFields) {
+      alert = <Alert severity='error' onClose={() => { setIncompleteFields(false) }} >You have incomplete fields!</Alert>
     }
 
     return (
