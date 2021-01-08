@@ -7,12 +7,14 @@ import CustomAjax from '../../../../../CustomAjax';
 import changeTitle from '../../../../../Redux/Actions/ChangeTitle';
 import { setBackButton } from '../../../../../Redux/Actions/ChangeHeaderNavigation';
 import verifyToken from '../../../Helper Functions/verifyToken';
+import IncompleteValuesDialog from '../../Error Dialogs/IncompleteValuesDialog';
 
 export default function CreateGroup() {
 
     const [groupname, setGroupname] = useState('');
     const [file, setFile] = useState(null);
     const [temporaryFile, setTemporaryFile] = useState(null);
+    const [openErrorDialog, setOpenErrorDialog] = useState(false);
 
     const dispatch = useDispatch();
     const token = useSelector((state) => { return state.tokenState });
@@ -26,20 +28,24 @@ export default function CreateGroup() {
     }, [history, token]);
 
     const submitForm = () => {
-        const formData = new FormData();
+        if (groupname.length > 0 && file != null) {
+            const formData = new FormData();
 
-        formData.append('groupname', groupname);
-        formData.append('file', file);
+            formData.append('groupname', groupname);
+            formData.append('file', file);
 
-        const ajax = new CustomAjax();
+            const ajax = new CustomAjax();
 
-        ajax.post('http://localhost:2727/api/groups/create-group', formData, false, token);
-        ajax.stateListener((response) => {
-            response = JSON.parse(response);
-            if (response.message === 'Group Inserted') {
-                history.push('/api/groups');
-            }
-        });
+            ajax.post('http://localhost:2727/api/groups/create-group', formData, false, token);
+            ajax.stateListener((response) => {
+                response = JSON.parse(response);
+                if (response.message === 'Group Inserted') {
+                    history.push('/api/groups');
+                }
+            });
+        } else {
+            setOpenErrorDialog(true);
+        }
     }
 
     return (
@@ -67,6 +73,10 @@ export default function CreateGroup() {
                 CREATE
             </SubmitButton>
 
+            <IncompleteValuesDialog
+                setOpenDialog={setOpenErrorDialog}
+                openDialog={openErrorDialog}
+            />
         </CreateGroupForm>
     );
 }
