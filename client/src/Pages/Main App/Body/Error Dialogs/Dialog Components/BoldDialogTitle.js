@@ -1,7 +1,6 @@
 import { styled, Typography } from '@material-ui/core';
 
 export default function BoldDialogTitle(props) {
-
     return (
         <BoldDialogTitleBody>
             {props.content}

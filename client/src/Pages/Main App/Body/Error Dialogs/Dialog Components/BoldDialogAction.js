@@ -5,8 +5,7 @@ export default function BoldDialogAction(props) {
         <BoldDialogActionBody>
             {props.content}
         </BoldDialogActionBody>
-    )
-    
+    );
 }
 
 const BoldDialogActionBody = styled(Typography)({
