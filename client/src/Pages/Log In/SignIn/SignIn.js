@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 import CustomAjax from '../../../CustomAjax';
 import setToken from '../../../Redux/Actions/SetTokenState';
-import Title from '../Title';
-import AppLogo from '../AppLogo';
-import SubmitButton from '../SubmitButton';
+import Title from '.././Log In Components/Title';
+import AppLogo from '.././Log In Components/AppLogo';
+import SubmitButton from '.././Log In Components/SubmitButton';
 import setUser from '../../../Redux/Actions/SetUserState';
 
 export default function SignIn() {
