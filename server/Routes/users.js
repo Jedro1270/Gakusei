@@ -3,20 +3,6 @@ import jwt from 'jsonwebtoken';
 
 export default function usersRoutes(app, secureRoute, upload, database, passport) {
 
-    app.get('/sign-in', (request, response) => {
-      if (request.session.passport) {
-        console.log(request.session.passport.user.user, request.session.passport.signInDetails.token)
-        const user = request.session.passport.user.user;
-        const token = request.session.passport.user.token
-
-        response.json({
-          message: 'Successfully Authenticated',
-          token: token,
-          user: user
-        });
-      }
-    });
-
     // Sign In Locally
     app.post('/sign-in', (request, response, next) => {
       passport.authenticate('local', (error, user) => {
