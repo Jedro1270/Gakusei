@@ -110,8 +110,6 @@ export default function SignIn() {
 const SignInBody = styled(Box)({
   padding: '5px',
   component: 'main',
-  maxWidth: 'false',
-  width: '100%',
   height: '100%',
   backgroundColor: 'white',
   display: 'flex',
