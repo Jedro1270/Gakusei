@@ -46,21 +46,26 @@ export default function Rankings() {
     }
 
     const displayTeamMembers = () => {
-        return teamMembers.map((member, index) => {
-            const username = member.username;
-            const level = member.level_id;
-            const rankingNumber = index + 1;
-            const points = member.points;
+        return teamMembers
+            .sort((firstMember, secondMember) => {
+                return secondMember.points - firstMember.points;
+            })
+            .map((member, index) => {
+                const username = member.username;
+                const level = member.level_id;
+                const rankingNumber = index + 1;
+                const points = member.points;
 
-            return (
-                <MemberRanking
-                    username={username}
-                    rankingNumber={rankingNumber}
-                    level={level}
-                    points={points}
-                />
-            );
-        });
+                return (
+                    <MemberRanking
+                        username={username}
+                        rankingNumber={rankingNumber}
+                        level={level}
+                        points={points}
+                    />
+                );
+            }
+        );
     }
 
     dispatch(changeTitle('Rankings and Badges'));
