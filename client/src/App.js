@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, BrowserRouter as Router, Switch, Redirect} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 
 import Header from './Pages/Main App/Header/Header';
 import Groups from './Pages/Main App/Body/Groups/Groups';
@@ -21,107 +21,98 @@ export default function App() {
   return (
     <Router>
       <div className='App'>
-          <Switch>
-            <Route exact path='/'>
-              <Redirect to='/sign-in'/>
-            </Route>
-            <Route exact path='/sign-up' render={() => (
-                <SignUp/>
-              )}
-            />
-            <Route exact path='/sign-in' render={() => (
-                <SignIn/>
-              )}
-            />
-            <Route exact path='/api/groups' render={() => (
-              <div className='App-body'>
-                  <Header/>
-                  <Groups/>
-              </div>
-                
-              )} 
-            />
-            <Route exact path='/api/groups/join-group' render={() => (
-              <div className='App-body'>
-                  <Header/>
-                  <JoinGroup/>
-              </div>
+        <Switch>
 
-              )} 
-            />
-            <Route exact path='/api/groups/create-group' render={() => (
-              <div className='App-body'>
-                  <Header/>
-                  <CreateGroup />
-              </div>
+          <Route exact path='/'>
+            <Redirect to='/sign-in' />
+          </Route>
 
-              )} 
-            />
-            <Route exact path='/api/pomodoro' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Pomodoro />
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/notebooks' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Notebooks />
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/notebooks/:notebookTitle' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Notes />
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/notebooks/:notebookTitle/:noteTitle' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <NoteContents />
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/chat' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Chat />
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/rankings' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Rankings/>
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/rankings/badges' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <Badges/>
-                </div>
-                
-              )} 
-            />
-            <Route exact path='/api/rankings/badges/:badgeName' render={() => (
-                <div className='App-body'>
-                  <Header/>
-                  <BadgeDetails/>
-                </div>
-                
-              )} 
-            />
-          </Switch>
+          <Route exact path='/sign-up'>
+            <SignUp />
+          </Route>
+
+          <Route exact path='/sign-in'>
+            <SignIn />
+          </Route>
+
+          <Route exact path='/api/groups'>
+            <div className='App-body'>
+              <Header />
+              <Groups />
+            </div>
+          </Route>
+
+          <Route exact path='/api/groups/join-group'>
+            <div className='App-body'>
+              <Header />
+              <JoinGroup />
+            </div>
+          </Route>
+
+          <Route exact path='/api/groups/create-group'>
+            <div className='App-body'>
+              <Header />
+              <CreateGroup />
+            </div>
+          </Route>
+
+          <Route exact path='/api/pomodoro' >
+            <div className='App-body'>
+              <Header />
+              <Pomodoro />
+            </div>
+          </Route>
+
+          <Route exact path='/api/notebooks'>
+            <div className='App-body'>
+              <Header />
+              <Notebooks />
+            </div>
+          </Route>
+
+          <Route exact path='/api/notebooks/:notebookTitle'>
+            <div className='App-body'>
+              <Header />
+              <Notes />
+            </div>
+          </Route>
+
+          <Route exact path='/api/notebooks/:notebookTitle/:noteTitle'>
+            <div className='App-body'>
+              <Header />
+              <NoteContents />
+            </div>
+          </Route>
+
+          <Route exact path='/api/chat'>
+            <div className='App-body'>
+              <Header />
+              <Chat />
+            </div>
+          </Route>
+
+          <Route exact path='/api/rankings'>
+            <div className='App-body'>
+              <Header />
+              <Rankings />
+            </div>
+          </Route>
+
+          <Route exact path='/api/rankings/badges'>
+            <div className='App-body'>
+              <Header />
+              <Badges />
+            </div>
+          </Route>
+
+          <Route exact path='/api/rankings/badges/:badgeName'>
+            <div className='App-body'>
+              <Header />
+              <BadgeDetails />
+            </div>
+          </Route>
+          
+        </Switch>
       </div>
     </Router>
   );
