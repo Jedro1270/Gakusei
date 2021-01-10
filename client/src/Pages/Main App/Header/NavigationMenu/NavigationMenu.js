@@ -89,8 +89,7 @@ export default function NavigationMenu(props) {
                 Change Profile Picture
 
                 <input type='file' accept='image/*' hidden onChange={(event) => {
-                    event.preventDefault()
-                    const chosenFile = event.target.files[0]
+                    const chosenFile = event.target.files[0];
 
                     setFile(chosenFile);
                     setTemporaryFile(URL.createObjectURL(chosenFile));
