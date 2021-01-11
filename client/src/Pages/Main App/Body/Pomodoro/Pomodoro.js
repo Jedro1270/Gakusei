@@ -32,6 +32,7 @@ export default function Pomodoro() {
         }
 
         ajax.post(`http://localhost:2727/api/pomodoro`, data, true, token);
+        getPomodorosCompleted();
     }
 
     const getPomodorosCompleted = () => {
@@ -58,9 +59,9 @@ export default function Pomodoro() {
             }, 1000);
         } else if (!timerStart) {
             if (restPeriod) {
-                setSecondsLeft(300);
+                setSecondsLeft(1);
             } else {
-                setSecondsLeft(1500);
+                setSecondsLeft(2);
             }
         } else if (secondsLeft <= 0) {
             if (!restPeriod) {
@@ -70,9 +71,11 @@ export default function Pomodoro() {
 
             setRestPeriod(!restPeriod);
         }
-
-        getPomodorosCompleted();
     }, [secondsLeft, timerStart, history, token]);
+
+    useEffect(() => {
+        getPomodorosCompleted();
+    }, []);
 
     const displayTimerType = () => {
         if (restPeriod) {
