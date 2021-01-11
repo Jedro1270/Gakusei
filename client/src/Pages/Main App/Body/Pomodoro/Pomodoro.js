@@ -59,9 +59,9 @@ export default function Pomodoro() {
             }, 1000);
         } else if (!timerStart) {
             if (restPeriod) {
-                setSecondsLeft(1);
+                setSecondsLeft(300);
             } else {
-                setSecondsLeft(2);
+                setSecondsLeft(1500);
             }
         } else if (secondsLeft <= 0) {
             if (!restPeriod) {
