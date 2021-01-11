@@ -119,6 +119,7 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
                   if (error) {
                     console.log(`ERROR: ${error}`);
                   } else {
+                    console.log(results.rows)
                     response.json({ groups: results.rows });
                   }
                 }
@@ -126,8 +127,9 @@ export default function groupsRoutes(app, secureRoute, upload, database) {
             } else {
               database.query(
                 `
-                  SELECT * FROM "groups";
-                `,
+                  SELECT * FROM "groups"
+                  WHERE "group_name" ILIKE $1;
+                `, [`%${searchValue}%`],
                 (error, results) => {
                   if (error) {
                     console.log(`ERROR: ${error}`);
