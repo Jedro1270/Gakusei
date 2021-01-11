@@ -1,4 +1,4 @@
-import { Fab, styled } from '@material-ui/core';
+import { Box, Fab, styled } from '@material-ui/core';
 import { useState } from 'react';
 import { Add } from '@material-ui/icons';
 
@@ -9,7 +9,7 @@ export default function FloatingActionButton(props) {
     const [openDialog, setOpenDialog] = useState(false);
 
     return (
-        <div>
+        <Box>
             <ActionButton size='large' onClick={() => { setOpenDialog(true) }}>
                 <Add />
             </ActionButton>
@@ -21,7 +21,7 @@ export default function FloatingActionButton(props) {
                 setNewName={ props.setNewName }
                 create={ props.handleDialogButtonClick }
             />
-        </div>
+        </Box>
     )
 }
 
