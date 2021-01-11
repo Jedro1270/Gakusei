@@ -30,7 +30,11 @@ export default function rankingsRoutes(app, secureRoute, database) {
                     console.log(`ERROR: ${error}`);
                   } else {
 
-                    const topMemberId = results.rows[0].user_id;
+                    const rankedMembers = results.rows.sort((firstMember, secondMember) => {
+                        return secondMember.points - firstMember.points;
+                    })
+
+                    const topMemberId = rankedMembers[0].user_id;
 
                     if (topMemberId === userId) {
                         const badgeId = 5;
