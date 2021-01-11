@@ -66,7 +66,6 @@ export default function Pomodoro() {
         } else if (secondsLeft <= 0) {
             if (!restPeriod) {
                 recordPomodoro();
-                setPomodorosCompleted(pomodorosCompleted + 1);
             }
 
             setRestPeriod(!restPeriod);
