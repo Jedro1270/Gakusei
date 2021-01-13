@@ -31,7 +31,7 @@ export default function Notebooks() {
     const [renamedTitle, setRenamedTitle] = useState('');
     const [openUndoSnackbar, setOpenUndoSnackbar] = useState(false);
 
-    dispatch(changeTitle('Notebooks'));
+    dispatch(changeTitle(`Notebooks for ${currentGroup.groupname}`));
     dispatch(setDrawer());
 
     useEffect(() => {
