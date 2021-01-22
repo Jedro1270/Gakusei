@@ -7,8 +7,8 @@ export default function rankingsRoutes(app, secureRoute, database) {
         const userId = request.user.id;
         const groupId = request.params.groupId;
 
-        try {
-            database.query(
+        database
+            .query(
                 `
                     SELECT 
                         DISTINCT ON (username) username,
@@ -24,32 +24,27 @@ export default function rankingsRoutes(app, secureRoute, database) {
                         ORDER BY
                             "username" ASC,
                             "level_id" DESC;
-                `, [groupId],
-                (error, results) => {
-                  if (error) {
-                    console.log(`ERROR: ${error}`);
-                  } else {
+                `, [groupId]
+            )
+            .then((results) => {
+                const rankedMembers = results.rows.sort((firstMember, secondMember) => {
+                    return secondMember.points - firstMember.points;
+                })
 
-                    const rankedMembers = results.rows.sort((firstMember, secondMember) => {
-                        return secondMember.points - firstMember.points;
-                    })
+                const topMemberId = rankedMembers[0].user_id;
 
-                    const topMemberId = rankedMembers[0].user_id;
+                if (topMemberId === userId) {
+                    const badgeId = 5;
 
-                    if (topMemberId === userId) {
-                        const badgeId = 5;
-
-                        badgeAchievement(userId, badgeId, database, (badgeTitle) => {
-                            response.json({ members: results.rows, badgeTitle: badgeTitle });
-                        });
-                    } else {
-                        response.json({ members: results.rows, badgeTitle: '' });
-                    }
-                  }
+                    badgeAchievement(userId, badgeId, database, (badgeTitle) => {
+                        response.json({ members: results.rows, badgeTitle: badgeTitle });
+                    });
+                } else {
+                    response.json({ members: results.rows, badgeTitle: '' });
                 }
-              );
-        } catch (error) {
-            console.log(error);
-        }
+            })
+            .catch((error) => {
+                console.log(`ERROR: ${error}`);
+            })
     });
 }

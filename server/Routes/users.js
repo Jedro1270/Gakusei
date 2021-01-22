@@ -44,47 +44,45 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
     app.post('/sign-up', async (request, response) => {
       const hashedPassword = await bcrypt.hash(request.body.password, 10);
 
-      database.query(
-        `
-          INSERT INTO "users"(username, password, points)
-            VALUES($1, $2, 0)
-            ON CONFLICT (username) DO NOTHING
-          RETURNING *;
-        `, [request.body.username, hashedPassword],
-        (error, results) => {
-          if (error) {
-            console.log(`ERROR: ${error}`);
+      database
+        .query(
+          `
+            INSERT INTO "users"(username, password, points)
+              VALUES($1, $2, 0)
+              ON CONFLICT (username) DO NOTHING
+            RETURNING *;
+          `, [request.body.username, hashedPassword]
+        )
+        .then((results) => {
+
+          if (results.rows.length === 0) {
+            console.log('Username taken');
+            response.json({ message: 'Username Taken' });
           } else {
+            const user = results.rows[0];
 
-            if (results.rows.length === 0) {
-
-              console.log('Username taken');
-              response.json({ message: 'Username Taken' });
-
-            } else {
-
-              const user = results.rows[0];
-
-              database.query(
+            database
+              .query(
                 `
                   INSERT INTO "level_achievements"(user_id, level_id)
                     VALUES($1, $2)
                   RETURNING *;
-                `, [user.user_id, 1],
-                (error, results) => {
-                  if (error) {
-                    console.log(`ERROR: ${error}`);
-                  } else {
-                      console.log('User inserted');
-                      response.json({ message: 'User Inserted' });
-                  }
-                }
-              );
+                `,
+                [user.user_id, 1]
+              )
+              .then((results) => {
+                console.log('User inserted');
+                response.json({ message: 'User Inserted' });
+              })
+              .catch((error) => {
+                console.log(`ERROR: ${error}`);
+              })
 
-            }
           }
-        }
-      );
+        })
+        .catch((error) => {
+          console.log(`ERROR: ${error}`);
+        })
     });
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -101,8 +99,8 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
     app.get('/api/users', secureRoute, (request, response) => {
       const userId = request.user.id;
   
-      try {
-        database.query(
+      database
+        .query(
           `
             SELECT * FROM "users"
               INNER JOIN "level_achievements" 
@@ -111,44 +109,36 @@ export default function usersRoutes(app, secureRoute, upload, database, passport
                   USING (level_id)
             WHERE "user_id" = $1
             ORDER BY "level_id" DESC;
-          `, [userId],
-          (error, results) => {
-            if (error) {
-              console.log(`ERROR: ${error}`);
-            } else {
-              response.json({ user: results.rows[0] });
-            }
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+          `, [userId]
+        )
+        .then((results) => {
+          response.json({ user: results.rows[0] });
+        })
+        .catch((error) => {
+          console.log(`ERROR: ${error}`);
+        })
     });
 
     // Update user profile picture
     app.put('/api/users', secureRoute, upload.single('file'), (request, response) => {
       const userId = request.user.id;
       const profilePicture = request.file.filename;
-  
-      try {
-        database.query(
+
+      database
+        .query(
           `
             UPDATE "users"
             SET
                 "profile_picture" = $1
             WHERE "user_id" = $2
             RETURNING *;
-          `, [profilePicture, userId],
-          (error, results) => {
-            if (error) {
-              console.log(`ERROR: ${error}`);
-            } else {
-              response.json({ user: results.rows[0] });
-            }
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+          `, [profilePicture, userId]
+        )
+        .then((results) => {
+          response.json({ user: results.rows[0] });
+        })
+        .catch((error) => {
+          console.log(`ERROR: ${error}`);
+        })
     });
   }

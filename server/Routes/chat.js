@@ -10,25 +10,21 @@ export default function chatRoutes(app, secureRoute, database) {
 
       let responseMessage = '';
 
-      try {
-        database.query(
+
+      database
+        .query(
           `
             INSERT INTO "messages"(group_id, author_id, message_content)
                 VALUES($1, $2, $3)
             RETURNING *;
-          `, [groupId, authorId, messageContent],
-          (error, results) => {
-            if (error) {
-              console.log(`ERROR: ${error}`);
-              responseMessage = error;
-            } else {
-              responseMessage = 'Successfully Uploaded Messages'
-            }
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+          `, [groupId, authorId, messageContent]
+        )
+        .then((results) => {
+          responseMessage = 'Successfully Uploaded Messages'
+        })
+        .catch((error) => {
+          console.log(`ERROR: ${error}`);
+        })
 
       response.json({ message: responseMessage });
     });
@@ -38,8 +34,9 @@ export default function chatRoutes(app, secureRoute, database) {
       const groupId = request.params.groupId;
       const limit = request.query.limit;
 
-      try {
-        database.query(
+
+      database
+        .query(
           `
             SELECT * FROM "messages" as m
               INNER JOIN "users" as u
@@ -47,17 +44,13 @@ export default function chatRoutes(app, secureRoute, database) {
             WHERE m.group_id = $1
             ORDER BY "message_id" 
             DESC LIMIT $2;
-          `, [groupId, limit],
-          (error, results) => {
-            if (error) {
-              console.log(`ERROR: ${error}`);
-            } else {
-              response.json({ messages: results.rows });
-            }
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+          `, [groupId, limit]
+        )
+        .then((results) => {
+          response.json({ messages: results.rows });
+        })
+        .catch((error) => {
+          console.log(`ERROR: ${error}`);
+        })
     });
   }
